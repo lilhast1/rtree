@@ -1,0 +1,3 @@
+/Users/tarikhastor/rtree/build/CMakeFiles/hilbert_rtree.dir
+/Users/tarikhastor/rtree/build/CMakeFiles/edit_cache.dir
+/Users/tarikhastor/rtree/build/CMakeFiles/rebuild_cache.dir

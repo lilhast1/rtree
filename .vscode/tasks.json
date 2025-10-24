@@ -1,0 +1,63 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build (Debug)",
+            "type": "shell",
+            "command": "cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug && cmake --build build -j",
+            "group": "build",
+            "problemMatcher": "$gcc"
+        },
+        {
+            "label": "Run",
+            "type": "shell",
+            "command": "./build/hilbert_rtree",
+            "dependsOn": ["Build (Debug)"]
+        },
+        {
+            "label": "Format",
+            "type": "shell",
+            "command": "clang-format -i $(find src include -name '*.cpp' -or -name '*.h')"
+        },
+        {
+            "label": "Tidy",
+            "type": "shell",
+            "command": "clang-tidy $(find src -name '*.cpp') -- -Iinclude"
+        },
+
+        // 🧩 MEMORY LEAK CHECK
+        {
+            "label": "Valgrind (Leak Check)",
+            "type": "shell",
+            "command": "valgrind --leak-check=full --show-leak-kinds=all ./build/hilbert_rtree",
+            "dependsOn": ["Build (Debug)"],
+            "problemMatcher": []
+        },
+
+        // 🧠 HEAP PROFILING
+        {
+            "label": "Valgrind (Heap Profile)",
+            "type": "shell",
+            "command": "valgrind --tool=massif ./build/hilbert_rtree && ms_print massif.out.* | less",
+            "dependsOn": ["Build (Debug)"],
+            "problemMatcher": []
+        },
+
+        // ⚡ CPU PROFILING WITH PERF
+        {
+            "label": "Perf (Record)",
+            "type": "shell",
+            "command": "perf record -g ./build/hilbert_rtree",
+            "dependsOn": ["Build (Debug)"],
+            "problemMatcher": []
+        },
+
+        // 📊 PERF REPORT
+        {
+            "label": "Perf (Report)",
+            "type": "shell",
+            "command": "perf report",
+            "problemMatcher": []
+        }
+    ]
+}

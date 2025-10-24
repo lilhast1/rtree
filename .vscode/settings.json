@@ -1,0 +1,11 @@
+{
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+    "editor.formatOnSave": true,
+    "C_Cpp.clang_format_style": "file",
+    "cmake.buildDirectory": "${workspaceFolder}/build",
+    "cmake.generator": "Unix Makefiles",
+    "files.associations": {
+        "*.tpp": "cpp",
+        "*.hpp": "cpp"
+    }
+}
