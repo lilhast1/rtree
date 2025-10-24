@@ -1,8 +1,0 @@
-[
-{
-  "directory": "/Users/tarikhastor/rtree/build",
-  "command": "/usr/bin/c++  -I/Users/tarikhastor/rtree/include -g -std=gnu++14 -arch arm64 -Wall -Wextra -Wpedantic -O2 -o CMakeFiles/hilbert_rtree.dir/src/main.cpp.o -c /Users/tarikhastor/rtree/src/main.cpp",
-  "file": "/Users/tarikhastor/rtree/src/main.cpp",
-  "output": "CMakeFiles/hilbert_rtree.dir/src/main.cpp.o"
-}
-]
