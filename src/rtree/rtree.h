@@ -2,16 +2,25 @@
 #include <initializer_list>
 #include <iterator>
 #include <vector>
+#include <functional>
+#include <memory>
+
+template<typename T>
+class RTreeIteratorBase {
+public:
+    virtual ~RTreeIteratorBase() = default;
+    virtual bool operator==(const RTreeIteratorBase& other) const = 0;
+    virtual RTreeIteratorBase& operator++() = 0;
+    virtual const T& operator*() const = 0;
+    virtual std::unique_ptr<RTreeIteratorBase> clone() const = 0;
+};
 
 template <typename T>
 class RTree {
    protected:
-    virtual const_iterator queryImpl(const std::function<bool(const T&)>& pred) const = 0;
+    virtual const RTreeIteratorBase<T> queryImpl(const std::function<bool(const T&)>& pred) const = 0;
 
    public:
-    using iterator = std::any_iterator<T&, std::input_iterator_tag>;
-    using const_iterator = std::any_iterator<const T&, std::input_iterator_tag>;
-
     RTree() = default;
 
     template <typename Itr>
@@ -39,19 +48,19 @@ class RTree {
 
     virtual void remove(const T&) = 0;
 
-    virtual iterator begin() = 0;
-    virtual iterator end() = 0;
+    virtual RTreeIteratorBase<T> begin() = 0;
+    virtual RTreeIteratorBase<T> end() = 0;
 
-    virtual const_iterator begin() const = 0;
-    virtual const_iterator end() const = 0;
+    virtual const RTreeIteratorBase<T> begin() const = 0;
+    virtual const RTreeIteratorBase<T> end() const = 0;
 
     template <typename Predicate>
-    iterator query(Predicate pred) {
+    RTreeIteratorBase<T> query(Predicate pred) {
         return queryImpl(pred);
     }
 
     template <typename Predicate>
-    const_iterator query(Predicate pred) const {
+    const RTreeIteratorBase<T> query(Predicate pred) const {
         return queryImpl(pred);
     }
 
