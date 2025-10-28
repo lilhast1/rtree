@@ -11,6 +11,7 @@ public:
     virtual ~RTreeIteratorBase() = default;
     virtual bool operator==(const RTreeIteratorBase& other) const = 0;
     virtual RTreeIteratorBase& operator++() = 0;
+    virtual RTreeIteratorBase& operator++(int) = 0;
     virtual const T& operator*() const = 0;
     virtual std::unique_ptr<RTreeIteratorBase> clone() const = 0;
 };
