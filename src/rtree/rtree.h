@@ -1,13 +1,14 @@
 #include <any>
+#include <functional>
 #include <initializer_list>
 #include <iterator>
-#include <vector>
-#include <functional>
 #include <memory>
+#include <string>
+#include <vector>
 
-template<typename T>
+template <typename T>
 class RTreeIteratorBase {
-public:
+   public:
     virtual ~RTreeIteratorBase() = default;
     virtual bool operator==(const RTreeIteratorBase& other) const = 0;
     virtual RTreeIteratorBase& operator++() = 0;
@@ -19,7 +20,8 @@ public:
 template <typename T>
 class RTree {
    protected:
-    virtual const RTreeIteratorBase<T> queryImpl(const std::function<bool(const T&)>& pred) const = 0;
+    virtual const RTreeIteratorBase<T> queryImpl(
+        const std::function<bool(const T&)>& pred) const = 0;
 
    public:
     RTree() = default;
@@ -69,4 +71,54 @@ class RTree {
 
     virtual bool empty() const = 0;
     virtual void clear() = 0;
+};
+
+template <typename T>
+struct MBR {
+    std::vector<double> coord;
+    std::string id;
+    void* children;
+    T* data;
+};
+
+template <typename T>
+class VanillaNode {
+    std::vector<MBR<T>> mbrs;
+};
+
+template <typename T>
+class RTreeVanilla : public RTree<T> {
+    const RTreeIteratorBase<T> queryImpl(const std::function<bool(const T&)>& pred);
+
+    static std::vector<MBR<T>> search(const VanillaNode<T> root,
+                                      const std::vector<double>& rectangle);
+
+    unsigned int _size;
+    unsigned int m;
+    unsigned int M;
+
+   public:
+    RTreeVanilla();
+    RTreeVanilla(const RTree<T>&);
+    RTreeVanilla(RTree<T>&&);
+    RTreeVanilla<T>& operator=(const RTree<T>&);
+    RTreeVanilla<T>& operator=(RTree<T>&&);
+    ~RTreeVanilla();
+
+    void swap(RTreeVanilla<T>&) override;
+
+    void insert(const T&) override;
+
+    void remove(const T&) override;
+
+    RTreeIteratorBase<T> begin() override;
+    RTreeIteratorBase<T> end() override;
+
+    const RTreeIteratorBase<T> begin() const override;
+    const RTreeIteratorBase<T> end() const override;
+
+    unsigned int size() const override;
+
+    bool empty() const override;
+    void clear() override;
 };
