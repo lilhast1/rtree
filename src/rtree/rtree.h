@@ -1679,6 +1679,7 @@ class RTreeGutman {
     int m;
 
     struct Node;
+    struct Block;
 
     struct Rectangle {
         std::vector<double> min;
@@ -1692,15 +1693,19 @@ class RTreeGutman {
 
     struct Node {
         Rectangle mbr;
-        bool is_leaf;
-        int count;
-        std::vector<Node*> children;
-        Node* parent;
+        Block* children;
+        Block* parent;
         T* elem;
     };
 
+    struct Block {
+        bool is_leaf;
+        std::vector<Node*> nodes;
+        Node* parent;
+    };
+
     // search
-    std::vector<Rectangle>& search(Rectangle& s, Node* t = root, std::vector<Rectangle>& result) {
+    std::vector<Rectangle>& search(Rectangle& s, std::vector<Rectangle>& result, Node* t = root) {
         if (t->is_leaf) {
             for (int i = 0; i < t->count; i++) {
                 if (Rectangle::overlap(t->children[i]->mbr, s)) {
