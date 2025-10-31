@@ -1691,27 +1691,28 @@ class RTreeGutman {
     };
 
     struct Node {
-        std::vector<Rectangle> rectangles;
+        Rectangle mbr;
         bool is_leaf;
         int count;
         std::vector<Node*> children;
-        std::vector<Item> items;
+        Node* parent;
+        T* elem;
     };
 
     // search
     std::vector<Rectangle>& search(Rectangle& s, Node* t = root, std::vector<Rectangle>& result) {
         if (t->is_leaf) {
             for (int i = 0; i < t->count; i++) {
-                if (Rectangle::overlap(t->rectangles[i], s)) {
-                    result.push_back(r);
+                if (Rectangle::overlap(t->children[i]->mbr, s)) {
+                    result.push_back(t->children[i]->mbr);
                 }
             }
             return result;
         }
         for (int i = 0; i < t->count; i++) {
-            if (Rectangle::overlap(t->rectangles[i], s)) {
+            if (Rectangle::overlap(t->children[i]->mbr, s)) {
                 std::vector<Rectangle> r;
-                search(s, t->rectangles[i].child, r);
+                search(s, t->children[i], r);
                 result.insert(std::back_inserter(result), r.begin(), r.end());
             }
         }
@@ -1721,10 +1722,14 @@ class RTreeGutman {
     // insert
     void insert(Rectangle& r) {
         auto leaf = choose_leaf();
-        if (leaf.rectangles.size() < M) {
+        if (leaf.count <= M) {
             leaf.push_back(r);
             return;
         }
+    }
+
+    void insert(Node* inode) {
+
     }
 
     // chooseleaf
@@ -1737,7 +1742,7 @@ class RTreeGutman {
         auto leaf = n;
 
         for (int i = 0; i < n->count; i++) {
-            auto& r = n->rectangles[i];
+            auto& r = n->children[i]->mbr;
             const double e = r.enlargement_needed(s);
             if (!equal(e, min_enlarge) && e < min_enlarge) {
                 min_enlarge = e;
@@ -1760,13 +1765,13 @@ class RTreeGutman {
     Node* find_leaf(Rectangle& r, Node* t = root) {
         if (t->is_leaf) {
             for (int i = 0; i < t->count; i++) {
-                if (t->rectangles[i] == r) return t;
+                if (t->children[i]->mbr == r) return t;
             }
             return nullptr;
         }
         auto p = nullptr;
         for (int i = 0; i < t->count; i++) {
-            if (Rectangle::overlap(t->rectangles[i], r)) {
+            if (Rectangle::overlap(t->children[i]->mbr, r)) {
                 auto u = find_leaf(r, t->children[i]);
                 if (u) return p;
             }
@@ -1779,4 +1784,46 @@ class RTreeGutman {
     // picknext
     // linearsplit
     // linearpickseeds
+    void split(Node* u) {
+        // u sada ima M + 1 elem
+        //quadratic split
+
+        int w = v = -1;
+        double max_needed_mbr = -1;
+        for (int i = 0; i < u->count; i++) {
+            for (int j = 0; j < u->count; j++) {
+                if (i == j)
+                    continue;
+                double m = Rectangle::calculate_mbr_needed(u->children[i]->mbr, u->children[j]->mbr);
+                if (m > max_needed_mbr) {
+                    max_needed_mbr = m;
+                    w = i;
+                    v = j;
+                } 
+            }
+        }
+        
+        std::stack<Node*> stck;
+
+        for (int i = 0; i < u->count; i++) {
+            if (i == w || i == v)
+                continue;
+            stck.push(u->children[i]);
+            u->children[i] = nullptr;
+        }
+
+        auto ptr1 = m->children[v], ptr2 = m->children[w];
+
+        u->children->clear();
+        u->children->push_back(ptr1);
+        u->children->push_back(ptr2);
+        u->count = 2;
+
+        while (!stck.empty()) {
+            insert(stck.pop());
+        }
+
+        
+
+    }
 };
