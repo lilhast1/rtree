@@ -1788,6 +1788,32 @@ class RTreeGutman {
         adjust_tree(block->parent->parent);
     }
     // delete
+    void remove(Rectangle& r) {
+        auto block = find_leaf(r, root);
+        if (block == nullptr) return;
+        int i = 0;
+        for (i = 0; i < block->count; i++) {
+            if (Rectangle::equal(block->nodes[i]->mbr, r)) break;
+        }
+        if (i == block->count) return;
+        auto node = block->nodes.get(i);
+        block->nodes.erase(block->nodes.begin() + i);
+        block->count--;
+        delete node;
+        condense_tree(block);
+        if (root->nodes.size() == 1) {
+            auto d = root;
+            root = root->nodes[0]->children;
+            d->count = 0;
+            d->nodes.clear();
+            delete d;
+        }
+        if (root->nodes.size() == 0) {
+            delete root;
+            root = nullptr;
+        }
+    }
+
     // findleaf
     Block* find_leaf(Rectangle& r, Block* t = nullptr) {
         if (t == nullptr) t = root;
@@ -1807,6 +1833,35 @@ class RTreeGutman {
         return p;
     }
     // condensetree
+    void condense_tree(Block* t) {
+        std::stack<Node*> orphans;
+
+        while (t->parent) {
+            auto parent = t->parent;
+            auto parent_block = parent->parent;
+            if (t->count < m) {
+                int i = 0;
+                for (i = 0; i < parent_block->count; i++) {
+                    if (parent_block->nodes[i] == parent) {
+                        parent_block->nodes.erase(parent_block->nodes.begin() + i);
+                        parent_block->count--;
+                        break;
+                    }
+                }
+                for (auto p : t->nodes) orphans.push(p);
+                parent->children = nullptr;
+                delete parent;
+                parent_block->count--;
+            }
+            t = parent_block;
+        }
+        while (!orphans.empty()) {
+            auto n = orphans.pop();
+            if (n->elem) insert(n->mbr, n->elem);
+            n->children = nullptr;
+            delete n;
+        }
+    }
 
     // linearsplit
     // linearpickseeds
