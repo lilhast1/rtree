@@ -1670,36 +1670,29 @@ std::vector<typename RTREE_QUAL::Rect> RTREE_QUAL::ListTree() const {
 
 template <typename T>
 class RTreeGutman {
-    public:
+   public:
     struct Node;
     struct Block;
-    private:
+
+   private:
     Block* root;
     int m;
     int M;
 
-    static double equal(double x, double y, double eps=1e-7) {
+    static double equal(double x, double y, double eps = 1e-7) {
         return std::fabs(x - y) <= eps * (std::fabs(x) + std::fabs(y));
     }
 
    public:
-    
-    
-
-    
-
     struct Rectangle {
         std::vector<double> min;
         std::vector<double> max;
         static bool overlap(const Rectangle&, const Rectangle&);
         static Rectangle calc_mbr(const Rectangle&, const Rectangle&);
-        static double calc_mbr_area (const Rectangle&, const Rectangle&);
+        static double calc_mbr_area(const Rectangle&, const Rectangle&);
         double enlargement_needed(const Rectangle&) const;
         double area() const;
         static bool equal(const Rectangle&, const Rectangle&);
-
-
-
     };
 
     struct Node {
@@ -1718,8 +1711,7 @@ class RTreeGutman {
 
     // search
     std::vector<T*>& search(Rectangle& s, std::vector<T*>& result, Block* t = nullptr) {
-        if (t == nullptr) 
-            t = root;
+        if (t == nullptr) t = root;
         if (t->is_leaf) {
             for (int i = 0; i < t->count; i++) {
                 if (Rectangle::overlap(t->nodes[i]->mbr, s)) {
@@ -1741,30 +1733,16 @@ class RTreeGutman {
     // insert
     void insert(Rectangle& r, T* elem = nullptr) {
         if (root == nullptr) {
-            root = new Block {
-                .is_leaf = true,
-                .parent = nullptr,
-                .count = 1,
-                .nodes = std::vector<Node*>()
-            };
+            root = new Block{
+                .is_leaf = true, .parent = nullptr, .count = 1, .nodes = std::vector<Node*>()};
             root->nodes.push_back(
-                new Node {
-                    .elem = elem,
-                    .mbr = r,
-                    .parent = root,
-                    .children = nullptr
-                }
-            );
+                new Node{.elem = elem, .mbr = r, .parent = root, .children = nullptr});
             return;
         }
-        
+
         auto leaf = choose_leaf();
-        leaf->nodes.push_back(new Node{
-            .elem = elem,
-            .mbr = r,
-            .children = nullptr,
-            .parent = leaf
-        });
+        leaf->nodes.push_back(
+            new Node{.elem = elem, .mbr = r, .children = nullptr, .parent = leaf});
         leaf->count++;
         if (leaf->count > M) {
             split(leaf);
@@ -1775,8 +1753,7 @@ class RTreeGutman {
     // chooseleaf
     Block* choose_leaf(Rectangle& s, Block* n = nullptr) {
         // auto n = root;
-        if (n == nullptr)
-            n = root;
+        if (n == nullptr) n = root;
 
         if (n->is_leaf) return n;
 
@@ -1802,25 +1779,21 @@ class RTreeGutman {
 
     // adjusttree
     void adjust_tree(Block* block) {
-        if (block->parent == nullptr)
-            return;
+        if (block->parent == nullptr) return;
         auto mbr = Rectangle::calc_mbr(block->nodes, block->nodes + block->count);
         if (Rectangle::equal(block->parent->mbr, mbr)) {
             return;
-        } 
+        }
         block->parent->mbr = mbr;
         adjust_tree(block->parent->parent);
     }
-    // splitnode
     // delete
     // findleaf
     Block* find_leaf(Rectangle& r, Block* t = nullptr) {
-        if (t == nullptr)
-            t = root;
+        if (t == nullptr) t = root;
         if (t->is_leaf) {
             for (int i = 0; i < t->count; i++) {
-                if (Rectangle::equal(t->nodes[i]->mbr, r)) 
-                    return t;
+                if (Rectangle::equal(t->nodes[i]->mbr, r)) return t;
             }
             return nullptr;
         }
@@ -1834,21 +1807,20 @@ class RTreeGutman {
         return p;
     }
     // condensetree
-    
+
     // linearsplit
     // linearpickseeds
 
     // quadraticsplit
     void split(Block* t) {
         // u sada ima M + 1 elem
-        //quadratic split
+        // quadratic split
         double max_mbr = -1;
         Node* p = t->nodes[0];
         Node* q = p;
         for (int i = 0; i < t->count; i++) {
             for (int j = 0; j < t->count; j++) {
-                if (i == j)
-                    continue;
+                if (i == j) continue;
                 double mbr = Rectangle::calc_mbr_area(t->nodes[i]->mbr, t->nodes[j]->mbr);
                 if (mbr > max_mbr) {
                     max_mbr = mbr;
@@ -1858,10 +1830,8 @@ class RTreeGutman {
             }
         }
 
-        Node* right_parent = new Node {
-            .mbr = p->mbr
-        };
-        Block* right_block = new Block {
+        Node* right_parent = new Node{.mbr = p->mbr};
+        Block* right_block = new Block{
             .is_leaf = t->is_leaf,
             .nodes = std::vector<Node*>{p},
             .count = 1,
@@ -1869,11 +1839,8 @@ class RTreeGutman {
         right_parent->children = right_block;
         right_block->parent = right_parent;
 
-
-        Node * left_parent = new Node {
-            .mbr = q->mbr
-        };
-        Block* left_block = new Block {
+        Node* left_parent = new Node{.mbr = q->mbr};
+        Block* left_block = new Block{
             .is_leaf = t->is_leaf,
             .nodes = std::vector<Node*>{q},
             .count = 1,
@@ -1883,9 +1850,9 @@ class RTreeGutman {
 
         for (int i = 0; i < t->count; i++) {
             auto ptr = t->nodes[i];
-            if (ptr == p || ptr == q)
-                continue;
-            if (left_parent->mbr.enlargement_needed(ptr->mbr) < right_parent->mbr.enlargement_needed(ptr->mbr)) {
+            if (ptr == p || ptr == q) continue;
+            if (left_parent->mbr.enlargement_needed(ptr->mbr) <
+                right_parent->mbr.enlargement_needed(ptr->mbr)) {
                 left_block->nodes.push_back(ptr);
                 left_block->count++;
                 left_parent->mbr = Rectangle::calc_mbr(left_parent->mbr, ptr->mbr);
@@ -1899,14 +1866,12 @@ class RTreeGutman {
         t->nodes.clear();
         t->count = 0;
 
-        if (t->parent == nullptr) {    
+        if (t->parent == nullptr) {
             delete t;
-            root = new Block {
-                .is_leaf = false,
-                .nodes = std::vector<Node*>{left_parent, right_parent},
-                .parent = nullptr,
-                .count = 2
-            };
+            root = new Block{.is_leaf = false,
+                             .nodes = std::vector<Node*>{left_parent, right_parent},
+                             .parent = nullptr,
+                             .count = 2};
             return;
         }
 
@@ -1914,8 +1879,7 @@ class RTreeGutman {
         auto up_block = up_node->parent;
 
         for (int i = 0; i < up_block->count; i++) {
-            if (up_block->nodes[i] != up_node)
-                continue;
+            if (up_block->nodes[i] != up_node) continue;
             up_block->nodes[i] = left_parent;
             break;
         }
@@ -1930,8 +1894,7 @@ class RTreeGutman {
 
         delete up_node;
 
-        if (up_block->count > M)
-            split(up_block);
+        if (up_block->count > M) split(up_block);
 
         adjust_tree(up_block);
     }
