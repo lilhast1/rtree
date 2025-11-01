@@ -1687,10 +1687,6 @@ class RTreeGutman {
         static overlap(const Rectangle&, const Rectangle&);
     }
 
-    struct Item {
-        T* elem;
-    };
-
     struct Node {
         Rectangle mbr;
         Block* children;
@@ -1702,22 +1698,23 @@ class RTreeGutman {
         bool is_leaf;
         std::vector<Node*> nodes;
         Node* parent;
+        int count;
     };
 
     // search
-    std::vector<Rectangle>& search(Rectangle& s, std::vector<Rectangle>& result, Node* t = root) {
+    std::vector<T*>& search(Rectangle& s, std::vector<T*>& result, Block* t = root) {
         if (t->is_leaf) {
             for (int i = 0; i < t->count; i++) {
-                if (Rectangle::overlap(t->children[i]->mbr, s)) {
-                    result.push_back(t->children[i]->mbr);
+                if (Rectangle::overlap(t->nodes[i]->mbr, s)) {
+                    result.push_back(t->nodes[i]->elem);
                 }
             }
             return result;
         }
         for (int i = 0; i < t->count; i++) {
-            if (Rectangle::overlap(t->children[i]->mbr, s)) {
-                std::vector<Rectangle> r;
-                search(s, t->children[i], r);
+            if (Rectangle::overlap(t->nodes[i]->mbr, s)) {
+                std::vector<T*> r;
+                search(s, t->nodes[i]->children, r);
                 result.insert(std::back_inserter(result), r.begin(), r.end());
             }
         }
@@ -1738,7 +1735,7 @@ class RTreeGutman {
     }
 
     // chooseleaf
-    Node* choose_leaf(Rectangle& s, Node* n = root) {
+    Node* choose_leaf(Rectangle& s, Block* n = root) {
         // auto n = root;
 
         if (n->is_leaf) return n;
@@ -1747,16 +1744,16 @@ class RTreeGutman {
         auto leaf = n;
 
         for (int i = 0; i < n->count; i++) {
-            auto& r = n->children[i]->mbr;
+            auto& r = n->nodes[i]->mbr;
             const double e = r.enlargement_needed(s);
             if (!equal(e, min_enlarge) && e < min_enlarge) {
                 min_enlarge = e;
                 min_area = r.area();
-                leaf = n->children[i];
+                leaf = n->nodes[i]->children;
             } else if (equal(e, min_enlarge) && r.area() < min_area) {
                 min_enlarge = e;
                 min_area = r.area();
-                leaf = n->children[i];
+                leaf = n->nodes[i]->children;
             }
         }
         return choose_leaf(s, leaf);
@@ -1789,46 +1786,97 @@ class RTreeGutman {
     // picknext
     // linearsplit
     // linearpickseeds
-    void split(Node* u) {
+    void split(Block* t) {
         // u sada ima M + 1 elem
         //quadratic split
-
-        int w = v = -1;
-        double max_needed_mbr = -1;
-        for (int i = 0; i < u->count; i++) {
-            for (int j = 0; j < u->count; j++) {
+        double max_mbr = -1;
+        auto p = q = t->children[0];
+        for (int i = 0; i < t->count; i++) {
+            for (int j = 0; j < t->count; j++) {
                 if (i == j)
                     continue;
-                double m = Rectangle::calculate_mbr_needed(u->children[i]->mbr, u->children[j]->mbr);
-                if (m > max_needed_mbr) {
-                    max_needed_mbr = m;
-                    w = i;
-                    v = j;
-                } 
+                double mbr = Rectangle::calc_mbr_area(t->nodes[i]->mbr, t->nodes[j]->mbr);
+                if (mbr > max_mbr) {
+                    max_mbr = mbr;
+                    p = t->children[i];
+                    q = t->children[j];
+                }
             }
         }
-        
-        std::stack<Node*> stck;
 
-        for (int i = 0; i < u->count; i++) {
-            if (i == w || i == v)
+        Node * right_parent = new Node {
+            mbr = p->mbr
+        };
+        Block* right_block = new Block {
+            is_leaf = t->is_leaf,
+            nodes = std::vector<Node*>{p},
+            count = 1,
+        };
+        right_parent->children = right_block;
+        right_block->parent = right_parent;
+
+
+        Node * left_parent = new Node {
+            mbr = q->mbr
+        };
+        Block* left_block = new Block {
+            is_leaf = t->is_leaf,
+            nodes = std::vector<Node*>{q},
+            count = 1,
+        };
+        left_parent->children = left_block;
+        left_block->parent = left_parent;
+
+        for (int i = 0; i < t->count; i++) {
+            auto ptr = t->nodes[i];
+            if (ptr == p || ptr == q)
                 continue;
-            stck.push(u->children[i]);
-            u->children[i] = nullptr;
+            if (left_parent->mbr.enlargement_needed(ptr->mbr) < right_parent->mbr.enlargement_needed(ptr->mbr)) {
+                left_block->nodes.push_back(ptr);
+                left_block->count++;
+                left_parent->mbr = Rectangle::calc_mbr(left_parent->mbr, ptr->mbr);
+            } else {
+                right_block->nodes.push_back(ptr);
+                right_block->count++;
+                right_parent->mbr = Rectangle::calc_mbr(right_parent->mbr, ptr->mbr);
+            }
         }
 
-        auto ptr1 = m->children[v], ptr2 = m->children[w];
+        t->nodes.clear();
+        t->count = 0;
 
-        u->children->clear();
-        u->children->push_back(ptr1);
-        u->children->push_back(ptr2);
-        u->count = 2;
-
-        while (!stck.empty()) {
-            insert(stck.pop());
+        if (t->parent == nullptr) {    
+            delete t;
+            root = new Block {
+                is_leaf = false,
+                nodes = std::vector<Node*>{left_parent, right_parent},
+                parent = nullptr,
+                count = 2
+            };
+            return;
         }
 
-        
+        auto up_node = t->parent;
+        auto up_block = up_node->parent;
 
+        for (int i = 0; i < up_block->count; i++) {
+            if (up_block->nodes[i] != up_node)
+                continue;
+            up_block->nodes[i] = left_parent;
+            break;
+        }
+
+        up_block->nodes.push_back(right_parent);
+        up_block->count++;
+
+        left_parent->parent = up_block;
+        right_parent->parent = up_block;
+
+        up_block->is_leaf = false;
+
+        delete up_node;
+
+        if (up_block->count > M)
+            split(up_block);
     }
 };
