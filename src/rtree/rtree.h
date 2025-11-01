@@ -1722,20 +1722,41 @@ class RTreeGutman {
     }
 
     // insert
-    void insert(Rectangle& r) {
-        auto leaf = choose_leaf();
-        if (leaf.count <= M) {
-            leaf.push_back(r);
+    void insert(Rectangle& r, T* elem = nullptr) {
+        if (root == nullptr) {
+            root = new Block {
+                is_leaf = true,
+                parent = nullptr,
+                count = 1,
+                nodes = std::vector<Node*>()
+            };
+            root->nodes.push_back(
+                new Node {
+                    elem = elem,
+                    mbr = r,
+                    parent = root,
+                    children = nullptr
+                }
+            );
             return;
         }
-    }
-
-    void insert(Node* inode) {
-
+        
+        auto leaf = choose_leaf();
+        leaf->nodes.push_back(new Node{
+            elem = elem,
+            mbr = r,
+            children = nullptr,
+            parent = leaf
+        });
+        leaf->count++;
+        if (leaf->count > M) {
+            split(leaf);
+        }
+        adjust_tree(leaf);
     }
 
     // chooseleaf
-    Node* choose_leaf(Rectangle& s, Block* n = root) {
+    Block* choose_leaf(Rectangle& s, Block* n = root) {
         // auto n = root;
 
         if (n->is_leaf) return n;
@@ -1760,7 +1781,16 @@ class RTreeGutman {
     }
 
     // adjusttree
-    void adjust_tree();
+    void adjust_tree(Block* block) {
+        if (block->parent == nullptr)
+            return;
+        auto mbr = Rectangle::calc_mbr(block->nodes, block->nodes + block->count);
+        if (Rectangle::equal(block->parent->mbr, mbr)) {
+            return;
+        } 
+        block->parent->mbr = mbr;
+        adjust_tree(block->parent->parent);
+    }
     // splitnode
     // delete
     // findleaf
@@ -1781,11 +1811,11 @@ class RTreeGutman {
         return p;
     }
     // condensetree
-    // quadraticsplit
-    // pickseeds
-    // picknext
+    
     // linearsplit
     // linearpickseeds
+
+    // quadraticsplit
     void split(Block* t) {
         // u sada ima M + 1 elem
         //quadratic split
@@ -1804,7 +1834,7 @@ class RTreeGutman {
             }
         }
 
-        Node * right_parent = new Node {
+        Node* right_parent = new Node {
             mbr = p->mbr
         };
         Block* right_block = new Block {
@@ -1878,5 +1908,7 @@ class RTreeGutman {
 
         if (up_block->count > M)
             split(up_block);
+
+        adjust_tree(up_block);
     }
 };
