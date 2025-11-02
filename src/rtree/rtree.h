@@ -2,7 +2,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <stdexcept>
 #include <algorithm>
 #include <any>
 #include <functional>
@@ -15,6 +15,7 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <iostream>
 
 template <typename T>
 class RTreeGutman {
@@ -33,7 +34,7 @@ class RTreeGutman {
 
    public:
     RTreeGutman(int m, int M) : root(nullptr), m(m), M(M) {
-        if (m > M / 2) throw "Ne moze";
+        if (m > M / 2) throw std::length_error("The minimum number of entries in a node must be at most M / 2");
     }
     ~RTreeGutman() { delete root; }
     struct Rectangle {
@@ -51,6 +52,7 @@ class RTreeGutman {
         }
         template <typename Itr>
         static Rectangle calc_mbr(Itr p, Itr q) {
+            if (q == p) throw std::range_error("Calculating the MBR on an empty range"); 
             auto t = p++;
             if (q == p) return (*t)->mbr;
             auto n = p;
@@ -184,8 +186,15 @@ class RTreeGutman {
 
     // adjusttree
     void adjust_tree(Block* block) {
-        if (!block) return;
+        if (block == nullptr) return;
         if (block->parent == nullptr) return;
+        std::cout << block->count;
+        if (block->nodes.begin() == block->nodes.end()) {
+            std::cout << "\nWTF\n";
+            std::cout << "parent " << block->parent;
+            std::cout << "\nnode size " << block->nodes.size();
+            std::cout << "\ncount " << block->count;
+        }
         auto mbr = Rectangle::calc_mbr(block->nodes.begin(), block->nodes.end());
         if (Rectangle::equal(block->parent->mbr, mbr)) {
             return;
@@ -360,12 +369,13 @@ class RTreeGutman {
 
         up_block->is_leaf = false;
 
+        up_node->children = nullptr;
         delete up_node;
 
         if (up_block->count > M) split(up_block);
 
         adjust_tree(up_block);
 
-        delete t;
+        //delete t;
     }
 };
