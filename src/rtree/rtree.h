@@ -184,6 +184,7 @@ class RTreeGutman {
 
     // adjusttree
     void adjust_tree(Block* block) {
+        if (!block) return;
         if (block->parent == nullptr) return;
         auto mbr = Rectangle::calc_mbr(block->nodes.begin(), block->nodes.end());
         if (Rectangle::equal(block->parent->mbr, mbr)) {
