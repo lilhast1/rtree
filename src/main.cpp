@@ -331,7 +331,178 @@ class RTreeTest {
 
         assert_true(results.size() == 1, "Zero area rectangle (point)");
     }
+    void test_insert_and_search_large_dataset() {
+        RTreeGutman<int> tree(2, 4);
+        tree.m = 2;
+        tree.M = 4;
 
+        std::vector<int> values(100);
+        for (int i = 0; i < 100; i++) {
+            values[i] = i;
+            double x = (i % 10) * 2.0;
+            double y = (i / 10) * 2.0;
+            auto rect = makeRect({x, y}, {x + 1.5, y + 1.5});
+            tree.insert(rect, &values[i]);
+        }
+
+        auto search_rect = makeRect({-1.0, -1.0}, {30.0, 30.0});
+        std::vector<int*> results;
+        tree.search(search_rect, results);
+        assert_true(results.size() == 100, "Insert and search large dataset (100 elements)");
+    }
+
+    void test_delete_every_other_element() {
+        RTreeGutman<int> tree(2, 4);
+        tree.m = 2;
+        tree.M = 4;
+
+        std::vector<int> values(20);
+        std::vector<Rectangle> rects;
+
+        for (int i = 0; i < 20; i++) {
+            values[i] = i;
+            rects.push_back(makeRect({(double)i, (double)i}, {(double)i + 0.8, (double)i + 0.8}));
+            tree.insert(rects[i], &values[i]);
+        }
+
+        for (int i = 0; i < 20; i += 2) {
+            tree.remove(rects[i]);
+        }
+
+        auto search_rect = makeRect({-1.0, -1.0}, {25.0, 25.0});
+        std::vector<int*> results;
+        tree.search(search_rect, results);
+        assert_true(results.size() == 8, "Sto radi sa 8");
+        assert_true(results.size() == 10, "Delete every other element");
+    }
+
+    void test_search_with_exact_boundaries() {
+        RTreeGutman<int> tree(2, 4);
+        tree.m = 2;
+        tree.M = 4;
+
+        int val1 = 10, val2 = 20, val3 = 30;
+        auto rect1 = makeRect({0.0, 0.0}, {5.0, 5.0});
+        auto rect2 = makeRect({5.0, 5.0}, {10.0, 10.0});
+        auto rect3 = makeRect({10.0, 10.0}, {15.0, 15.0});
+
+        tree.insert(rect1, &val1);
+        tree.insert(rect2, &val2);
+        tree.insert(rect3, &val3);
+
+        auto search_rect = makeRect({0.0, 0.0}, {5.0, 5.0});
+        std::vector<int*> results;
+        tree.search(search_rect, results);
+
+        assert_true(results.size() >= 1, "Search with exact boundaries");
+    }
+
+    void test_insert_identical_rectangles() {
+        RTreeGutman<int> tree(2, 4);
+        tree.m = 2;
+        tree.M = 4;
+
+        std::vector<int> values = {1, 2, 3, 4, 5};
+        auto rect = makeRect({5.0, 5.0}, {10.0, 10.0});
+
+        for (size_t i = 0; i < values.size(); i++) {
+            tree.insert(rect, &values[i]);
+        }
+
+        std::vector<int*> results;
+        tree.search(rect, results);
+
+        assert_true(results.size() == 5, "Insert identical rectangles with different values");
+    }
+
+    void test_delete_from_single_element_tree() {
+        RTreeGutman<int> tree(2, 4);
+        tree.m = 2;
+        tree.M = 4;
+
+        int val = 42;
+        auto rect = makeRect({0.0, 0.0}, {1.0, 1.0});
+
+        tree.insert(rect, &val);
+        tree.remove(rect);
+
+        int val2 = 99;
+        auto rect2 = makeRect({5.0, 5.0}, {6.0, 6.0});
+        tree.insert(rect2, &val2);
+
+        std::vector<int*> results;
+        tree.search(rect2, results);
+
+        assert_true(results.size() == 1 && *results[0] == 99,
+                    "Delete from single element tree and reinsert");
+    }
+
+    void test_mixed_insert_delete_operations() {
+        RTreeGutman<int> tree(2, 4);
+        tree.m = 2;
+        tree.M = 4;
+
+        std::vector<int> values(15);
+        std::vector<Rectangle> rects;
+
+        for (int i = 0; i < 5; i++) {
+            values[i] = i;
+            rects.push_back(makeRect({(double)i, (double)i}, {(double)i + 1, (double)i + 1}));
+            tree.insert(rects[i], &values[i]);
+        }
+
+        tree.remove(rects[1]);
+        tree.remove(rects[3]);
+
+        for (int i = 5; i < 10; i++) {
+            values[i] = i;
+            rects.push_back(makeRect({(double)i, (double)i}, {(double)i + 1, (double)i + 1}));
+            tree.insert(rects[i], &values[i]);
+        }
+
+        tree.remove(rects[2]);
+        tree.remove(rects[6]);
+        tree.remove(rects[8]);
+
+        for (int i = 10; i < 15; i++) {
+            values[i] = i;
+            rects.push_back(makeRect({(double)i, (double)i}, {(double)i + 1, (double)i + 1}));
+            tree.insert(rects[i], &values[i]);
+        }
+
+        auto search_rect = makeRect({-1.0, -1.0}, {20.0, 20.0});
+        std::vector<int*> results;
+        tree.search(search_rect, results);
+
+        assert_true(results.size() == 10, "Mixed insert/delete operations");
+    }
+
+    void test_stress_test_splits() {
+        RTreeGutman<int> tree(2, 4);
+        tree.m = 2;
+        tree.M = 4;
+
+        std::vector<int> values(50);
+
+        for (int i = 0; i < 50; i++) {
+            values[i] = i;
+            double base_x = (i / 5) * 3.0;
+            double base_y = (i % 5) * 3.0;
+            auto rect = makeRect({base_x, base_y}, {base_x + 2.0, base_y + 2.0});
+            tree.insert(rect, &values[i]);
+        }
+
+        auto search_rect = makeRect({-5.0, -5.0}, {50.0, 50.0});
+        std::vector<int*> results;
+        tree.search(search_rect, results);
+
+        auto cluster_rect = makeRect({0.0, 0.0}, {5.0, 5.0});
+        std::vector<int*> cluster_results;
+        tree.search(cluster_rect, cluster_results);
+
+        assert_true(results.size() == 50 && cluster_results.size() > 0,
+                    "Stress test with multiple splits");
+    }
     void run_all_tests() {
         std::cout << "\n========== Running R-Tree Tests ==========" << std::endl;
 
@@ -346,6 +517,7 @@ class RTreeTest {
         test_search_no_overlap();
         test_search_partial_overlap();
         test_search_point_query();
+        test_search_with_exact_boundaries();
 
         std::cout << "\n--- Deletion Tests ---" << std::endl;
         test_delete_single_element();
@@ -353,11 +525,18 @@ class RTreeTest {
         test_delete_nonexistent();
         test_delete_and_reinsert();
         test_delete_multiple_sequential();
+        test_delete_every_other_element();
+        test_delete_from_single_element_tree();
 
         std::cout << "\n--- Edge Cases ---" << std::endl;
         test_3d_rectangles();
         test_high_dimensional();
         test_zero_area_rectangle();
+
+        std::cout << "\n--- Stress Tests ---" << std::endl;
+        test_insert_and_search_large_dataset();
+        test_mixed_insert_delete_operations();
+        test_stress_test_splits();
 
         print_summary();
     }
