@@ -1,4 +1,6 @@
-set print pretty on
 set pagination off
-set confirm off
-set breakpoint pending on
+set disassembly-flavor intel
+set print pretty on
+set print object on
+set print static-members on
+set print vtbl on

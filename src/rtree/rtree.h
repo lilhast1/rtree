@@ -338,6 +338,8 @@ class RTreeGutman {
                              .nodes = std::vector<Node*>{left_parent, right_parent},
                              .parent = nullptr,
                              .count = 2};
+            left_parent->parent = root;
+            right_parent->parent = root;
             return;
         }
 
