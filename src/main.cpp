@@ -372,7 +372,6 @@ class RTreeTest {
         auto search_rect = makeRect({-1.0, -1.0}, {25.0, 25.0});
         std::vector<int*> results;
         tree.search(search_rect, results);
-        assert_true(results.size() == 8, "Sto radi sa 8");
         assert_true(results.size() == 10, "Delete every other element");
     }
 
@@ -503,6 +502,139 @@ class RTreeTest {
         assert_true(results.size() == 50 && cluster_results.size() > 0,
                     "Stress test with multiple splits");
     }
+    void test_deep_tree_with_condense() {
+        RTreeGutman<int> tree(2, 4);
+        tree.m = 2;
+        tree.M = 4;
+
+        std::vector<int> values(100);
+        std::vector<Rectangle> rects;
+
+        for (int i = 0; i < 100; i++) {
+            values[i] = i;
+            double cluster_x = (i / 25) * 10.0;
+            double cluster_y = (i % 25) * 0.5;
+            double x = cluster_x + (i % 5) * 0.1;
+            double y = cluster_y;
+            rects.push_back(makeRect({x, y}, {x + 0.05, y + 0.05}));
+            tree.insert(rects[i], &values[i]);
+        }
+        std::vector<int> to_delete = {0,  1,  2,  3,  4,  25, 26, 27, 28, 29,
+                                      50, 51, 52, 53, 54, 75, 76, 77, 78, 79};
+
+        for (int idx : to_delete) {
+            tree.remove(rects[idx]);
+        }
+
+        auto search_rect = makeRect({-10.0, -10.0}, {50.0, 50.0});
+        std::vector<int*> results;
+        tree.search(search_rect, results);
+
+        assert_true(results.size() == 80, "Deep tree with non-leaf orphans condense");
+    }
+
+    void test_deep_tree_with_extreme_condense() {
+        RTreeGutman<int> tree(2, 4);
+        tree.m = 2;
+        tree.M = 4;
+
+        std::vector<int> values(200);
+        std::vector<Rectangle> rects;
+
+        for (int i = 0; i < 200; i++) {
+            values[i] = i;
+            int cluster_id = i / 20;
+            int within_cluster = i % 20;
+
+            double x = cluster_id * 5.0 + (within_cluster % 4) * 0.1;
+            double y = cluster_id * 5.0 + (within_cluster / 4) * 0.1;
+
+            rects.push_back(makeRect({x, y}, {x + 0.05, y + 0.05}));
+            tree.insert(rects[i], &values[i]);
+        }
+
+        for (int cluster = 0; cluster < 10; cluster += 2) {
+            for (int j = 0; j < 20; j++) {
+                int idx = cluster * 20 + j;
+                tree.remove(rects[idx]);
+            }
+        }
+
+        auto search_rect = makeRect({-5.0, -5.0}, {60.0, 60.0});
+        std::vector<int*> results;
+        tree.search(search_rect, results);
+
+        assert_true(results.size() == 100, "Extreme condense");
+    }
+
+    void test_extra_delete_and_reinsert() {
+        RTreeGutman<int> tree(2, 4);
+        tree.m = 2;
+        tree.M = 4;
+
+        std::vector<int> values(50);
+        std::vector<Rectangle> rects;
+
+        for (int i = 0; i < 50; i++) {
+            values[i] = i;
+            double x = (i % 7) * 2.0;
+            double y = (i / 7) * 2.0;
+            rects.push_back(makeRect({x, y}, {x + 1.0, y + 1.0}));
+            tree.insert(rects[i], &values[i]);
+        }
+
+        bool all_passed = true;
+        for (int cycle = 0; cycle < 3; cycle++) {
+            std::vector<int> deleted_indices;
+            for (int i = cycle; i < 50; i += 5) {
+                tree.remove(rects[i]);
+                deleted_indices.push_back(i);
+            }
+
+            for (int idx : deleted_indices) {
+                tree.insert(rects[idx], &values[idx]);
+            }
+
+            auto search_rect = makeRect({-5.0, -5.0}, {20.0, 20.0});
+            std::vector<int*> results;
+            tree.search(search_rect, results);
+
+            if (results.size() != 50) {
+                all_passed = false;
+                break;
+            }
+        }
+
+        assert_true(all_passed, "Sequential delete and reinsert");
+    }
+
+    void test_massive_delete_and_reinsert() {
+        RTreeGutman<int> tree(2, 4);
+        tree.m = 2;
+        tree.M = 4;
+
+        std::vector<int> values(150);
+        std::vector<Rectangle> rects;
+
+        for (int i = 0; i < 150; i++) {
+            values[i] = i;
+            double x = (i % 12) * 1.5;
+            double y = (i / 12) * 1.5;
+            rects.push_back(makeRect({x, y}, {x + 0.8, y + 0.8}));
+            tree.insert(rects[i], &values[i]);
+        }
+
+        for (int i = 0; i < 100; i++) {
+            tree.remove(rects[i]);
+        }
+
+        auto search_rect = makeRect({-10.0, -10.0}, {50.0, 50.0});
+        std::vector<int*> results;
+        tree.search(search_rect, results);
+
+        assert_true(results.size() == 50, "Massive deletions with reinsertion");
+    }
+
     void run_all_tests() {
         std::cout << "\n========== Running R-Tree Tests ==========" << std::endl;
 
@@ -537,6 +669,12 @@ class RTreeTest {
         test_insert_and_search_large_dataset();
         test_mixed_insert_delete_operations();
         test_stress_test_splits();
+
+        std::cout << "\n--- Condense Tree Tests ---" << std::endl;
+        test_deep_tree_with_condense();
+        test_deep_tree_with_extreme_condense();
+        test_extra_delete_and_reinsert();
+        test_massive_delete_and_reinsert();
 
         print_summary();
     }

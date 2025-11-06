@@ -192,14 +192,8 @@ class RTreeGutman {
     void adjust_tree(Block* block) {
         if (block == nullptr) return;
         if (block->parent == nullptr) return;
-        std::cout << block->count;
         if (block->count == 0) return;
-        if (block->nodes.begin() == block->nodes.end()) {
-            std::cout << "\nWTF\n";
-            std::cout << "parent " << block->parent;
-            std::cout << "\nnode size " << block->nodes.size();
-            std::cout << "\ncount " << block->count;
-        }
+
         auto mbr = Rectangle::calc_mbr(block->nodes.begin(), block->nodes.end());
         if (Rectangle::equal(block->parent->mbr, mbr)) {
             return;
@@ -287,12 +281,32 @@ class RTreeGutman {
             t = parent_block;
         }
         while (!orphans.empty()) {
-            std::cout << "\nSta je jebo ga ti\n";
             auto n = orphans.top();
             orphans.pop();
-            if (n->elem) insert(n->mbr, n->elem);
-            n->children = nullptr;
+            reinsert_subtree(n);
             delete n;
+        }
+    }
+    void reinsert_subtree(Node* node) {
+        if (node->children == nullptr) {
+            if (node->elem) {
+                insert(node->mbr, node->elem);
+            }
+        } else {
+            if (node->children->is_leaf) {
+                for (auto child : node->children->nodes) {
+                    if (child->elem) {
+                        insert(child->mbr, child->elem);
+                    }
+                }
+            } else {
+                for (auto child : node->children->nodes) {
+                    reinsert_subtree(child);
+                }
+            }
+            node->children->nodes.clear();
+            delete node->children;
+            node->children = nullptr;
         }
     }
 
