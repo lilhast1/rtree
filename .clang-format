@@ -8,3 +8,11 @@ ReflowComments: true
 SortIncludes: true
 SpaceAfterTemplateKeyword: true
 # Standard: Cpp14
+IndentPPDirectives: AfterHash
+AlwaysBreakAfterReturnType: None
+BreakBeforeBraces: Allman
+BreakBeforeTernaryOperators: true
+BreakBeforeBinaryOperators: NonAssignment
+AllowAllParametersOfDeclarationOnNextLine: false
+AllowShortBlocksOnASingleLine: false
+AllowShortIfStatementsOnASingleLine: false
