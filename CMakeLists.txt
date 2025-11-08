@@ -1,24 +1,20 @@
 cmake_minimum_required(VERSION 3.14)
-project(HilbertRTreeComparison LANGUAGES CXX)
+project(RTreeComparison LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 20
-)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Debug)
+    set(CMAKE_BUILD_TYPE Debug)
 endif()
 
 add_compile_options(-Wall -Wextra -Wpedantic -O2)
 
-file(GLOB_RECURSE SOURCES src/*.cpp)
-add_executable(hilbert_rtree ${SOURCES})
-target_include_directories(hilbert_rtree PRIVATE include)
-
-
+# ------------------------
+# Catch2 for unit tests
+# ------------------------
 include(FetchContent)
-
 FetchContent_Declare(
   catch2
   GIT_REPOSITORY https://github.com/catchorg/Catch2.git
@@ -26,6 +22,31 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(catch2)
 
-add_executable(tests tests/test_rtree.cpp)
-target_link_libraries(tests PRIVATE Catch2::Catch2WithMain)
-target_include_directories(tests PRIVATE src)
+# ------------------------
+# Library target
+# ------------------------
+file(GLOB_RECURSE RTREE_SOURCES
+    src/rtree_hilbert/*.cpp
+    src/rtree/*.cpp
+)
+
+add_library(rtree_lib STATIC ${RTREE_SOURCES})
+target_include_directories(rtree_lib PUBLIC src include)
+
+# ------------------------
+# Main executable (benchmark / comparison)
+# ------------------------
+add_executable(benchmark src/main.cpp)
+target_link_libraries(benchmark PRIVATE rtree_lib)
+
+# ------------------------
+# Tests
+# ------------------------
+file(GLOB_RECURSE TEST_SOURCES tests/*.cpp)
+
+add_executable(tests ${TEST_SOURCES})
+target_link_libraries(tests PRIVATE rtree_lib Catch2::Catch2WithMain)
+target_include_directories(tests PRIVATE src include)
+
+enable_testing()
+add_test(NAME RTreeTests COMMAND tests)

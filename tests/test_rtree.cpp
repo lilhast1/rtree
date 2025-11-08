@@ -1,6 +1,7 @@
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch_all.hpp>
 #include "rtree/rtree.h"  // Adjust include path for your RTreeGutman
+#include "rtree_hilbert/hilbert.h"
 
 // Helper alias (assuming you have makeRect defined somewhere)
 //using Rectangle = RTreeGutman<int>::Rectangle;
@@ -445,3 +446,5 @@ TEST_CASE("RTree stress and condense tests", "[stress]") {
 
 
 }
+
+
