@@ -12,7 +12,7 @@ using Point = std::vector<ll>;
 ll HilbertCurve::index(const Point& point) const
 {
     Point x(point);
-    auto y = transposed_index_to_point(bits, x);
+    auto y = transposed_index(bits, x);
     return to_index(y);
 }
 
@@ -57,7 +57,7 @@ Point HilbertCurve::transposed_index(int bits, Point& point)
     ll p, q, t;
     int i;
 
-    for (q - M; q > 1; q >>= 1)
+    for (q = M; q > 1; q >>= 1)
     {
         p = q - 1;
         for (i = 0; i < n; i++)
@@ -156,13 +156,9 @@ Ranges HilbertCurve::query(const Point& a, const Point& b, int max_ranges, int b
     if (buffer_size <= max_ranges)
         throw std::domain_error("Buffer size must be larger than the max range");
 
-    if (max_ranges == 0)
-        buffer_size = 0;
-
     Box box(a, b);
 
     std::vector<ll> list;
-    list.reserve(128);
 
     box.visit_perimiter(
         [&](const Point& cell)
@@ -173,12 +169,53 @@ Ranges HilbertCurve::query(const Point& a, const Point& b, int max_ranges, int b
 
     std::sort(list.begin(), list.end());
 
-    int i = 0;
+    Ranges ranges(buffer_size > 0 ? buffer_size : 1024);
+    if (list.empty())
+        return ranges;
 
-    Ranges ranges(buffer_size);
-    long range_start = -1;
+    ll range_start = list[0];
+    ll range_end = list[0];
+    for (size_t i = 1; i < list.size(); i++)
+    {
+        bool continuous = true;
+        for (ll idx = range_end + 1; idx < list[i]; idx++)
+        {
+            if (!box.contains(point(idx)))
+            {
+                continuous = false;
+                break;
+            }
+        }
 
-    while (true)
+        if (continuous && list[i] - range_end <= 100)
+        {
+            range_end = list[i];
+        }
+        else
+        {
+            ranges.add(Range(range_start, range_end));
+            range_start = list[i];
+            range_end = list[i];
+        }
+    }
+    ranges.add(Range(range_start, range_end));
+
+    if (max_ranges > 0 && static_cast<int>(ranges.size()) > max_ranges)
+    {
+        Ranges lmtd(max_ranges);
+        int count = 0;
+        for (const auto& r : ranges)
+        {
+            if (count >= max_ranges)
+                break;
+            lmtd.add(r);
+            count++;
+        }
+        return lmtd;
+    }
+
+    return ranges;
+    /*while (true)
     {
         if (i == list.size())
             break;
@@ -216,5 +253,5 @@ Ranges HilbertCurve::query(const Point& a, const Point& b, int max_ranges, int b
 
     for (const auto& range : ranges) lmtd.add(range);
 
-    return lmtd;
+    return lmtd;*/
 }

@@ -10,7 +10,7 @@ struct Range
     ll end;
     Range(ll start, ll end) : start(start), end(end)
     {
-        if (start < end)
+        if (start > end)
             throw std::invalid_argument("Range end can't be less than range start");
     }
 };
