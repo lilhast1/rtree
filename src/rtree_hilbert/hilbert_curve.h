@@ -6,15 +6,13 @@
 using ll = long long;
 using Point = std::vector<ll>;
 
-class HilbertCurve
-{
+class HilbertCurve {
     int bits;
     int dim;
     ll len;
 
    public:
-    HilbertCurve(int bits, int dim) : dim(dim), bits(bits), len(bits * dim)
-    {
+    HilbertCurve(int bits, int dim) : dim(dim), bits(bits), len(bits * dim) {
         if (bits < 1 || dim < 1)
             throw std::domain_error("You can't have negative dimensions or bits");
     }

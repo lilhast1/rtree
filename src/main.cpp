@@ -12,35 +12,28 @@
 using Rectangle = RTreeGutman<int>::Rectangle;
 
 // Helper function to create a rectangle
-Rectangle makeRect(std::vector<double> min, std::vector<double> max)
-{
+Rectangle makeRect(std::vector<double> min, std::vector<double> max) {
     return Rectangle(min, max);
 }
 
 // Test fixture class
-class RTreeTest
-{
+class RTreeTest {
    private:
     int passed = 0;
     int failed = 0;
 
    public:
-    void assert_true(bool condition, const std::string& test_name)
-    {
-        if (condition)
-        {
+    void assert_true(bool condition, const std::string& test_name) {
+        if (condition) {
             std::cout << "✓ PASS: " << test_name << std::endl;
             passed++;
-        }
-        else
-        {
+        } else {
             std::cout << "✗ FAIL: " << test_name << std::endl;
             failed++;
         }
     }
 
-    void print_summary()
-    {
+    void print_summary() {
         std::cout << "\n========== Test Summary ==========" << std::endl;
         std::cout << "Passed: " << passed << std::endl;
         std::cout << "Failed: " << failed << std::endl;
@@ -49,8 +42,7 @@ class RTreeTest
     }
 
     // Basic Insertion Tests
-    void test_insert_single_element()
-    {
+    void test_insert_single_element() {
         RTreeGutman<int> tree(2, 4);
         tree.m = 2;
         tree.M = 5;
@@ -65,8 +57,7 @@ class RTreeTest
         assert_true(results.size() == 1 && *results[0] == 42, "Insert single element");
     }
 
-    void test_insert_multiple_elements()
-    {
+    void test_insert_multiple_elements() {
         RTreeGutman<int> tree(2, 4);
         tree.m = 2;
         tree.M = 4;
@@ -74,8 +65,7 @@ class RTreeTest
         std::vector<int> values = {1, 2, 3, 4, 5};
         std::vector<Rectangle> rects;
 
-        for (size_t i = 0; i < values.size(); i++)
-        {
+        for (size_t i = 0; i < values.size(); i++) {
             rects.push_back(makeRect({(double)i, (double)i}, {(double)i + 1, (double)i + 1}));
             tree.insert(rects[i], &values[i]);
         }
@@ -87,8 +77,7 @@ class RTreeTest
         assert_true(results.size() == 5, "Insert multiple elements");
     }
 
-    void test_insert_overlapping_rectangles()
-    {
+    void test_insert_overlapping_rectangles() {
         RTreeGutman<int> tree(2, 4);
         tree.m = 2;
         tree.M = 4;
@@ -110,15 +99,13 @@ class RTreeTest
         assert_true(results.size() == 3, "Insert overlapping rectangles");
     }
 
-    void test_insert_trigger_split()
-    {
+    void test_insert_trigger_split() {
         RTreeGutman<int> tree(2, 4);
         tree.m = 2;
         tree.M = 4;
 
         std::vector<int> values(10);
-        for (int i = 0; i < 10; i++)
-        {
+        for (int i = 0; i < 10; i++) {
             values[i] = i;
             auto rect = makeRect({(double)i, (double)i}, {(double)i + 0.5, (double)i + 0.5});
             tree.insert(rect, &values[i]);
@@ -133,8 +120,7 @@ class RTreeTest
     }
 
     // Search Tests
-    void test_search_empty_tree()
-    {
+    void test_search_empty_tree() {
         RTreeGutman<int> tree(2, 4);
         tree.m = 2;
         tree.M = 4;
@@ -146,8 +132,7 @@ class RTreeTest
         assert_true(results.size() == 0, "Search in empty tree");
     }
 
-    void test_search_no_overlap()
-    {
+    void test_search_no_overlap() {
         RTreeGutman<int> tree(2, 4);
         tree.m = 2;
         tree.M = 4;
@@ -163,8 +148,7 @@ class RTreeTest
         assert_true(results.size() == 0, "Search with no overlap");
     }
 
-    void test_search_partial_overlap()
-    {
+    void test_search_partial_overlap() {
         RTreeGutman<int> tree(2, 4);
         tree.m = 2;
         tree.M = 4;
@@ -184,8 +168,7 @@ class RTreeTest
         assert_true(results.size() == 3, "Search with partial overlap");
     }
 
-    void test_search_point_query()
-    {
+    void test_search_point_query() {
         RTreeGutman<int> tree(2, 4);
         tree.m = 2;
         tree.M = 4;
@@ -203,8 +186,7 @@ class RTreeTest
     }
 
     // Deletion Tests
-    void test_delete_single_element()
-    {
+    void test_delete_single_element() {
         RTreeGutman<int> tree(2, 4);
         tree.m = 2;
         tree.M = 4;
@@ -220,8 +202,7 @@ class RTreeTest
         assert_true(results.size() == 0, "Delete single element");
     }
 
-    void test_delete_from_multiple()
-    {
+    void test_delete_from_multiple() {
         RTreeGutman<int> tree(2, 4);
         tree.m = 2;
         tree.M = 4;
@@ -229,8 +210,7 @@ class RTreeTest
         std::vector<int> values = {1, 2, 3, 4, 5};
         std::vector<Rectangle> rects;
 
-        for (size_t i = 0; i < values.size(); i++)
-        {
+        for (size_t i = 0; i < values.size(); i++) {
             rects.push_back(makeRect({(double)i, (double)i}, {(double)i + 1, (double)i + 1}));
             tree.insert(rects[i], &values[i]);
         }
@@ -245,8 +225,7 @@ class RTreeTest
         assert_true(results.size() == 4, "Delete from multiple elements");
     }
 
-    void test_delete_nonexistent()
-    {
+    void test_delete_nonexistent() {
         RTreeGutman<int> tree(2, 4);
         tree.m = 2;
         tree.M = 4;
@@ -264,8 +243,7 @@ class RTreeTest
         assert_true(results.size() == 1, "Delete non-existent element");
     }
 
-    void test_delete_and_reinsert()
-    {
+    void test_delete_and_reinsert() {
         RTreeGutman<int> tree(2, 4);
         tree.m = 2;
         tree.M = 4;
@@ -283,8 +261,7 @@ class RTreeTest
         assert_true(results.size() == 1 && *results[0] == 20, "Delete and reinsert");
     }
 
-    void test_delete_multiple_sequential()
-    {
+    void test_delete_multiple_sequential() {
         RTreeGutman<int> tree(2, 4);
         tree.m = 2;
         tree.M = 4;
@@ -292,8 +269,7 @@ class RTreeTest
         std::vector<int> values = {1, 2, 3, 4, 5, 6, 7, 8};
         std::vector<Rectangle> rects;
 
-        for (size_t i = 0; i < values.size(); i++)
-        {
+        for (size_t i = 0; i < values.size(); i++) {
             rects.push_back(makeRect({(double)i, (double)i}, {(double)i + 1, (double)i + 1}));
             tree.insert(rects[i], &values[i]);
         }
@@ -311,8 +287,7 @@ class RTreeTest
     }
 
     // Edge Cases
-    void test_3d_rectangles()
-    {
+    void test_3d_rectangles() {
         RTreeGutman<int> tree(2, 4);
         tree.m = 2;
         tree.M = 4;
@@ -327,8 +302,7 @@ class RTreeTest
         assert_true(results.size() == 1, "3D rectangles");
     }
 
-    void test_high_dimensional()
-    {
+    void test_high_dimensional() {
         RTreeGutman<int> tree(2, 4);
         tree.m = 2;
         tree.M = 4;
@@ -343,8 +317,7 @@ class RTreeTest
         assert_true(results.size() == 1, "High dimensional (5D)");
     }
 
-    void test_zero_area_rectangle()
-    {
+    void test_zero_area_rectangle() {
         RTreeGutman<int> tree(2, 4);
         tree.m = 2;
         tree.M = 4;
@@ -358,15 +331,13 @@ class RTreeTest
 
         assert_true(results.size() == 1, "Zero area rectangle (point)");
     }
-    void test_insert_and_search_large_dataset()
-    {
+    void test_insert_and_search_large_dataset() {
         RTreeGutman<int> tree(2, 4);
         tree.m = 2;
         tree.M = 4;
 
         std::vector<int> values(100);
-        for (int i = 0; i < 100; i++)
-        {
+        for (int i = 0; i < 100; i++) {
             values[i] = i;
             double x = (i % 10) * 2.0;
             double y = (i / 10) * 2.0;
@@ -380,8 +351,7 @@ class RTreeTest
         assert_true(results.size() == 100, "Insert and search large dataset (100 elements)");
     }
 
-    void test_delete_every_other_element()
-    {
+    void test_delete_every_other_element() {
         RTreeGutman<int> tree(2, 4);
         tree.m = 2;
         tree.M = 4;
@@ -389,15 +359,13 @@ class RTreeTest
         std::vector<int> values(20);
         std::vector<Rectangle> rects;
 
-        for (int i = 0; i < 20; i++)
-        {
+        for (int i = 0; i < 20; i++) {
             values[i] = i;
             rects.push_back(makeRect({(double)i, (double)i}, {(double)i + 0.8, (double)i + 0.8}));
             tree.insert(rects[i], &values[i]);
         }
 
-        for (int i = 0; i < 20; i += 2)
-        {
+        for (int i = 0; i < 20; i += 2) {
             tree.remove(rects[i]);
         }
 
@@ -407,8 +375,7 @@ class RTreeTest
         assert_true(results.size() == 10, "Delete every other element");
     }
 
-    void test_search_with_exact_boundaries()
-    {
+    void test_search_with_exact_boundaries() {
         RTreeGutman<int> tree(2, 4);
         tree.m = 2;
         tree.M = 4;
@@ -429,8 +396,7 @@ class RTreeTest
         assert_true(results.size() >= 1, "Search with exact boundaries");
     }
 
-    void test_insert_identical_rectangles()
-    {
+    void test_insert_identical_rectangles() {
         RTreeGutman<int> tree(2, 4);
         tree.m = 2;
         tree.M = 4;
@@ -438,8 +404,7 @@ class RTreeTest
         std::vector<int> values = {1, 2, 3, 4, 5};
         auto rect = makeRect({5.0, 5.0}, {10.0, 10.0});
 
-        for (size_t i = 0; i < values.size(); i++)
-        {
+        for (size_t i = 0; i < values.size(); i++) {
             tree.insert(rect, &values[i]);
         }
 
@@ -449,8 +414,7 @@ class RTreeTest
         assert_true(results.size() == 5, "Insert identical rectangles with different values");
     }
 
-    void test_delete_from_single_element_tree()
-    {
+    void test_delete_from_single_element_tree() {
         RTreeGutman<int> tree(2, 4);
         tree.m = 2;
         tree.M = 4;
@@ -472,8 +436,7 @@ class RTreeTest
                     "Delete from single element tree and reinsert");
     }
 
-    void test_mixed_insert_delete_operations()
-    {
+    void test_mixed_insert_delete_operations() {
         RTreeGutman<int> tree(2, 4);
         tree.m = 2;
         tree.M = 4;
@@ -481,8 +444,7 @@ class RTreeTest
         std::vector<int> values(15);
         std::vector<Rectangle> rects;
 
-        for (int i = 0; i < 5; i++)
-        {
+        for (int i = 0; i < 5; i++) {
             values[i] = i;
             rects.push_back(makeRect({(double)i, (double)i}, {(double)i + 1, (double)i + 1}));
             tree.insert(rects[i], &values[i]);
@@ -491,8 +453,7 @@ class RTreeTest
         tree.remove(rects[1]);
         tree.remove(rects[3]);
 
-        for (int i = 5; i < 10; i++)
-        {
+        for (int i = 5; i < 10; i++) {
             values[i] = i;
             rects.push_back(makeRect({(double)i, (double)i}, {(double)i + 1, (double)i + 1}));
             tree.insert(rects[i], &values[i]);
@@ -502,8 +463,7 @@ class RTreeTest
         tree.remove(rects[6]);
         tree.remove(rects[8]);
 
-        for (int i = 10; i < 15; i++)
-        {
+        for (int i = 10; i < 15; i++) {
             values[i] = i;
             rects.push_back(makeRect({(double)i, (double)i}, {(double)i + 1, (double)i + 1}));
             tree.insert(rects[i], &values[i]);
@@ -516,16 +476,14 @@ class RTreeTest
         assert_true(results.size() == 10, "Mixed insert/delete operations");
     }
 
-    void test_stress_test_splits()
-    {
+    void test_stress_test_splits() {
         RTreeGutman<int> tree(2, 4);
         tree.m = 2;
         tree.M = 4;
 
         std::vector<int> values(50);
 
-        for (int i = 0; i < 50; i++)
-        {
+        for (int i = 0; i < 50; i++) {
             values[i] = i;
             double base_x = (i / 5) * 3.0;
             double base_y = (i % 5) * 3.0;
@@ -544,8 +502,7 @@ class RTreeTest
         assert_true(results.size() == 50 && cluster_results.size() > 0,
                     "Stress test with multiple splits");
     }
-    void test_deep_tree_with_condense()
-    {
+    void test_deep_tree_with_condense() {
         RTreeGutman<int> tree(2, 4);
         tree.m = 2;
         tree.M = 4;
@@ -553,8 +510,7 @@ class RTreeTest
         std::vector<int> values(100);
         std::vector<Rectangle> rects;
 
-        for (int i = 0; i < 100; i++)
-        {
+        for (int i = 0; i < 100; i++) {
             values[i] = i;
             double cluster_x = (i / 25) * 10.0;
             double cluster_y = (i % 25) * 0.5;
@@ -566,8 +522,7 @@ class RTreeTest
         std::vector<int> to_delete = {0,  1,  2,  3,  4,  25, 26, 27, 28, 29,
                                       50, 51, 52, 53, 54, 75, 76, 77, 78, 79};
 
-        for (int idx : to_delete)
-        {
+        for (int idx : to_delete) {
             tree.remove(rects[idx]);
         }
 
@@ -578,8 +533,7 @@ class RTreeTest
         assert_true(results.size() == 80, "Deep tree with non-leaf orphans condense");
     }
 
-    void test_deep_tree_with_extreme_condense()
-    {
+    void test_deep_tree_with_extreme_condense() {
         RTreeGutman<int> tree(10, 40);
         tree.m = 2;
         tree.M = 4;
@@ -587,8 +541,7 @@ class RTreeTest
         std::vector<int> values(2000);
         std::vector<Rectangle> rects;
 
-        for (int i = 0; i < 2000; i++)
-        {
+        for (int i = 0; i < 2000; i++) {
             values[i] = i;
             int cluster_id = i / 20;
             int within_cluster = i % 20;
@@ -600,10 +553,8 @@ class RTreeTest
             tree.insert(rects[i], &values[i]);
         }
 
-        for (int cluster = 0; cluster < 10; cluster += 2)
-        {
-            for (int j = 0; j < 20; j++)
-            {
+        for (int cluster = 0; cluster < 10; cluster += 2) {
+            for (int j = 0; j < 20; j++) {
                 int idx = cluster * 20 + j;
                 tree.remove(rects[idx]);
             }
@@ -616,8 +567,7 @@ class RTreeTest
         assert_true(results.size() == 100, "Extreme condense");
     }
 
-    void test_extra_delete_and_reinsert()
-    {
+    void test_extra_delete_and_reinsert() {
         RTreeGutman<int> tree(2, 4);
         tree.m = 2;
         tree.M = 4;
@@ -625,8 +575,7 @@ class RTreeTest
         std::vector<int> values(50);
         std::vector<Rectangle> rects;
 
-        for (int i = 0; i < 50; i++)
-        {
+        for (int i = 0; i < 50; i++) {
             values[i] = i;
             double x = (i % 7) * 2.0;
             double y = (i / 7) * 2.0;
@@ -635,17 +584,14 @@ class RTreeTest
         }
 
         bool all_passed = true;
-        for (int cycle = 0; cycle < 3; cycle++)
-        {
+        for (int cycle = 0; cycle < 3; cycle++) {
             std::vector<int> deleted_indices;
-            for (int i = cycle; i < 50; i += 5)
-            {
+            for (int i = cycle; i < 50; i += 5) {
                 tree.remove(rects[i]);
                 deleted_indices.push_back(i);
             }
 
-            for (int idx : deleted_indices)
-            {
+            for (int idx : deleted_indices) {
                 tree.insert(rects[idx], &values[idx]);
             }
 
@@ -653,8 +599,7 @@ class RTreeTest
             std::vector<int*> results;
             tree.search(search_rect, results);
 
-            if (results.size() != 50)
-            {
+            if (results.size() != 50) {
                 all_passed = false;
                 break;
             }
@@ -663,8 +608,7 @@ class RTreeTest
         assert_true(all_passed, "Sequential delete and reinsert");
     }
 
-    void test_massive_delete_and_reinsert()
-    {
+    void test_massive_delete_and_reinsert() {
         RTreeGutman<int> tree(2, 4);
         tree.m = 2;
         tree.M = 4;
@@ -672,8 +616,7 @@ class RTreeTest
         std::vector<int> values(150);
         std::vector<Rectangle> rects;
 
-        for (int i = 0; i < 150; i++)
-        {
+        for (int i = 0; i < 150; i++) {
             values[i] = i;
             double x = (i % 12) * 1.5;
             double y = (i / 12) * 1.5;
@@ -681,8 +624,7 @@ class RTreeTest
             tree.insert(rects[i], &values[i]);
         }
 
-        for (int i = 0; i < 100; i++)
-        {
+        for (int i = 0; i < 100; i++) {
             tree.remove(rects[i]);
         }
 
@@ -693,8 +635,7 @@ class RTreeTest
         assert_true(results.size() == 50, "Massive deletions with reinsertion");
     }
 
-    void run_all_tests()
-    {
+    void run_all_tests() {
         std::cout << "\n========== Running R-Tree Tests ==========" << std::endl;
 
         std::cout << "\n--- Insertion Tests ---" << std::endl;
@@ -739,8 +680,7 @@ class RTreeTest
     }
 };
 
-int main()
-{
+int main() {
     RTreeTest test_suite;
     test_suite.run_all_tests();
     return 0;

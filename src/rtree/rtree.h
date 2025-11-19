@@ -20,8 +20,7 @@
 #include <vector>
 
 template <typename T>
-class RTreeGutman
-{
+class RTreeGutman {
    public:
     struct Node;
     struct Block;
@@ -31,32 +30,25 @@ class RTreeGutman
     int m;
     int M;
 
-    static double equal(double x, double y, double eps = 1e-7)
-    {
+    static double equal(double x, double y, double eps = 1e-7) {
         return std::fabs(x - y) <= eps * (std::fabs(x) + std::fabs(y));
     }
 
    public:
-    RTreeGutman(int m, int M) : root(nullptr), m(m), M(M)
-    {
+    RTreeGutman(int m, int M) : root(nullptr), m(m), M(M) {
         if (m > M / 2)
             throw std::length_error(
                 "The minimum number of entries in a node must be at most M / 2");
     }
     ~RTreeGutman() { delete root; }
-    struct Rectangle
-    {
+    struct Rectangle {
         std::vector<double> min;
         std::vector<double> max;
         Rectangle(const std::vector<double>& min, const std::vector<double>& max)
-            : min(min), max(max)
-        {
-        }
-        static bool overlap(const Rectangle& a, const Rectangle& b)
-        {
+            : min(min), max(max) {}
+        static bool overlap(const Rectangle& a, const Rectangle& b) {
             bool f = true;
-            for (int i = 0; i < a.min.size(); i++)
-            {
+            for (int i = 0; i < a.min.size(); i++) {
                 f = f && a.max[i] >= b.min[i] && a.min[i] <= b.max[i];
                 if (!f)
                     break;
@@ -64,8 +56,7 @@ class RTreeGutman
             return f;
         }
         template <typename Itr>
-        static Rectangle calc_mbr(Itr p, Itr q)
-        {
+        static Rectangle calc_mbr(Itr p, Itr q) {
             if (q == p)
                 throw std::range_error("Calculating the MBR on an empty range");
             auto t = p++;
@@ -73,15 +64,13 @@ class RTreeGutman
                 return (*t)->mbr;
             auto n = p;
             auto agg = calc_mbr((*n)->mbr, (*t)->mbr);
-            while (n != q)
-            {
+            while (n != q) {
                 agg = calc_mbr(agg, (*n)->mbr);
                 n++;
             }
             return agg;
         }
-        static Rectangle calc_mbr(const Rectangle& a, const Rectangle& b)
-        {
+        static Rectangle calc_mbr(const Rectangle& a, const Rectangle& b) {
             auto c = a;
             std::transform(a.min.begin(), a.min.end(), b.min.begin(), c.min.begin(),
                            [](double a, double b) { return std::min(a, b); });
@@ -89,43 +78,35 @@ class RTreeGutman
                            [](double a, double b) { return std::max(a, b); });
             return c;
         }
-        static double calc_mbr_area(const Rectangle& a, const Rectangle& b)
-        {
+        static double calc_mbr_area(const Rectangle& a, const Rectangle& b) {
             return calc_mbr(a, b).area();
         }
-        double enlargement_needed(const Rectangle& b) const
-        {
+        double enlargement_needed(const Rectangle& b) const {
             auto mbr = calc_mbr(*this, b);
             return mbr.area() - area();
         }
-        double area() const
-        {
+        double area() const {
             double a = 1;
-            for (int i = 0; i < min.size(); i++)
-            {
+            for (int i = 0; i < min.size(); i++) {
                 a *= std::fabs(min[i] - max[i]);
             }
             return a;
         }
-        static bool vec_equal(const std::vector<double>& x, const std::vector<double>& y)
-        {
+        static bool vec_equal(const std::vector<double>& x, const std::vector<double>& y) {
             bool f = true;
-            for (int i = 0; i < x.size(); i++)
-            {
+            for (int i = 0; i < x.size(); i++) {
                 f = f && RTreeGutman::equal(x[i], y[i]);
                 if (!f)
                     break;
             }
             return f;
         }
-        static bool equal(const Rectangle& a, const Rectangle& b)
-        {
+        static bool equal(const Rectangle& a, const Rectangle& b) {
             return vec_equal(a.min, b.min) && vec_equal(a.max, b.max);
         }
     };
 
-    struct Node
-    {
+    struct Node {
         Rectangle mbr;
         Block* children;
         Block* parent;
@@ -133,40 +114,32 @@ class RTreeGutman
         ~Node() { delete children; }
     };
 
-    struct Block
-    {
+    struct Block {
         bool is_leaf;
         std::vector<Node*> nodes;
         Node* parent;
         int count;
-        ~Block()
-        {
+        ~Block() {
             for (auto x : nodes) delete x;
         }
     };
 
     // search
-    std::vector<T*>& search(Rectangle s, std::vector<T*>& result, Block* t = nullptr)
-    {
+    std::vector<T*>& search(Rectangle s, std::vector<T*>& result, Block* t = nullptr) {
         if (t == nullptr)
             t = root;
         if (t == nullptr)
             return result;
-        if (t->is_leaf)
-        {
-            for (int i = 0; i < t->count; i++)
-            {
-                if (Rectangle::overlap(t->nodes[i]->mbr, s))
-                {
+        if (t->is_leaf) {
+            for (int i = 0; i < t->count; i++) {
+                if (Rectangle::overlap(t->nodes[i]->mbr, s)) {
                     result.push_back(t->nodes[i]->elem);
                 }
             }
             return result;
         }
-        for (int i = 0; i < t->count; i++)
-        {
-            if (Rectangle::overlap(t->nodes[i]->mbr, s))
-            {
+        for (int i = 0; i < t->count; i++) {
+            if (Rectangle::overlap(t->nodes[i]->mbr, s)) {
                 std::vector<T*> r;
                 search(s, r, t->nodes[i]->children);
                 std::copy(r.begin(), r.end(), std::back_inserter(result));
@@ -176,10 +149,8 @@ class RTreeGutman
     }
 
     // insert
-    void insert(Rectangle r, T* elem = nullptr)
-    {
-        if (root == nullptr)
-        {
+    void insert(Rectangle r, T* elem = nullptr) {
+        if (root == nullptr) {
             root = new Block{
                 .is_leaf = true, .nodes = std::vector<Node*>(), .parent = nullptr, .count = 1};
             root->nodes.push_back(
@@ -191,16 +162,14 @@ class RTreeGutman
         leaf->nodes.push_back(
             new Node{.mbr = r, .children = nullptr, .parent = leaf, .elem = elem});
         leaf->count++;
-        if (leaf->count > M)
-        {
+        if (leaf->count > M) {
             split(leaf);
         }
         adjust_tree(leaf);
     }
 
     // chooseleaf
-    Block* choose_leaf(Rectangle s, Block* n = nullptr)
-    {
+    Block* choose_leaf(Rectangle s, Block* n = nullptr) {
         // auto n = root;
         if (n == nullptr)
             n = root;
@@ -212,18 +181,14 @@ class RTreeGutman
         double min_enlarge = min_area;
         auto leaf = n;
 
-        for (int i = 0; i < n->count; i++)
-        {
+        for (int i = 0; i < n->count; i++) {
             auto& r = n->nodes[i]->mbr;
             const double e = r.enlargement_needed(s);
-            if (!equal(e, min_enlarge) && e < min_enlarge)
-            {
+            if (!equal(e, min_enlarge) && e < min_enlarge) {
                 min_enlarge = e;
                 min_area = r.area();
                 leaf = n->nodes[i]->children;
-            }
-            else if (equal(e, min_enlarge) && r.area() < min_area)
-            {
+            } else if (equal(e, min_enlarge) && r.area() < min_area) {
                 min_enlarge = e;
                 min_area = r.area();
                 leaf = n->nodes[i]->children;
@@ -233,8 +198,7 @@ class RTreeGutman
     }
 
     // adjusttree
-    void adjust_tree(Block* block)
-    {
+    void adjust_tree(Block* block) {
         if (block == nullptr)
             return;
         if (block->parent == nullptr)
@@ -243,27 +207,23 @@ class RTreeGutman
             return;
 
         auto mbr = Rectangle::calc_mbr(block->nodes.begin(), block->nodes.end());
-        if (Rectangle::equal(block->parent->mbr, mbr))
-        {
+        if (Rectangle::equal(block->parent->mbr, mbr)) {
             return;
         }
         block->parent->mbr = mbr;
-        if (block->parent->parent)
-        {
+        if (block->parent->parent) {
             adjust_tree(block->parent->parent);
         }
     }
     // delete
-    void remove(Rectangle r)
-    {
+    void remove(Rectangle r) {
         if (root == nullptr)
             return;
         auto block = find_leaf(r, root);
         if (block == nullptr)
             return;
         int i = 0;
-        for (i = 0; i < block->count; i++)
-        {
+        for (i = 0; i < block->count; i++) {
             if (Rectangle::equal(block->nodes[i]->mbr, r))
                 break;
         }
@@ -274,8 +234,7 @@ class RTreeGutman
         block->count--;
         delete node;
         condense_tree(block);
-        if (root != nullptr && root->count == 1 && !root->is_leaf)
-        {
+        if (root != nullptr && root->count == 1 && !root->is_leaf) {
             auto d = root;
             root = root->nodes[0]->children;
             if (root)
@@ -284,32 +243,26 @@ class RTreeGutman
             d->nodes.clear();
             delete d;
         }
-        if (root != nullptr && root->nodes.size() == 0)
-        {
+        if (root != nullptr && root->nodes.size() == 0) {
             delete root;
             root = nullptr;
         }
     }
 
     // findleaf
-    Block* find_leaf(Rectangle r, Block* t = nullptr)
-    {
+    Block* find_leaf(Rectangle r, Block* t = nullptr) {
         if (t == nullptr)
             t = root;
-        if (t->is_leaf)
-        {
-            for (int i = 0; i < t->count; i++)
-            {
+        if (t->is_leaf) {
+            for (int i = 0; i < t->count; i++) {
                 if (Rectangle::equal(t->nodes[i]->mbr, r))
                     return t;
             }
             return nullptr;
         }
         auto p = nullptr;
-        for (int i = 0; i < t->count; i++)
-        {
-            if (Rectangle::overlap(t->nodes[i]->mbr, r))
-            {
+        for (int i = 0; i < t->count; i++) {
+            if (Rectangle::overlap(t->nodes[i]->mbr, r)) {
                 auto u = find_leaf(r, t->nodes[i]->children);
                 if (u)
                     return u;
@@ -319,21 +272,16 @@ class RTreeGutman
     }
     // condensetree
 
-    void condense_tree(Block* t)
-    {
+    void condense_tree(Block* t) {
         std::stack<Node*> orphans;
 
-        while (t->parent)
-        {
+        while (t->parent) {
             auto parent = t->parent;
             auto parent_block = parent->parent;
-            if (t->count < m)
-            {
+            if (t->count < m) {
                 int i = 0;
-                for (i = 0; i < parent_block->count; i++)
-                {
-                    if (parent_block->nodes[i] == parent)
-                    {
+                for (i = 0; i < parent_block->count; i++) {
+                    if (parent_block->nodes[i] == parent) {
                         parent_block->nodes.erase(parent_block->nodes.begin() + i);
                         parent_block->count--;
                         break;
@@ -345,49 +293,34 @@ class RTreeGutman
                 parent->children = nullptr;
                 delete parent;
                 // parent_block->count--;
-            }
-            else
-            {
-                if (t->count > 0)
-                {
+            } else {
+                if (t->count > 0) {
                     parent->mbr = Rectangle::calc_mbr(t->nodes.begin(), t->nodes.end());
                 }
             }
             t = parent_block;
         }
-        while (!orphans.empty())
-        {
+        while (!orphans.empty()) {
             auto n = orphans.top();
             orphans.pop();
             reinsert_subtree(n);
             delete n;
         }
     }
-    void reinsert_subtree(Node* node)
-    {
-        if (node->children == nullptr)
-        {
-            if (node->elem)
-            {
+    void reinsert_subtree(Node* node) {
+        if (node->children == nullptr) {
+            if (node->elem) {
                 insert(node->mbr, node->elem);
             }
-        }
-        else
-        {
-            if (node->children->is_leaf)
-            {
-                for (auto child : node->children->nodes)
-                {
-                    if (child->elem)
-                    {
+        } else {
+            if (node->children->is_leaf) {
+                for (auto child : node->children->nodes) {
+                    if (child->elem) {
                         insert(child->mbr, child->elem);
                     }
                 }
-            }
-            else
-            {
-                for (auto child : node->children->nodes)
-                {
+            } else {
+                for (auto child : node->children->nodes) {
                     reinsert_subtree(child);
                 }
             }
@@ -401,22 +334,18 @@ class RTreeGutman
     // linearpickseeds
 
     // quadraticsplit
-    void split(Block* t)
-    {
+    void split(Block* t) {
         // u sada ima M + 1 elem
         // quadratic split
         double max_mbr = -1;
         Node* p = nullptr;
         Node* q = nullptr;
-        for (int i = 0; i < t->count; i++)
-        {
-            for (int j = 0; j < t->count; j++)
-            {
+        for (int i = 0; i < t->count; i++) {
+            for (int j = 0; j < t->count; j++) {
                 if (i == j)
                     continue;
                 double mbr = Rectangle::calc_mbr_area(t->nodes[i]->mbr, t->nodes[j]->mbr);
-                if (mbr > max_mbr)
-                {
+                if (mbr > max_mbr) {
                     max_mbr = mbr;
                     p = t->nodes[i];
                     q = t->nodes[j];
@@ -444,8 +373,7 @@ class RTreeGutman
         left_block->parent = left_parent;
         q->parent = left_block;
 
-        for (int i = 0; i < t->count; i++)
-        {
+        for (int i = 0; i < t->count; i++) {
             auto ptr = t->nodes[i];
             if (ptr == p || ptr == q)
                 continue;
@@ -453,15 +381,12 @@ class RTreeGutman
             const auto ra = right_parent->mbr.area();
             const auto a = ptr->mbr.area();
             if (left_parent->mbr.enlargement_needed(ptr->mbr) - la - a
-                < right_parent->mbr.enlargement_needed(ptr->mbr) - ra - a)
-            {
+                < right_parent->mbr.enlargement_needed(ptr->mbr) - ra - a) {
                 left_block->nodes.push_back(ptr);
                 left_block->count++;
                 left_parent->mbr = Rectangle::calc_mbr(left_parent->mbr, ptr->mbr);
                 ptr->parent = left_block;
-            }
-            else
-            {
+            } else {
                 right_block->nodes.push_back(ptr);
                 right_block->count++;
                 right_parent->mbr = Rectangle::calc_mbr(right_parent->mbr, ptr->mbr);
@@ -472,8 +397,7 @@ class RTreeGutman
         t->nodes.clear();
         t->count = 0;
 
-        if (t->parent == nullptr)
-        {
+        if (t->parent == nullptr) {
             delete t;
             root = new Block{.is_leaf = false,
                              .nodes = std::vector<Node*>{left_parent, right_parent},
@@ -487,8 +411,7 @@ class RTreeGutman
         auto up_node = t->parent;
         auto up_block = up_node->parent;
 
-        for (int i = 0; i < up_block->count; i++)
-        {
+        for (int i = 0; i < up_block->count; i++) {
             if (up_block->nodes[i] != up_node)
                 continue;
             up_block->nodes[i] = left_parent;
@@ -515,42 +438,34 @@ class RTreeGutman
     }
 };
 
-namespace Gutman
-{
+namespace Gutman {
 
-bool equal(double x, double y, double eps = 1e-7)
-{
+bool equal(double x, double y, double eps = 1e-7) {
     return std::fabs(x - y) <= eps * (std::fabs(x) + std::fabs(y));
 }
 
-struct Rectangle
-{
+struct Rectangle {
     std::vector<double> min;
     std::vector<double> max;
 
-    Rectangle(const std::vector<double>& min, const std::vector<double>& max) : min(min), max(max)
-    {
-    }
+    Rectangle(const std::vector<double>& min, const std::vector<double>& max)
+        : min(min), max(max) {}
 
-    double area() const
-    {
+    double area() const {
         double a = 1;
-        for (int i = 0; i < min.size(); i++)
-        {
+        for (int i = 0; i < min.size(); i++) {
             a *= std::fabs(min[i] - max[i]);
         }
         return a;
     }
 
-    double enlargement_needed(const Rectangle& b) const
-    {
+    double enlargement_needed(const Rectangle& b) const {
         auto mbr = calc_mbr(*this, b);
         return mbr.area() - area();
     }
 
     template <typename Itr>
-    static Rectangle calc_mbr(Itr p, Itr q)
-    {
+    static Rectangle calc_mbr(Itr p, Itr q) {
         if (q == p)
             throw std::range_error("Calculating the MBR on an empty range");
         auto t = p++;
@@ -558,16 +473,14 @@ struct Rectangle
             return (*t)->mbr;
         auto n = p;
         auto agg = calc_mbr((*n)->mbr, (*t)->mbr);
-        while (n != q)
-        {
+        while (n != q) {
             agg = calc_mbr(agg, (*n)->mbr);
             n++;
         }
         return agg;
     }
 
-    static Rectangle calc_mbr(const Rectangle& a, const Rectangle& b)
-    {
+    static Rectangle calc_mbr(const Rectangle& a, const Rectangle& b) {
         auto c = a;
         std::transform(a.min.begin(), a.min.end(), b.min.begin(), c.min.begin(),
                        [](double a, double b) { return std::min(a, b); });
@@ -576,16 +489,13 @@ struct Rectangle
         return c;
     }
 
-    static double calc_mbr_area(const Rectangle& a, const Rectangle& b)
-    {
+    static double calc_mbr_area(const Rectangle& a, const Rectangle& b) {
         return calc_mbr(a, b).area();
     }
 
-    static bool vec_equal(const std::vector<double>& x, const std::vector<double>& y)
-    {
+    static bool vec_equal(const std::vector<double>& x, const std::vector<double>& y) {
         bool f = true;
-        for (int i = 0; i < x.size(); i++)
-        {
+        for (int i = 0; i < x.size(); i++) {
             f = f && equal(x[i], y[i]);
             if (!f)
                 break;
@@ -593,16 +503,13 @@ struct Rectangle
         return f;
     }
 
-    static bool equal(const Rectangle& a, const Rectangle& b)
-    {
+    static bool equal(const Rectangle& a, const Rectangle& b) {
         return vec_equal(a.min, b.min) && vec_equal(a.max, b.max);
     }
 
-    static bool overlap(const Rectangle& a, const Rectangle& b)
-    {
+    static bool overlap(const Rectangle& a, const Rectangle& b) {
         bool f = true;
-        for (int i = 0; i < a.min.size(); i++)
-        {
+        for (int i = 0; i < a.min.size(); i++) {
             f = f && a.max[i] >= b.min[i] && a.min[i] <= b.max[i];
             if (!f)
                 break;
@@ -612,8 +519,7 @@ struct Rectangle
 };
 
 template <typename T>
-struct Node
-{
+struct Node {
     bool is_leaf;
     Node* parent;
     std::vector<Node*> children;
@@ -623,15 +529,13 @@ struct Node
     int count() const { return is_leaf ? elems.size() : children.size(); }
 
     Node(bool is_leaf, Rectangle mbr) : is_leaf(is_leaf), mbr(mbr) {}
-    ~Node()
-    {
+    ~Node() {
         for (auto child : children) delete child;
     }
 };
 
 template <typename T>
-class RTree
-{
+class RTree {
     int m, M;
     Node<T>* root;
     size_t size;
@@ -640,8 +544,7 @@ class RTree
     RTree(int m, int M) : root(nullptr), m(m), M(M), size(0) {}
     ~RTree() { delete root; }
 
-    std::vector<T*> search(const Rectangle& search_rect) const
-    {
+    std::vector<T*> search(const Rectangle& search_rect) const {
         std::vector<T*> result;
         _impl_search(search_rect, result, root);
         return result;
@@ -650,40 +553,85 @@ class RTree
     void remove(Rectangle r);
 
    private:
-    void _impl_search(const Rectangle& s, std::vector<T*>& result, Node<T>* t = nullptr) const
-    {
+    void _impl_search(const Rectangle& s, std::vector<T*>& result, Node<T>* t = nullptr) const {
         if (t == nullptr)
             t = root;
         if (t == nullptr)
             return;
 
-        if (t->is_leaf)
-        {
-            for (auto& elem_rec : t->elems)
-            {
+        if (t->is_leaf) {
+            for (auto& elem_rec : t->elems) {
                 if (Rectangle::overlap(elem_rec.second, s))
                     result.push_back(elem_rec.first);
             }
             return;
         }
 
-        for (auto node : t->children)
-        {
-            if (Rectangle::overlap(node->mbr, s))
-            {
+        for (auto node : t->children) {
+            if (Rectangle::overlap(node->mbr, s)) {
                 std::vector<T*> r;
                 _impl_search(s, r, node);
                 std::copy(r.begin(), r.end(), std::back_inserter(result));
             }
         }
     }
-    Node* choose_leaf(Rectangle s, Node<T>* = nullptr);
+    Node* choose_leaf(Rectangle s, Node<T>* n = nullptr) {
+        if (!n)
+            n = root;
+        if (!n)
+            return nullptr;
+
+        if (n->is_leaf)
+            return n;
+
+        double min_area = std::numeric_limits<double>::max();
+        double min_enlarge = min_area;
+
+        auto leaf = n;
+
+        for (auto node : n->nodes) {
+            const double e = node->mbr.enlargement_needed(s);
+            if (!equal(e, min_enlarge) && e < min_enlarge) {
+                min_enlarge = e;
+                min_area = node->mbr.area();
+                leaf = node;
+            } else if (equal(e, min_enlarge) && node->mbr.area() < min_area) {
+                min_enlarge = e;
+                min_area = node->mbr.area();
+                leaf = node;
+            }
+        }
+        return choose_leaf(s, leaf);
+    }
     void adjust_tree(Node<T>*);
     void condense_tree(Node<T>*);
 
     void split(Node<T>* t) {}
 
-    Node<T>* find_leaf(Rectangle r, Node<T>* t = nullptr);
+    Node<T>* find_leaf(const Rectangle& r, Node<T>* t = nullptr) {
+        if (t == nullptr)
+            t = root;
+        if (t == nullptr)
+            return nullptr;
+
+        if (t->is_leaf) {
+            for (auto& elem_rec : t->elems) {
+                if (Rectangle::equal(elem_rec.second, r))
+                    return t;
+            }
+        } else {
+            for (auto node : nodes) {
+                if (Rectangle::overlap(node->mbr, r)) {
+                    auto leaf = find_leaf(r, node);
+                    if (leaf)
+                        return leaf;
+                }
+            }
+        }
+
+        return nullptr;
+    }
+
     void reinsert_subtree(Node<T>* node);
 };
 }  // namespace Gutman

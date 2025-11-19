@@ -19,7 +19,8 @@
         {
             "label": "Format",
             "type": "shell",
-            "command": "clang-format -i $(find src include -name '*.cpp' -or -name '*.h')"
+            "command": "clang-format -i $(find src include -name '*.cpp' -or -name '*.h')",
+            "problemMatcher": []
         },
         {
             "label": "Tidy",

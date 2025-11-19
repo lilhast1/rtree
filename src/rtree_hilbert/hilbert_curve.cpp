@@ -9,32 +9,26 @@
 using ll = long long;
 using Point = std::vector<ll>;
 
-ll HilbertCurve::index(const Point& point) const
-{
+ll HilbertCurve::index(const Point& point) const {
     Point x(point);
     auto y = transposed_index(bits, x);
     return to_index(y);
 }
 
-Point HilbertCurve::point(ll index) const
-{
+Point HilbertCurve::point(ll index) const {
     auto p = transpose(index);
     return transposed_index_to_point(bits, p);
 }
 
-void HilbertCurve::point(ll index, Point& x) const
-{
+void HilbertCurve::point(ll index, Point& x) const {
     for (auto& v : x) v = 0;
     transpose(index, x);
     transposed_index_to_point(bits, x);
 }
 
-void HilbertCurve::transpose(ll index, Point& x) const
-{
-    for (int idx = 0; idx < 8 * sizeof(ll); idx++)
-    {
-        if (index & (1ll << idx))
-        {
+void HilbertCurve::transpose(ll index, Point& x) const {
+    for (int idx = 0; idx < 8 * sizeof(ll); idx++) {
+        if (index & (1ll << idx)) {
             auto d = (len - idx - 1) % dim;
             auto s = (idx / dim) % bits;
             x[d] |= 1L << s;
@@ -42,32 +36,25 @@ void HilbertCurve::transpose(ll index, Point& x) const
     }
 }
 
-Point HilbertCurve::transpose(ll index) const
-{
+Point HilbertCurve::transpose(ll index) const {
     auto x = Point(dim);
     transpose(index, x);
     return x;
 }
 
-Point HilbertCurve::transposed_index(int bits, Point& point)
-{
+Point HilbertCurve::transposed_index(int bits, Point& point) {
     auto M = 1ll << (bits - 1);
     auto n = point.size();
     Point x(point);
     ll p, q, t;
     int i;
 
-    for (q = M; q > 1; q >>= 1)
-    {
+    for (q = M; q > 1; q >>= 1) {
         p = q - 1;
-        for (i = 0; i < n; i++)
-        {
-            if (x[i] & q)
-            {
+        for (i = 0; i < n; i++) {
+            if (x[i] & q) {
                 x[0] ^= p;
-            }
-            else
-            {
+            } else {
                 t = (x[0] ^ x[i]) & p;
                 x[0] ^= t;
                 x[i] ^= t;
@@ -87,8 +74,7 @@ Point HilbertCurve::transposed_index(int bits, Point& point)
     return x;
 }
 
-Point HilbertCurve::transposed_index_to_point(int bits, Point& x)
-{
+Point HilbertCurve::transposed_index_to_point(int bits, Point& x) {
     auto N = 2UL << (bits - 1);
     auto n = x.size();
     long p, q, t;
@@ -98,16 +84,12 @@ Point HilbertCurve::transposed_index_to_point(int bits, Point& x)
 
     for (i = n - 1; i > 0; i--) x[i] ^= x[i - 1];
     x[0] ^= t;
-    for (q = 2; q != N; q <<= 1)
-    {
+    for (q = 2; q != N; q <<= 1) {
         p = q - 1;
         for (i = n - 1; i >= 0; i--)
-            if (x[i] & q)
-            {
+            if (x[i] & q) {
                 x[0] ^= p;
-            }
-            else
-            {
+            } else {
                 t = (x[0] ^ x[i]) & p;
                 x[0] ^= t;
                 x[i] ^= t;
@@ -116,20 +98,16 @@ Point HilbertCurve::transposed_index_to_point(int bits, Point& x)
     return x;
 }
 
-ll HilbertCurve::to_index(Point& transposed_index) const
-{
+ll HilbertCurve::to_index(Point& transposed_index) const {
     ll b = 0;
     auto bidx = len - 1;
     auto mask = 1ll << (bits - 1);
 
     auto n = transposed_index.size();
 
-    for (int i = 0; i < bits; i++)
-    {
-        for (int j = 0; j < n; j++)
-        {
-            if (transposed_index[j] & mask)
-            {
+    for (int i = 0; i < bits; i++) {
+        for (int j = 0; j < n; j++) {
+            if (transposed_index[j] & mask) {
                 b |= 1ll << bidx;
             }
             bidx--;
@@ -139,18 +117,15 @@ ll HilbertCurve::to_index(Point& transposed_index) const
     return b;  // big endian
 }
 
-ll HilbertCurve::max_ordinate() const
-{
+ll HilbertCurve::max_ordinate() const {
     return (1 << bits) - 1;
 }
 
-ll HilbertCurve::max_index() const
-{
+ll HilbertCurve::max_index() const {
     return (1 << (bits * dim)) - 1;
 }
 
-Ranges HilbertCurve::query(const Point& a, const Point& b, int max_ranges, int buffer_size) const
-{
+Ranges HilbertCurve::query(const Point& a, const Point& b, int max_ranges, int buffer_size) const {
     if (max_ranges < 0)
         throw std::domain_error("Max range number in a query must be positive");
     if (buffer_size <= max_ranges)
@@ -160,12 +135,10 @@ Ranges HilbertCurve::query(const Point& a, const Point& b, int max_ranges, int b
 
     std::vector<ll> list;
 
-    box.visit_perimiter(
-        [&](const Point& cell)
-        {
-            auto n = index(cell);
-            list.push_back(n);
-        });
+    box.visit_perimiter([&](const Point& cell) {
+        auto n = index(cell);
+        list.push_back(n);
+    });
 
     std::sort(list.begin(), list.end());
 
@@ -175,24 +148,18 @@ Ranges HilbertCurve::query(const Point& a, const Point& b, int max_ranges, int b
 
     ll range_start = list[0];
     ll range_end = list[0];
-    for (size_t i = 1; i < list.size(); i++)
-    {
+    for (size_t i = 1; i < list.size(); i++) {
         bool continuous = true;
-        for (ll idx = range_end + 1; idx < list[i]; idx++)
-        {
-            if (!box.contains(point(idx)))
-            {
+        for (ll idx = range_end + 1; idx < list[i]; idx++) {
+            if (!box.contains(point(idx))) {
                 continuous = false;
                 break;
             }
         }
 
-        if (continuous && list[i] - range_end <= 100)
-        {
+        if (continuous && list[i] - range_end <= 100) {
             range_end = list[i];
-        }
-        else
-        {
+        } else {
             ranges.add(Range(range_start, range_end));
             range_start = list[i];
             range_end = list[i];
@@ -200,12 +167,10 @@ Ranges HilbertCurve::query(const Point& a, const Point& b, int max_ranges, int b
     }
     ranges.add(Range(range_start, range_end));
 
-    if (max_ranges > 0 && static_cast<int>(ranges.size()) > max_ranges)
-    {
+    if (max_ranges > 0 && static_cast<int>(ranges.size()) > max_ranges) {
         Ranges lmtd(max_ranges);
         int count = 0;
-        for (const auto& r : ranges)
-        {
+        for (const auto& r : ranges) {
             if (count >= max_ranges)
                 break;
             lmtd.add(r);
