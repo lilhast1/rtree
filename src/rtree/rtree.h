@@ -640,16 +640,49 @@ class RTree
     RTree(int m, int M) : root(nullptr), m(m), M(M), size(0) {}
     ~RTree() { delete root; }
 
-    std::vector<T*> search(const Rectangle& search_rect) const;
+    std::vector<T*> search(const Rectangle& search_rect) const
+    {
+        std::vector<T*> result;
+        _impl_search(search_rect, result, root);
+        return result;
+    }
     void insert(const Rectangle& mbr, T* elem);
     void remove(Rectangle r);
 
    private:
-    void _impl_search(const Rectangle&, std::vector<T*>&, Node<T>* = nullptr);
+    void _impl_search(const Rectangle& s, std::vector<T*>& result, Node<T>* t = nullptr) const
+    {
+        if (t == nullptr)
+            t = root;
+        if (t == nullptr)
+            return;
+
+        if (t->is_leaf)
+        {
+            for (auto& elem_rec : t->elems)
+            {
+                if (Rectangle::overlap(elem_rec.second, s))
+                    result.push_back(elem_rec.first);
+            }
+            return;
+        }
+
+        for (auto node : t->children)
+        {
+            if (Rectangle::overlap(node->mbr, s))
+            {
+                std::vector<T*> r;
+                _impl_search(s, r, node);
+                std::copy(r.begin(), r.end(), std::back_inserter(result));
+            }
+        }
+    }
     Node* choose_leaf(Rectangle s, Node<T>* = nullptr);
     void adjust_tree(Node<T>*);
     void condense_tree(Node<T>*);
-    void split(Node<T>* t);
+
+    void split(Node<T>* t) {}
+
     Node<T>* find_leaf(Rectangle r, Node<T>* t = nullptr);
     void reinsert_subtree(Node<T>* node);
 };
