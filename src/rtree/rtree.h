@@ -518,35 +518,68 @@ class RTreeGutman
 namespace Gutman
 {
 
-struct Rectangle {
+bool equal(double x, double y, double eps = 1e-7)
+{
+    return std::fabs(x - y) <= eps * (std::fabs(x) + std::fabs(y));
+}
+
+struct Rectangle
+{
     std::vector<double> min;
     std::vector<double> max;
 
+    Rectangle(const std::vector<double>& min, const std::vector<double>& max) : min(min), max(max)
+    {
+    }
+
+    double area() const;
+    double enlargement_needed(const Rectangle& b) const;
+
+    template <typename Itr>
+    static Rectangle calc_mbr(Itr p, Itr q);
+
+    static Rectangle calc_mbr(const Rectangle& a, const Rectangle& b);
+    static double calc_mbr_area(const Rectangle& a, const Rectangle& b);
+    static bool vec_equal(const std::vector<double>& x, const std::vector<double>& y);
+    static bool equal(const Rectangle& a, const Rectangle& b);
+    static bool overlap(const Rectangle& a, const Rectangle& b);
 };
 
 template <typename T>
 struct Node
 {
     bool is_leaf;
-    node* parent;
-    std::vector<node*> children;
+    Node* parent;
+    std::vector<Node*> children;
     std::vector<T*> elems;
+    Rectangle mbr;
+
+    Node(bool is_leaf, Rectangle mbr) : is_leaf(is_leaf), mbr(mbr) {} 
+    ~Node();
 };
-
-
-
 
 template <typename T>
 class RTree
 {
+    int m, M;
+    Node<T>* root;
+    size_t size;
 
-    public:
-    std::vector<T*> search(const Rectangle& search_rect);
-    insert(const Rectangle& mbr, T* elem);
-    
-    private:
+   public:
+    RTree(int m, int M) : root(nullptr), m(m), M(M), size(0) {}
+    ~RTree() { delete root; }
+
+    std::vector<T*> search(const Rectangle& search_rect) const;
+    void insert(const Rectangle& mbr, T* elem);
+    void remove(Rectangle r);
+
+   private:
     void _impl_search(const Rectangle&, std::vector<T*>&, Node<T>* = nullptr);
     Node* choose_leaf(Rectangle s, Node<T>* = nullptr);
-
+    void adjust_tree(Node<T>*);
+    void condense_tree(Node<T>*);
+    void split(Node<T>* t);
+    Node<T>* find_leaf(Rectangle r, Node<T>* t = nullptr);
+    void reinsert_subtree(Node<T>* node);
 };
-}  // namespace
+}  // namespace Gutman
