@@ -399,49 +399,100 @@ TEST_CASE("RTree stress and condense tests", "[stress]") {
         REQUIRE(results.size()==100);
     }
 
-    SECTION("Sequential delete and reinsert") {
-        RTreeGutman<int> tree(2,4);
-        std::vector<int> values(50);
+    SECTION("Sequential delete and reinsert - STRESS TEST") {
+        const int N = 50000;          // number of rectangles
+        const int CYCLES = 20;        // number of deletion/reinsertion cycles
+        const int STRIDE = 7;         // stride for deletion pattern (was 5)
+        const int MIN_CHILD = 8;
+        const int MAX_CHILD = 16;
+
+        RTreeGutman<int> tree(MIN_CHILD, MAX_CHILD);
+
+        std::vector<int> values(N);
         std::vector<Rectangle> rects;
-        for(int i=0;i<50;i++){
-            values[i]=i;
-            double x=(i%7)*2.0;
-            double y=(i/7)*2.0;
-            rects.push_back(makeRect({x,y},{x+1,y+1}));
-            tree.insert(rects[i],&values[i]);
+        rects.reserve(N);
+
+        // Create deterministic grid layout
+        int grid = std::ceil(std::sqrt(N));
+        for (int i = 0; i < N; i++) {
+            values[i] = i;
+            double x = (i % grid) * 1.2;
+            double y = (i / grid) * 1.2;
+
+            rects.push_back(makeRect({x, y}, {x + 1.0, y + 1.0}));
+            tree.insert(rects[i], &values[i]);
         }
-        bool all_passed=true;
-        for(int cycle=0;cycle<3;cycle++){
+
+        bool all_passed = true;
+
+        for (int cycle = 0; cycle < CYCLES; cycle++) {
             std::vector<int> deleted;
-            for(int i=cycle;i<50;i+=5){
+            deleted.reserve(N / STRIDE);
+
+            // Sequential pattern with cycle-shift, heavier stride
+            for (int i = cycle; i < N; i += STRIDE) {
                 tree.remove(rects[i]);
                 deleted.push_back(i);
             }
-            for(auto idx:deleted) tree.insert(rects[idx],&values[idx]);
 
+            // Reinsertion (reverse to stress balancing)
+            for (int j = (int)deleted.size() - 1; j >= 0; j--) {
+                int idx = deleted[j];
+                tree.insert(rects[idx], &values[idx]);
+            }
+
+            // Global search
             std::vector<int*> results;
-            tree.search(makeRect({-5,-5},{20,20}),results);
-            if(results.size()!=50) all_passed=false;
+            tree.search(
+                makeRect({-1000, -1000}, 
+                        {(double)grid * 2.0, (double)grid * 2.0}),
+                results
+            );
+
+            if (results.size() != N)
+                all_passed = false;
         }
+
         REQUIRE(all_passed);
     }
 
-    SECTION("Massive deletions with reinsertion") {
-        RTreeGutman<int> tree(2,4);
-        std::vector<int> values(150);
-        std::vector<Rectangle> rects;
-        for(int i=0;i<150;i++){
-            values[i]=i;
-            double x=(i%12)*1.5;
-            double y=(i/12)*1.5;
-            rects.push_back(makeRect({x,y},{x+0.8,y+0.8}));
-            tree.insert(rects[i],&values[i]);
-        }
-        for(int i=0;i<100;i++) tree.remove(rects[i]);
+    SECTION("Massive deletions with reinsertion - STRESS TEST") {
+        const int N = 50000;       // total inserts
+        const int DELETE_N = 30000; // how many to delete
+        const int MIN_CHILD = 8;   // make tree fuller for stress
+        const int MAX_CHILD = 16;
 
+        RTreeGutman<int> tree(MIN_CHILD, MAX_CHILD);
+        std::vector<int> values(N);
+        std::vector<Rectangle> rects;
+        rects.reserve(N);
+
+        // Insert N rectangles in a grid
+        int grid = std::ceil(std::sqrt(N));
+        for (int i = 0; i < N; i++) {
+            values[i] = i;
+            double x = (i % grid) * 1.5;
+            double y = (i / grid) * 1.5;
+
+            rects.push_back(makeRect({x, y}, {x + 0.8, y + 0.8}));
+            tree.insert(rects[i], &values[i]);
+        }
+
+        // Massive deletion
+        for (int i = 0; i < DELETE_N; i++) {
+            tree.remove(rects[i]);
+        }
+
+        // Reinsertion of deleted rects in reverse order
+        for (int i = DELETE_N - 1; i >= 0; i--) {
+            tree.insert(rects[i], &values[i]);
+        }
+
+        // Global query
         std::vector<int*> results;
-        tree.search(makeRect({-10,-10},{50,50}), results);
-        REQUIRE(results.size()==50);
+        tree.search(makeRect({-1000, -1000}, {1000, 1000}), results);
+
+        REQUIRE(results.size() == N);
     }
 
 

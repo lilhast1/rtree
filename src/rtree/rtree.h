@@ -406,8 +406,8 @@ class RTreeGutman
         // u sada ima M + 1 elem
         // quadratic split
         double max_mbr = -1;
-        Node* p = t->nodes[0];
-        Node* q = p;
+        Node* p = nullptr;
+        Node* q = nullptr;
         for (int i = 0; i < t->count; i++)
         {
             for (int j = 0; j < t->count; j++)
@@ -514,3 +514,39 @@ class RTreeGutman
         // delete t;
     }
 };
+
+namespace Gutman
+{
+
+struct Rectangle {
+    std::vector<double> min;
+    std::vector<double> max;
+
+};
+
+template <typename T>
+struct Node
+{
+    bool is_leaf;
+    node* parent;
+    std::vector<node*> children;
+    std::vector<T*> elems;
+};
+
+
+
+
+template <typename T>
+class RTree
+{
+
+    public:
+    std::vector<T*> search(const Rectangle& search_rect);
+    insert(const Rectangle& mbr, T* elem);
+    
+    private:
+    void _impl_search(const Rectangle&, std::vector<T*>&, Node<T>* = nullptr);
+    Node* choose_leaf(Rectangle s, Node<T>* = nullptr);
+
+};
+}  // namespace

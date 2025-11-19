@@ -580,14 +580,14 @@ class RTreeTest
 
     void test_deep_tree_with_extreme_condense()
     {
-        RTreeGutman<int> tree(2, 4);
+        RTreeGutman<int> tree(10, 40);
         tree.m = 2;
         tree.M = 4;
 
-        std::vector<int> values(200);
+        std::vector<int> values(2000);
         std::vector<Rectangle> rects;
 
-        for (int i = 0; i < 200; i++)
+        for (int i = 0; i < 2000; i++)
         {
             values[i] = i;
             int cluster_id = i / 20;
