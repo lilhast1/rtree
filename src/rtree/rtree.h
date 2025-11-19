@@ -532,17 +532,83 @@ struct Rectangle
     {
     }
 
-    double area() const;
-    double enlargement_needed(const Rectangle& b) const;
+    double area() const
+    {
+        double a = 1;
+        for (int i = 0; i < min.size(); i++)
+        {
+            a *= std::fabs(min[i] - max[i]);
+        }
+        return a;
+    }
+
+    double enlargement_needed(const Rectangle& b) const
+    {
+        auto mbr = calc_mbr(*this, b);
+        return mbr.area() - area();
+    }
 
     template <typename Itr>
-    static Rectangle calc_mbr(Itr p, Itr q);
+    static Rectangle calc_mbr(Itr p, Itr q)
+    {
+        if (q == p)
+            throw std::range_error("Calculating the MBR on an empty range");
+        auto t = p++;
+        if (q == p)
+            return (*t)->mbr;
+        auto n = p;
+        auto agg = calc_mbr((*n)->mbr, (*t)->mbr);
+        while (n != q)
+        {
+            agg = calc_mbr(agg, (*n)->mbr);
+            n++;
+        }
+        return agg;
+    }
 
-    static Rectangle calc_mbr(const Rectangle& a, const Rectangle& b);
-    static double calc_mbr_area(const Rectangle& a, const Rectangle& b);
-    static bool vec_equal(const std::vector<double>& x, const std::vector<double>& y);
-    static bool equal(const Rectangle& a, const Rectangle& b);
-    static bool overlap(const Rectangle& a, const Rectangle& b);
+    static Rectangle calc_mbr(const Rectangle& a, const Rectangle& b)
+    {
+        auto c = a;
+        std::transform(a.min.begin(), a.min.end(), b.min.begin(), c.min.begin(),
+                       [](double a, double b) { return std::min(a, b); });
+        std::transform(a.max.begin(), a.max.end(), b.max.begin(), c.max.begin(),
+                       [](double a, double b) { return std::max(a, b); });
+        return c;
+    }
+
+    static double calc_mbr_area(const Rectangle& a, const Rectangle& b)
+    {
+        return calc_mbr(a, b).area();
+    }
+
+    static bool vec_equal(const std::vector<double>& x, const std::vector<double>& y)
+    {
+        bool f = true;
+        for (int i = 0; i < x.size(); i++)
+        {
+            f = f && equal(x[i], y[i]);
+            if (!f)
+                break;
+        }
+        return f;
+    }
+
+    static bool equal(const Rectangle& a, const Rectangle& b)
+    {
+        return vec_equal(a.min, b.min) && vec_equal(a.max, b.max);
+    }
+
+    static bool overlap(const Rectangle& a, const Rectangle& b)
+    {
+        bool f = true;
+        for (int i = 0; i < a.min.size(); i++)
+        {
+            f = f && a.max[i] >= b.min[i] && a.min[i] <= b.max[i];
+            if (!f)
+                break;
+        }
+        return f;
+    }
 };
 
 template <typename T>
@@ -551,11 +617,16 @@ struct Node
     bool is_leaf;
     Node* parent;
     std::vector<Node*> children;
-    std::vector<T*> elems;
+    std::vector<std::pair<T*, Rectangle>> elems;
     Rectangle mbr;
 
-    Node(bool is_leaf, Rectangle mbr) : is_leaf(is_leaf), mbr(mbr) {} 
-    ~Node();
+    int count() const { return is_leaf ? elems.size() : children.size(); }
+
+    Node(bool is_leaf, Rectangle mbr) : is_leaf(is_leaf), mbr(mbr) {}
+    ~Node()
+    {
+        for (auto child : children) delete child;
+    }
 };
 
 template <typename T>
