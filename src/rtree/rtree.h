@@ -31,7 +31,6 @@ struct Rectangle {
 
     Rectangle(const std::vector<double>& min, const std::vector<double>& max)
         : min(min), max(max) {}
-
     double area() const {
         double a = 1;
         for (int i = 0; i < min.size(); i++) {
@@ -109,7 +108,7 @@ struct Node {
 
     int count() const { return is_leaf ? elems.size() : children.size(); }
 
-    Node(bool is_leaf, Rectangle mbr) : is_leaf(is_leaf), mbr(mbr) {}
+    Node(bool is_leaf, Rectangle mbr) : is_leaf(is_leaf), mbr(mbr), parent(nullptr) {}
     ~Node() {
         for (auto child : children) delete child;
     }
@@ -132,22 +131,28 @@ class RTree {
     }
 
     void insert(const Rectangle& mbr, T* elem) {
-        Node<T>* leaf = choose_leaf(root, mbr);
+        if (!root) {
+            root = new Node<T>(true, mbr);
+            root->elems.push_back({elem, mbr});
+            size++;
+            return;
+        }
+        Node<T>* leaf = choose_leaf(mbr, root);
         Node<T>* ll = nullptr;
 
-        if (leaf.count() < M) {
+        if (leaf->count() < M) {
             leaf->elems.push_back({elem, mbr});
         } else {
             // invoke split to get L and LL containing current entry E and all previous leaf entries
             ll = split(leaf);
         }
 
-        adjust_tree(leaf, ll); 
+        adjust_tree(leaf, ll);
         size++;
         // if root is split grow the tree taller
     }
 
-    void remove(Rectangle r);
+    void remove(Rectangle r) {return;}
 
    private:
     struct EntryWrapper {
@@ -255,16 +260,16 @@ class RTree {
                 adjust_tree(l, ll);
             }
             return;
-        } else if (p == nullptr && ll != nullptr) { // root was split
+        } else if (p == nullptr && ll != nullptr) {  // root was split
             auto rect = Rectangle::calc_mbr(ll->mbr, l->mbr);
             root = new Node<T>(false, rect);
             root->children = std::vector<Node<T>*>{l, ll};
             l->parent = ll->parent = root;
             return;
-        } else if (p != nullptr && ll == nullptr) { // just adjust the mbr
+        } else if (p != nullptr && ll == nullptr) {  // just adjust the mbr
             p->mbr = Rectangle::calc_mbr(p->children.begin(), p->children.end());
             adjust_tree(p, nullptr);
-        } else { // split if needed
+        } else {  // split if needed
             p->children.push_back(ll);
             ll->parent = p;
             Node<T>* pp = nullptr;
@@ -278,12 +283,14 @@ class RTree {
 
     Node<T>* split(Node<T>* t) {
         // apply pickseeds
-        std::vector<EntryWrapper> entries(t->count());
+        std::vector<EntryWrapper> entries;
         std::vector<bool> assigned(t->count(), false);
         if (t->is_leaf) {
-            std::transform(t->elems.begin(), t->elems.end(), entries.begin(), [](auto e) {return e.second;});
+            for (int i = 0; i < t->count(); i++)
+                entries.push_back(EntryWrapper{i, t->elems[i].second});
         } else {
-            std::transform(t->children.begin(), t->children.end(), entries.begin(), [](auto e) {return e->mbr;});
+            for (int i = 0; i < t->count(); i++)
+                entries.push_back(EntryWrapper{i, t->children[i]->mbr});
         }
 
         auto seeds = pick_seeds(entries);
@@ -310,8 +317,8 @@ class RTree {
             }
         }
 
-        auto tt = new Node{t->is_leaf, mbr2};
-        tt->parent = t->parent; 
+        auto tt = new Node<T>{t->is_leaf, mbr2};
+        tt->parent = t->parent;
         t->mbr = mbr1;
 
         if (g1.size() < m || g2.size() < m) {
@@ -348,8 +355,8 @@ class RTree {
                 e = nullptr;
             }
 
-            t->elems = elems1;
-            tt->elems = elems2;
+            t->children = elems1;
+            tt->children = elems2;
         }
 
         return tt;
@@ -385,7 +392,8 @@ class RTree {
         std::pair<int, int> seeds{-1, -1};
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                if (i == j) continue;
+                if (i == j)
+                    continue;
                 auto b = Rectangle::calc_mbr(entries[i].rect, entries[j].rect);
                 double d = b.area() - entries[i].rect.area() - entries[j].rect.area();
                 if (d > max_waste) {
@@ -394,27 +402,28 @@ class RTree {
                     seeds.second = j;
                 }
             }
-        } 
+        }
         return seeds;
     }
 
-
-    int pick_next(const std::vector<struct EntryWrapper>& entries, const std::vector<bool>& assigned, const Rectangle& mbr1, const Rectangle& mbr2) {
+    int pick_next(const std::vector<struct EntryWrapper>& entries,
+                  const std::vector<bool>& assigned, const Rectangle& mbr1, const Rectangle& mbr2) {
         int n = entries.size();
         double max_diff = -100000;
         int max_i = -1;
         for (int i = 0; i < n; i++) {
-            if (assigned[i]) continue;
+            if (assigned[i])
+                continue;
             auto d1 = mbr1.enlargement_needed(entries[i].rect);
             auto d2 = mbr2.enlargement_needed(entries[i].rect);
-            if (std::fabs(d1 -d2) > max_diff) {
+            if (std::fabs(d1 - d2) > max_diff) {
                 max_i = i;
-                max_diff = std::fabs(d1 -d2);
+                max_diff = std::fabs(d1 - d2);
             }
         }
         return max_i;
     }
 
-    void reinsert_subtree(Node<T>* node);
+    void reinsert_subtree(Node<T>* node) {return;}
 };
 }  // namespace Gutman

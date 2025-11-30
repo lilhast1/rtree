@@ -16,8 +16,6 @@ Rectangle makeRect(std::vector<double> min, std::vector<double> max) {
     return Rectangle(min, max);
 }
 
-using Gutman::RTree = Gutman::RTree;
-
 // Test fixture class
 class RTreeTest {
    private:
@@ -67,7 +65,6 @@ class RTreeTest {
             tree.insert(rects[i], &values[i]);
         }
 
-        
         auto search_rect = makeRect({0.0, 0.0}, {10.0, 10.0});
         std::vector<int*> results = tree.search(search_rect);
 
@@ -173,8 +170,7 @@ class RTreeTest {
         tree.insert(rect, &val);
         tree.remove(rect);
 
-        std::vector<int*> results =
-        tree.search(rect);
+        std::vector<int*> results = tree.search(rect);
 
         assert_true(results.size() == 0, "Delete single element");
     }
@@ -193,7 +189,6 @@ class RTreeTest {
         // Delete middle element
         tree.remove(rects[2]);
 
-        
         auto search_rect = makeRect({0.0, 0.0}, {10.0, 10.0});
         std::vector<int*> results = tree.search(search_rect);
 
@@ -210,8 +205,7 @@ class RTreeTest {
         tree.insert(rect1, &val);
         tree.remove(rect2);  // Try to delete non-existent
 
-        std::vector<int*> results =
-        tree.search(rect1);
+        std::vector<int*> results = tree.search(rect1);
 
         assert_true(results.size() == 1, "Delete non-existent element");
     }
@@ -225,8 +219,7 @@ class RTreeTest {
         tree.remove(rect);
         tree.insert(rect, &val2);
 
-        std::vector<int*> results =
-        tree.search(rect);
+        std::vector<int*> results = tree.search(rect);
 
         assert_true(results.size() == 1 && *results[0] == 20, "Delete and reinsert");
     }
@@ -247,9 +240,8 @@ class RTreeTest {
         tree.remove(rects[3]);
         tree.remove(rects[5]);
 
-        
         auto search_rect = makeRect({-1.0, -1.0}, {20.0, 20.0});
-        std::vector<int*> results=tree.search(search_rect);
+        std::vector<int*> results = tree.search(search_rect);
 
         assert_true(results.size() == 5, "Delete multiple sequential");
     }
@@ -262,7 +254,7 @@ class RTreeTest {
         auto rect = makeRect({0.0, 0.0, 0.0}, {1.0, 1.0, 1.0});
         tree.insert(rect, &val);
 
-        std::vector<int*> results=tree.search(rect);
+        std::vector<int*> results = tree.search(rect);
 
         assert_true(results.size() == 1, "3D rectangles");
     }
@@ -274,8 +266,7 @@ class RTreeTest {
         auto rect = makeRect({0.0, 0.0, 0.0, 0.0, 0.0}, {1.0, 1.0, 1.0, 1.0, 1.0});
         tree.insert(rect, &val);
 
-        std::vector<int*> results;
-        tree.search(rect, results);
+        std::vector<int*> results = tree.search(rect);
 
         assert_true(results.size() == 1, "High dimensional (5D)");
     }
@@ -287,8 +278,7 @@ class RTreeTest {
         auto rect = makeRect({5.0, 5.0}, {5.0, 5.0});
         tree.insert(rect, &val);
 
-        std::vector<int*> results;
-        tree.search(rect, results);
+        std::vector<int*> results = tree.search(rect);
 
         assert_true(results.size() == 1, "Zero area rectangle (point)");
     }
@@ -305,8 +295,7 @@ class RTreeTest {
         }
 
         auto search_rect = makeRect({-1.0, -1.0}, {30.0, 30.0});
-        std::vector<int*> results;
-        tree.search(search_rect, results);
+        std::vector<int*> results = tree.search(search_rect);
         assert_true(results.size() == 100, "Insert and search large dataset (100 elements)");
     }
 
@@ -327,8 +316,7 @@ class RTreeTest {
         }
 
         auto search_rect = makeRect({-1.0, -1.0}, {25.0, 25.0});
-        std::vector<int*> results;
-        tree.search(search_rect, results);
+        std::vector<int*> results = tree.search(search_rect);
         assert_true(results.size() == 10, "Delete every other element");
     }
 
@@ -345,8 +333,7 @@ class RTreeTest {
         tree.insert(rect3, &val3);
 
         auto search_rect = makeRect({0.0, 0.0}, {5.0, 5.0});
-        std::vector<int*> results;
-        tree.search(search_rect, results);
+        std::vector<int*> results = tree.search(search_rect);
 
         assert_true(results.size() >= 1, "Search with exact boundaries");
     }
@@ -361,8 +348,7 @@ class RTreeTest {
             tree.insert(rect, &values[i]);
         }
 
-        std::vector<int*> results;
-        tree.search(rect, results);
+        std::vector<int*> results = tree.search(rect);
 
         assert_true(results.size() == 5, "Insert identical rectangles with different values");
     }
@@ -380,8 +366,7 @@ class RTreeTest {
         auto rect2 = makeRect({5.0, 5.0}, {6.0, 6.0});
         tree.insert(rect2, &val2);
 
-        std::vector<int*> results;
-        tree.search(rect2, results);
+        std::vector<int*> results = tree.search(rect2);
 
         assert_true(results.size() == 1 && *results[0] == 99,
                     "Delete from single element tree and reinsert");
@@ -419,8 +404,7 @@ class RTreeTest {
         }
 
         auto search_rect = makeRect({-1.0, -1.0}, {20.0, 20.0});
-        std::vector<int*> results;
-        tree.search(search_rect, results);
+        std::vector<int*> results =  tree.search(search_rect);
 
         assert_true(results.size() == 10, "Mixed insert/delete operations");
     }
@@ -439,12 +423,10 @@ class RTreeTest {
         }
 
         auto search_rect = makeRect({-5.0, -5.0}, {50.0, 50.0});
-        std::vector<int*> results;
-        tree.search(search_rect, results);
+        std::vector<int*> results = tree.search(search_rect);
 
         auto cluster_rect = makeRect({0.0, 0.0}, {5.0, 5.0});
-        std::vector<int*> cluster_results;
-        tree.search(cluster_rect, cluster_results);
+        std::vector<int*> cluster_results = tree.search(cluster_rect);
 
         assert_true(results.size() == 50 && cluster_results.size() > 0,
                     "Stress test with multiple splits");
@@ -472,8 +454,7 @@ class RTreeTest {
         }
 
         auto search_rect = makeRect({-10.0, -10.0}, {50.0, 50.0});
-        std::vector<int*> results;
-        tree.search(search_rect, results);
+        std::vector<int*> results = tree.search(search_rect);
 
         assert_true(results.size() == 80, "Deep tree with non-leaf orphans condense");
     }
@@ -504,8 +485,7 @@ class RTreeTest {
         }
 
         auto search_rect = makeRect({-5.0, -5.0}, {60.0, 60.0});
-        std::vector<int*> results;
-        tree.search(search_rect, results);
+        std::vector<int*> results = tree.search(search_rect);
 
         assert_true(results.size() == 100, "Extreme condense");
     }
@@ -537,8 +517,7 @@ class RTreeTest {
             }
 
             auto search_rect = makeRect({-5.0, -5.0}, {20.0, 20.0});
-            std::vector<int*> results;
-            tree.search(search_rect, results);
+            std::vector<int*> results = tree.search(search_rect);
 
             if (results.size() != 50) {
                 all_passed = false;
@@ -568,8 +547,7 @@ class RTreeTest {
         }
 
         auto search_rect = makeRect({-10.0, -10.0}, {50.0, 50.0});
-        std::vector<int*> results;
-        tree.search(search_rect, results);
+        std::vector<int*> results = tree.search(search_rect);
 
         assert_true(results.size() == 50, "Massive deletions with reinsertion");
     }

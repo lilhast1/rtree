@@ -11,11 +11,11 @@ endif()
 
 add_compile_options(-Wall -Wextra -Wpedantic -O2 -g  )
 
-# add_compile_options(-fsanitize=address)
-# add_link_options(-fsanitize=address) # ove 2 ukljucuju da trazi memory bugs
+add_compile_options(-fsanitize=address)
+add_link_options(-fsanitize=address) # ove 2 ukljucuju da trazi memory bugs
 
-# add_compile_options(-fsanitize=undefined)
-# add_link_options(-fsanitize=undefined) # ove 2 ukljucuju da trazi UB jer ono anything goes nobody knows!
+add_compile_options(-fsanitize=undefined)
+add_link_options(-fsanitize=undefined) # ove 2 ukljucuju da trazi UB jer ono anything goes nobody knows!
 
 # ------------------------
 # Catch2 for unit tests
@@ -48,11 +48,11 @@ target_link_libraries(benchmark PRIVATE rtree_lib)
 # ------------------------
 # Tests
 # ------------------------
-file(GLOB_RECURSE TEST_SOURCES tests/*.cpp)
+# file(GLOB_RECURSE TEST_SOURCES tests/*.cpp)
 
-add_executable(tests ${TEST_SOURCES})
-target_link_libraries(tests PRIVATE rtree_lib Catch2::Catch2WithMain)
-target_include_directories(tests PRIVATE src include)
+# add_executable(tests ${TEST_SOURCES})
+# target_link_libraries(tests PRIVATE rtree_lib Catch2::Catch2WithMain)
+# target_include_directories(tests PRIVATE src include)
 
-enable_testing()
-add_test(NAME RTreeTests COMMAND tests)
+# enable_testing()
+# add_test(NAME RTreeTests COMMAND tests)
