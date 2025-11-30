@@ -9,7 +9,7 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug)
 endif()
 
-add_compile_options(-Wall -Wextra -Wpedantic -O0 -g  ) # vrati optimizacije ovo je za edbag
+add_compile_options(-Wall -Wextra -Wpedantic -O2 -g  ) # vrati optimizacije ovo je za edbag
 
 add_compile_options(-fsanitize=address)
 add_link_options(-fsanitize=address) # ove 2 ukljucuju da trazi memory bugs
@@ -48,11 +48,11 @@ target_link_libraries(benchmark PRIVATE rtree_lib)
 # ------------------------
 # Tests
 # ------------------------
-# file(GLOB_RECURSE TEST_SOURCES tests/*.cpp)
+file(GLOB_RECURSE TEST_SOURCES tests/*.cpp)
 
-# add_executable(tests ${TEST_SOURCES})
-# target_link_libraries(tests PRIVATE rtree_lib Catch2::Catch2WithMain)
-# target_include_directories(tests PRIVATE src include)
+add_executable(tests ${TEST_SOURCES})
+target_link_libraries(tests PRIVATE rtree_lib Catch2::Catch2WithMain)
+target_include_directories(tests PRIVATE src include)
 
-# enable_testing()
-# add_test(NAME RTreeTests COMMAND tests)
+enable_testing()
+add_test(NAME RTreeTests COMMAND tests)

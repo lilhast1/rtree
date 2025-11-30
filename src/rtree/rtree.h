@@ -398,7 +398,7 @@ class RTree {
                     continue;
                 auto b = Rectangle::calc_mbr(entries[i].rect, entries[j].rect);
                 double d = b.area() - entries[i].rect.area() - entries[j].rect.area();
-                if (d > max_waste) {
+                if (std::fabs(d) > max_waste) {
                     max_waste = d;
                     seeds.first = i;
                     seeds.second = j;
