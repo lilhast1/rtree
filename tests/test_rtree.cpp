@@ -7,13 +7,14 @@
 //using Rectangle = RTreeGutman<int>::Rectangle;
 
 // Helper function to create a rectangle
-using Rectangle = RTreeGutman<int>::Rectangle;
+using Rectangle = Gutman::Rectangle;
 
 // Helper function to create a rectangle
 Rectangle makeRect(std::vector<double> min, std::vector<double> max) {
     return Rectangle(min, max);
 }
 
+using RTreeGutman = Gutman::RTree;
 
 //using Rectangle = decltype(makeRect(std::vector<double>{}, std::vector<double>{}));
 

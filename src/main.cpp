@@ -6,15 +6,17 @@
 
 #include "rtree/rtree.h"
 
-// Assuming the RTreeGutman class is included here
+// Assuming the Gutman::RTree class is included here
 // #include "rtree.h"
 
-using Rectangle = RTreeGutman<int>::Rectangle;
+using Rectangle = Gutman::Rectangle;
 
 // Helper function to create a rectangle
 Rectangle makeRect(std::vector<double> min, std::vector<double> max) {
     return Rectangle(min, max);
 }
+
+using Gutman::RTree = Gutman::RTree;
 
 // Test fixture class
 class RTreeTest {
@@ -43,24 +45,19 @@ class RTreeTest {
 
     // Basic Insertion Tests
     void test_insert_single_element() {
-        RTreeGutman<int> tree(2, 4);
-        tree.m = 2;
-        tree.M = 5;
+        Gutman::RTree<int> tree(2, 5);
 
         int val = 42;
         auto rect = makeRect({0.0, 0.0}, {1.0, 1.0});
         tree.insert(rect, &val);
 
-        std::vector<int*> results;
-        tree.search(rect, results);
+        std::vector<int*> results = tree.search(rect);
 
         assert_true(results.size() == 1 && *results[0] == 42, "Insert single element");
     }
 
     void test_insert_multiple_elements() {
-        RTreeGutman<int> tree(2, 4);
-        tree.m = 2;
-        tree.M = 4;
+        Gutman::RTree<int> tree(2, 4);
 
         std::vector<int> values = {1, 2, 3, 4, 5};
         std::vector<Rectangle> rects;
@@ -70,17 +67,15 @@ class RTreeTest {
             tree.insert(rects[i], &values[i]);
         }
 
-        std::vector<int*> results;
+        
         auto search_rect = makeRect({0.0, 0.0}, {10.0, 10.0});
-        tree.search(search_rect, results);
+        std::vector<int*> results = tree.search(search_rect);
 
         assert_true(results.size() == 5, "Insert multiple elements");
     }
 
     void test_insert_overlapping_rectangles() {
-        RTreeGutman<int> tree(2, 4);
-        tree.m = 2;
-        tree.M = 4;
+        Gutman::RTree<int> tree(2, 4);
 
         int val1 = 10, val2 = 20, val3 = 30;
         auto rect1 = makeRect({0.0, 0.0}, {5.0, 5.0});
@@ -93,16 +88,13 @@ class RTreeTest {
 
         // Search in overlapping region
         auto search_rect = makeRect({4.0, 4.0}, {5.0, 5.0});
-        std::vector<int*> results;
-        tree.search(search_rect, results);
+        std::vector<int*> results = tree.search(search_rect);
 
         assert_true(results.size() == 3, "Insert overlapping rectangles");
     }
 
     void test_insert_trigger_split() {
-        RTreeGutman<int> tree(2, 4);
-        tree.m = 2;
-        tree.M = 4;
+        Gutman::RTree<int> tree(2, 4);
 
         std::vector<int> values(10);
         for (int i = 0; i < 10; i++) {
@@ -113,45 +105,36 @@ class RTreeTest {
 
         // Search all
         auto search_rect = makeRect({-1.0, -1.0}, {20.0, 20.0});
-        std::vector<int*> results;
-        tree.search(search_rect, results);
+        std::vector<int*> results = tree.search(search_rect);
 
         assert_true(results.size() == 10, "Insert triggering node split");
     }
 
     // Search Tests
     void test_search_empty_tree() {
-        RTreeGutman<int> tree(2, 4);
-        tree.m = 2;
-        tree.M = 4;
+        Gutman::RTree<int> tree(2, 4);
 
         auto search_rect = makeRect({0.0, 0.0}, {10.0, 10.0});
-        std::vector<int*> results;
-        tree.search(search_rect, results);
+        std::vector<int*> results = tree.search(search_rect);
 
         assert_true(results.size() == 0, "Search in empty tree");
     }
 
     void test_search_no_overlap() {
-        RTreeGutman<int> tree(2, 4);
-        tree.m = 2;
-        tree.M = 4;
+        Gutman::RTree<int> tree(2, 4);
 
         int val = 42;
         auto rect = makeRect({0.0, 0.0}, {1.0, 1.0});
         tree.insert(rect, &val);
 
         auto search_rect = makeRect({10.0, 10.0}, {20.0, 20.0});
-        std::vector<int*> results;
-        tree.search(search_rect, results);
+        std::vector<int*> results = tree.search(search_rect);
 
         assert_true(results.size() == 0, "Search with no overlap");
     }
 
     void test_search_partial_overlap() {
-        RTreeGutman<int> tree(2, 4);
-        tree.m = 2;
-        tree.M = 4;
+        Gutman::RTree<int> tree(2, 4);
 
         std::vector<int> values = {1, 2, 3, 4, 5};
         tree.insert(makeRect({0.0, 0.0}, {2.0, 2.0}), &values[0]);
@@ -162,16 +145,13 @@ class RTreeTest {
 
         // Search should find only first two
         auto search_rect = makeRect({0.0, 0.0}, {6.0, 6.0});
-        std::vector<int*> results;
-        tree.search(search_rect, results);
+        std::vector<int*> results = tree.search(search_rect);
 
         assert_true(results.size() == 3, "Search with partial overlap");
     }
 
     void test_search_point_query() {
-        RTreeGutman<int> tree(2, 4);
-        tree.m = 2;
-        tree.M = 4;
+        Gutman::RTree<int> tree(2, 4);
 
         int val = 99;
         auto rect = makeRect({5.0, 5.0}, {10.0, 10.0});
@@ -179,33 +159,28 @@ class RTreeTest {
 
         // Point inside
         auto point = makeRect({7.0, 7.0}, {7.0, 7.0});
-        std::vector<int*> results;
-        tree.search(point, results);
+        std::vector<int*> results = tree.search(point);
 
         assert_true(results.size() == 1 && *results[0] == 99, "Point query inside rectangle");
     }
 
     // Deletion Tests
     void test_delete_single_element() {
-        RTreeGutman<int> tree(2, 4);
-        tree.m = 2;
-        tree.M = 4;
+        Gutman::RTree<int> tree(2, 4);
 
         int val = 42;
         auto rect = makeRect({0.0, 0.0}, {1.0, 1.0});
         tree.insert(rect, &val);
         tree.remove(rect);
 
-        std::vector<int*> results;
-        tree.search(rect, results);
+        std::vector<int*> results =
+        tree.search(rect);
 
         assert_true(results.size() == 0, "Delete single element");
     }
 
     void test_delete_from_multiple() {
-        RTreeGutman<int> tree(2, 4);
-        tree.m = 2;
-        tree.M = 4;
+        Gutman::RTree<int> tree(2, 4);
 
         std::vector<int> values = {1, 2, 3, 4, 5};
         std::vector<Rectangle> rects;
@@ -218,17 +193,15 @@ class RTreeTest {
         // Delete middle element
         tree.remove(rects[2]);
 
-        std::vector<int*> results;
+        
         auto search_rect = makeRect({0.0, 0.0}, {10.0, 10.0});
-        tree.search(search_rect, results);
+        std::vector<int*> results = tree.search(search_rect);
 
         assert_true(results.size() == 4, "Delete from multiple elements");
     }
 
     void test_delete_nonexistent() {
-        RTreeGutman<int> tree(2, 4);
-        tree.m = 2;
-        tree.M = 4;
+        Gutman::RTree<int> tree(2, 4);
 
         int val = 42;
         auto rect1 = makeRect({0.0, 0.0}, {1.0, 1.0});
@@ -237,17 +210,14 @@ class RTreeTest {
         tree.insert(rect1, &val);
         tree.remove(rect2);  // Try to delete non-existent
 
-        std::vector<int*> results;
-        tree.search(rect1, results);
+        std::vector<int*> results =
+        tree.search(rect1);
 
         assert_true(results.size() == 1, "Delete non-existent element");
     }
 
     void test_delete_and_reinsert() {
-        RTreeGutman<int> tree(2, 4);
-        tree.m = 2;
-        tree.M = 4;
-
+        Gutman::RTree<int> tree(2, 4);
         int val1 = 10, val2 = 20;
         auto rect = makeRect({0.0, 0.0}, {5.0, 5.0});
 
@@ -255,16 +225,14 @@ class RTreeTest {
         tree.remove(rect);
         tree.insert(rect, &val2);
 
-        std::vector<int*> results;
-        tree.search(rect, results);
+        std::vector<int*> results =
+        tree.search(rect);
 
         assert_true(results.size() == 1 && *results[0] == 20, "Delete and reinsert");
     }
 
     void test_delete_multiple_sequential() {
-        RTreeGutman<int> tree(2, 4);
-        tree.m = 2;
-        tree.M = 4;
+        Gutman::RTree<int> tree(2, 4);
 
         std::vector<int> values = {1, 2, 3, 4, 5, 6, 7, 8};
         std::vector<Rectangle> rects;
@@ -279,33 +247,28 @@ class RTreeTest {
         tree.remove(rects[3]);
         tree.remove(rects[5]);
 
-        std::vector<int*> results;
+        
         auto search_rect = makeRect({-1.0, -1.0}, {20.0, 20.0});
-        tree.search(search_rect, results);
+        std::vector<int*> results=tree.search(search_rect);
 
         assert_true(results.size() == 5, "Delete multiple sequential");
     }
 
     // Edge Cases
     void test_3d_rectangles() {
-        RTreeGutman<int> tree(2, 4);
-        tree.m = 2;
-        tree.M = 4;
+        Gutman::RTree<int> tree(2, 4);
 
         int val = 42;
         auto rect = makeRect({0.0, 0.0, 0.0}, {1.0, 1.0, 1.0});
         tree.insert(rect, &val);
 
-        std::vector<int*> results;
-        tree.search(rect, results);
+        std::vector<int*> results=tree.search(rect);
 
         assert_true(results.size() == 1, "3D rectangles");
     }
 
     void test_high_dimensional() {
-        RTreeGutman<int> tree(2, 4);
-        tree.m = 2;
-        tree.M = 4;
+        Gutman::RTree<int> tree(2, 4);
 
         int val = 42;
         auto rect = makeRect({0.0, 0.0, 0.0, 0.0, 0.0}, {1.0, 1.0, 1.0, 1.0, 1.0});
@@ -318,9 +281,7 @@ class RTreeTest {
     }
 
     void test_zero_area_rectangle() {
-        RTreeGutman<int> tree(2, 4);
-        tree.m = 2;
-        tree.M = 4;
+        Gutman::RTree<int> tree(2, 4);
 
         int val = 42;
         auto rect = makeRect({5.0, 5.0}, {5.0, 5.0});
@@ -332,9 +293,7 @@ class RTreeTest {
         assert_true(results.size() == 1, "Zero area rectangle (point)");
     }
     void test_insert_and_search_large_dataset() {
-        RTreeGutman<int> tree(2, 4);
-        tree.m = 2;
-        tree.M = 4;
+        Gutman::RTree<int> tree(2, 4);
 
         std::vector<int> values(100);
         for (int i = 0; i < 100; i++) {
@@ -352,9 +311,7 @@ class RTreeTest {
     }
 
     void test_delete_every_other_element() {
-        RTreeGutman<int> tree(2, 4);
-        tree.m = 2;
-        tree.M = 4;
+        Gutman::RTree<int> tree(2, 4);
 
         std::vector<int> values(20);
         std::vector<Rectangle> rects;
@@ -376,9 +333,7 @@ class RTreeTest {
     }
 
     void test_search_with_exact_boundaries() {
-        RTreeGutman<int> tree(2, 4);
-        tree.m = 2;
-        tree.M = 4;
+        Gutman::RTree<int> tree(2, 4);
 
         int val1 = 10, val2 = 20, val3 = 30;
         auto rect1 = makeRect({0.0, 0.0}, {5.0, 5.0});
@@ -397,9 +352,7 @@ class RTreeTest {
     }
 
     void test_insert_identical_rectangles() {
-        RTreeGutman<int> tree(2, 4);
-        tree.m = 2;
-        tree.M = 4;
+        Gutman::RTree<int> tree(2, 4);
 
         std::vector<int> values = {1, 2, 3, 4, 5};
         auto rect = makeRect({5.0, 5.0}, {10.0, 10.0});
@@ -415,9 +368,7 @@ class RTreeTest {
     }
 
     void test_delete_from_single_element_tree() {
-        RTreeGutman<int> tree(2, 4);
-        tree.m = 2;
-        tree.M = 4;
+        Gutman::RTree<int> tree(2, 4);
 
         int val = 42;
         auto rect = makeRect({0.0, 0.0}, {1.0, 1.0});
@@ -437,9 +388,7 @@ class RTreeTest {
     }
 
     void test_mixed_insert_delete_operations() {
-        RTreeGutman<int> tree(2, 4);
-        tree.m = 2;
-        tree.M = 4;
+        Gutman::RTree<int> tree(2, 4);
 
         std::vector<int> values(15);
         std::vector<Rectangle> rects;
@@ -477,9 +426,7 @@ class RTreeTest {
     }
 
     void test_stress_test_splits() {
-        RTreeGutman<int> tree(2, 4);
-        tree.m = 2;
-        tree.M = 4;
+        Gutman::RTree<int> tree(2, 4);
 
         std::vector<int> values(50);
 
@@ -503,9 +450,7 @@ class RTreeTest {
                     "Stress test with multiple splits");
     }
     void test_deep_tree_with_condense() {
-        RTreeGutman<int> tree(2, 4);
-        tree.m = 2;
-        tree.M = 4;
+        Gutman::RTree<int> tree(2, 4);
 
         std::vector<int> values(100);
         std::vector<Rectangle> rects;
@@ -534,9 +479,7 @@ class RTreeTest {
     }
 
     void test_deep_tree_with_extreme_condense() {
-        RTreeGutman<int> tree(10, 40);
-        tree.m = 2;
-        tree.M = 4;
+        Gutman::RTree<int> tree(10, 40);
 
         std::vector<int> values(2000);
         std::vector<Rectangle> rects;
@@ -568,9 +511,7 @@ class RTreeTest {
     }
 
     void test_extra_delete_and_reinsert() {
-        RTreeGutman<int> tree(2, 4);
-        tree.m = 2;
-        tree.M = 4;
+        Gutman::RTree<int> tree(2, 4);
 
         std::vector<int> values(50);
         std::vector<Rectangle> rects;
@@ -609,9 +550,7 @@ class RTreeTest {
     }
 
     void test_massive_delete_and_reinsert() {
-        RTreeGutman<int> tree(2, 4);
-        tree.m = 2;
-        tree.M = 4;
+        Gutman::RTree<int> tree(2, 4);
 
         std::vector<int> values(150);
         std::vector<Rectangle> rects;
