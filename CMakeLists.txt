@@ -9,7 +9,7 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug)
 endif()
 
-add_compile_options(-Wall -Wextra -Wpedantic -O2 -g  )
+add_compile_options(-Wall -Wextra -Wpedantic -O0 -g  ) # vrati optimizacije ovo je za edbag
 
 add_compile_options(-fsanitize=address)
 add_link_options(-fsanitize=address) # ove 2 ukljucuju da trazi memory bugs

@@ -144,6 +144,7 @@ class RTree {
             leaf->elems.push_back({elem, mbr});
         } else {
             // invoke split to get L and LL containing current entry E and all previous leaf entries
+            leaf->elems.push_back({elem, mbr});
             ll = split(leaf);
         }
 
@@ -303,8 +304,9 @@ class RTree {
 
         std::vector<int> g1{seeds.first}, g2{seeds.second};
 
-        for (int i = 2; i < n; i++) {
+        for (int i = 0; i < n; i++) {
             int next = pick_next(entries, assigned, mbr1, mbr2);
+            if (next < 0) continue;
             assigned[next] = true;
             auto c1 = Rectangle::calc_mbr(mbr1, entries[next].rect);
             auto c2 = Rectangle::calc_mbr(mbr2, entries[next].rect);
