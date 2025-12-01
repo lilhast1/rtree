@@ -1,9 +1,0 @@
-{
-	"InstallScripts" : 
-	[
-		"/Users/tarikhastor/rtree/cmake_install.cmake",
-		"/Users/tarikhastor/rtree/_deps/catch2-build/cmake_install.cmake",
-		"/Users/tarikhastor/rtree/_deps/catch2-build/src/cmake_install.cmake"
-	],
-	"Parallel" : false
-}

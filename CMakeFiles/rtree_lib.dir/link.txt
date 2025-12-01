@@ -1,2 +1,0 @@
-/usr/bin/ar qc librtree_lib.a CMakeFiles/rtree_lib.dir/src/rtree/rtree.cpp.o CMakeFiles/rtree_lib.dir/src/rtree_hilbert/hilbert_curve.cpp.o
-/usr/bin/ranlib librtree_lib.a
