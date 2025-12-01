@@ -153,42 +153,6 @@ class RTree {
         // if root is split grow the tree taller
     }
 
-    void update_mbr(Node<T>* n) {
-        if (!n || n->count() == 0)
-            return;
-
-        if (n->is_leaf) {
-            // Calculate MBR from elements
-            n->mbr = n->elems[0].second;
-            for (size_t i = 1; i < n->elems.size(); i++) {
-                n->mbr = Rectangle::calc_mbr(n->mbr, n->elems[i].second);
-            }
-        } else {
-            // Calculate MBR from children
-            n->mbr = n->children[0]->mbr;
-            for (size_t i = 1; i < n->children.size(); i++) {
-                n->mbr = Rectangle::calc_mbr(n->mbr, n->children[i]->mbr);
-            }
-        }
-    }
-
-    void collect_data_from_subtree(Node<T>* node, std::vector<std::pair<T*, Rectangle>>& data) {
-        if (node->is_leaf) {
-            for (auto& elem : node->elems) {
-                data.push_back(elem);
-            }
-            // Clear to prevent double-delete
-            node->elems.clear();
-        } else {
-            for (auto child : node->children) {
-                collect_data_from_subtree(child, data);
-            }
-            // Clear children to prevent destructor from deleting them
-            // (we already processed them recursively)
-            node->children.clear();
-        }
-    }
-
     void remove(Rectangle r) {
         if (!root)
             return;
@@ -546,6 +510,42 @@ class RTree {
             }
         }
         return max_i;
+    }
+
+    void update_mbr(Node<T>* n) {
+        if (!n || n->count() == 0)
+            return;
+
+        if (n->is_leaf) {
+            // Calculate MBR from elements
+            n->mbr = n->elems[0].second;
+            for (size_t i = 1; i < n->elems.size(); i++) {
+                n->mbr = Rectangle::calc_mbr(n->mbr, n->elems[i].second);
+            }
+        } else {
+            // Calculate MBR from children
+            n->mbr = n->children[0]->mbr;
+            for (size_t i = 1; i < n->children.size(); i++) {
+                n->mbr = Rectangle::calc_mbr(n->mbr, n->children[i]->mbr);
+            }
+        }
+    }
+
+    void collect_data_from_subtree(Node<T>* node, std::vector<std::pair<T*, Rectangle>>& data) {
+        if (node->is_leaf) {
+            for (auto& elem : node->elems) {
+                data.push_back(elem);
+            }
+            // Clear to prevent double-delete
+            node->elems.clear();
+        } else {
+            for (auto child : node->children) {
+                collect_data_from_subtree(child, data);
+            }
+            // Clear children to prevent destructor from deleting them
+            // (we already processed them recursively)
+            node->children.clear();
+        }
     }
 
     void reinsert_subtree(Node<T>* node) { return; }

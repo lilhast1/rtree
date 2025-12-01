@@ -1,0 +1,14 @@
+/Users/tarikhastor/rtree/CMakeFiles/rtree_lib.dir
+/Users/tarikhastor/rtree/CMakeFiles/benchmark.dir
+/Users/tarikhastor/rtree/CMakeFiles/tests.dir
+/Users/tarikhastor/rtree/CMakeFiles/test.dir
+/Users/tarikhastor/rtree/CMakeFiles/edit_cache.dir
+/Users/tarikhastor/rtree/CMakeFiles/rebuild_cache.dir
+/Users/tarikhastor/rtree/_deps/catch2-build/CMakeFiles/test.dir
+/Users/tarikhastor/rtree/_deps/catch2-build/CMakeFiles/edit_cache.dir
+/Users/tarikhastor/rtree/_deps/catch2-build/CMakeFiles/rebuild_cache.dir
+/Users/tarikhastor/rtree/_deps/catch2-build/src/CMakeFiles/Catch2.dir
+/Users/tarikhastor/rtree/_deps/catch2-build/src/CMakeFiles/Catch2WithMain.dir
+/Users/tarikhastor/rtree/_deps/catch2-build/src/CMakeFiles/test.dir
+/Users/tarikhastor/rtree/_deps/catch2-build/src/CMakeFiles/edit_cache.dir
+/Users/tarikhastor/rtree/_deps/catch2-build/src/CMakeFiles/rebuild_cache.dir
