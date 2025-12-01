@@ -1,1 +1,6 @@
 build/*
+_deps/*
+
+.DS_Store
+.DS_Store?
+._*
