@@ -5,18 +5,25 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+# Default to Debug build
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug)
 endif()
 
-add_compile_options(-Wall -Wextra -Wpedantic -O2 -g  ) # vrati optimizacije ovo je za edbag
+# ================================
+# Sanitizers and warnings per compiler
+# ================================
 
-add_compile_options(-fsanitize=address)
-add_link_options(-fsanitize=address) # ove 2 ukljucuju da trazi memory bugs
-
-add_compile_options(-fsanitize=undefined)
-add_link_options(-fsanitize=undefined) # ove 2 ukljucuju da trazi UB jer ono anything goes nobody knows!
-
+if(MSVC)
+    message(STATUS "Configuring for MSVC — enabling AddressSanitizer")
+    add_compile_options(/W4 /fsanitize=address)
+    add_link_options(/fsanitize=address)
+else()
+    message(STATUS "Configuring for GCC/Clang — enabling ASan + UBSan")
+    add_compile_options(-Wall -Wextra -Wpedantic -g -O2)
+    add_compile_options(-fsanitize=address -fsanitize=undefined)
+    add_link_options(-fsanitize=address -fsanitize=undefined)
+endif()
 # ------------------------
 # Catch2 for unit tests
 # ------------------------

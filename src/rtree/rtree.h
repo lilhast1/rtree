@@ -126,13 +126,42 @@ class RTree {
 
     std::vector<T*> search(const Rectangle& search_rect) const {
         std::vector<T*> result;
-        _impl_search(search_rect, result, root);
+        if (!root)
+            return result;
+
+        result.reserve(100);  // Pre-allocate some space
+
+        // Use iterative approach with stack instead of recursion
+        std::vector<Node<T>*> stack;
+        stack.reserve(64);  // Typical tree depth
+        stack.push_back(root);
+
+        while (!stack.empty()) {
+            Node<T>* node = stack.back();
+            stack.pop_back();
+
+            if (node->is_leaf) {
+                for (auto& elem_rec : node->elems) {
+                    if (Rectangle::overlap(elem_rec.second, search_rect)) {
+                        result.push_back(elem_rec.first);
+                    }
+                }
+            } else {
+                for (auto child : node->children) {
+                    if (Rectangle::overlap(child->mbr, search_rect)) {
+                        stack.push_back(child);
+                    }
+                }
+            }
+        }
+
         return result;
     }
 
     void insert(const Rectangle& mbr, T* elem) {
         if (!root) {
             root = new Node<T>(true, mbr);
+            root->elems.reserve(M + 1);  // Pre-allocate
             root->elems.push_back({elem, mbr});
             size++;
             return;
@@ -141,16 +170,20 @@ class RTree {
         Node<T>* ll = nullptr;
 
         if (leaf->count() < M) {
+            if (leaf->elems.capacity() == 0) {
+                leaf->elems.reserve(M + 1);
+            }
             leaf->elems.push_back({elem, mbr});
         } else {
-            // invoke split to get L and LL containing current entry E and all previous leaf entries
+            if (leaf->elems.capacity() <= M) {
+                leaf->elems.reserve(M + 1);
+            }
             leaf->elems.push_back({elem, mbr});
             ll = split(leaf);
         }
 
         adjust_tree(leaf, ll);
         size++;
-        // if root is split grow the tree taller
     }
 
     void update_mbr(Node<T>* n) {
@@ -236,58 +269,47 @@ class RTree {
 
     void condense_tree(Node<T>* l) {
         Node<T>* n = l;
-        std::vector<Node<T>*> q;  // Set of eliminated nodes to reinsert
+        std::vector<Node<T>*> q;
 
         while (n != root) {
             Node<T>* p = n->parent;
 
             if (n->count() < m) {
-                // Remove n from parent's children list
                 auto it = std::find(p->children.begin(), p->children.end(), n);
                 if (it != p->children.end()) {
                     p->children.erase(it);
                 }
-
-                // CRITICAL: Set parent to nullptr to mark this node as orphaned
                 n->parent = nullptr;
-
-                // Add to elimination list
                 q.push_back(n);
             } else {
-                // Node is not underflow, just update its MBR
                 update_mbr(n);
             }
 
-            // Always move to parent
             n = p;
         }
 
-        // Update root MBR if it still exists and has children
         if (root && root->count() > 0) {
             update_mbr(root);
         }
 
-        // Reinsert all entries from eliminated nodes
+        // Collect all entries
         std::vector<std::pair<T*, Rectangle>> leaf_entries;
+        leaf_entries.reserve(q.size() * M);  // Pre-allocate
 
         for (Node<T>* orphan : q) {
             if (orphan->is_leaf) {
-                // Collect leaf entries
                 for (auto& elem : orphan->elems) {
                     leaf_entries.push_back(elem);
                 }
-                // Clear to prevent destructor issues
                 orphan->elems.clear();
                 delete orphan;
             } else {
-                // For non-leaf nodes, collect all leaf entries from subtree
                 collect_data_from_subtree(orphan, leaf_entries);
-                // Destructor will handle cleanup
                 delete orphan;
             }
         }
 
-        // Reinsert all collected entries
+        // Batch reinsert - this is critical for performance
         for (const auto& entry : leaf_entries) {
             insert(entry.second, entry.first);
         }
@@ -348,7 +370,6 @@ class RTree {
         if (l == nullptr)
             return;
 
-        // CRITICAL FIX: Always update the MBR of the node we're adjusting
         if (l->count() > 0) {
             update_mbr(l);
         }
@@ -360,16 +381,17 @@ class RTree {
                 adjust_tree(l, ll);
             }
             return;
-        } else if (p == nullptr && ll != nullptr) {  // root was split
+        } else if (p == nullptr && ll != nullptr) {
             auto rect = Rectangle::calc_mbr(ll->mbr, l->mbr);
             root = new Node<T>(false, rect);
-            root->children = std::vector<Node<T>*>{l, ll};
+            root->children.reserve(M + 1);  // Pre-allocate
+            root->children = {l, ll};
             l->parent = ll->parent = root;
             return;
-        } else if (p != nullptr && ll == nullptr) {  // just adjust the mbr
+        } else if (p != nullptr && ll == nullptr) {
             update_mbr(p);
             adjust_tree(p, nullptr);
-        } else {  // split if needed
+        } else {
             p->children.push_back(ll);
             ll->parent = p;
             Node<T>* pp = nullptr;
@@ -384,9 +406,9 @@ class RTree {
     }
 
     Node<T>* split(Node<T>* t) {
-        // apply pickseeds
         std::vector<EntryWrapper> entries;
         std::vector<bool> assigned(t->count(), false);
+
         if (t->is_leaf) {
             for (int i = 0; i < t->count(); i++)
                 entries.push_back(EntryWrapper{i, t->elems[i].second});
@@ -399,39 +421,80 @@ class RTree {
         assigned[seeds.first] = assigned[seeds.second] = true;
 
         int n = t->count();
-
         auto mbr1 = entries[seeds.first].rect;
         auto mbr2 = entries[seeds.second].rect;
 
         std::vector<int> g1{seeds.first}, g2{seeds.second};
+        int remaining = n - 2;
 
-        for (int i = 0; i < n; i++) {
-            int next = pick_next(entries, assigned, mbr1, mbr2);
+        while (remaining > 0) {
+            // Check if we must assign all remaining to one group
+            if (g1.size() + remaining == m) {
+                // Must put all remaining in g1
+                for (int i = 0; i < n; i++) {
+                    if (!assigned[i]) {
+                        assigned[i] = true;
+                        g1.push_back(i);
+                        mbr1 = Rectangle::calc_mbr(mbr1, entries[i].rect);
+                        remaining--;
+                    }
+                }
+                break;
+            } else if (g2.size() + remaining == m) {
+                // Must put all remaining in g2
+                for (int i = 0; i < n; i++) {
+                    if (!assigned[i]) {
+                        assigned[i] = true;
+                        g2.push_back(i);
+                        mbr2 = Rectangle::calc_mbr(mbr2, entries[i].rect);
+                        remaining--;
+                    }
+                }
+                break;
+            }
+
+            int next = pick_next(entries, assigned, mbr1, mbr2, remaining, g1.size(), g2.size());
             if (next < 0)
-                continue;
+                break;
+
             assigned[next] = true;
+            remaining--;
+
             auto c1 = Rectangle::calc_mbr(mbr1, entries[next].rect);
             auto c2 = Rectangle::calc_mbr(mbr2, entries[next].rect);
-            if (c1.area() < c2.area()) {
+
+            double area_increase1 = c1.area() - mbr1.area();
+            double area_increase2 = c2.area() - mbr2.area();
+
+            if (area_increase1 < area_increase2) {
                 mbr1 = c1;
                 g1.push_back(next);
-            } else {
+            } else if (area_increase2 < area_increase1) {
                 mbr2 = c2;
                 g2.push_back(next);
+            } else {
+                // Tie: prefer smaller area
+                if (mbr1.area() < mbr2.area()) {
+                    mbr1 = c1;
+                    g1.push_back(next);
+                } else {
+                    mbr2 = c2;
+                    g2.push_back(next);
+                }
             }
         }
 
-        // Enforce minimum entries per node
+        // Safety check - ensure minimum node size
         if (g1.size() < m || g2.size() < m) {
             auto& big = g1.size() > g2.size() ? g1 : g2;
             auto& small = g1.size() < g2.size() ? g1 : g2;
 
-            while (small.size() < m) {
+            while (small.size() < m && big.size() > m) {
                 small.push_back(big.back());
                 big.pop_back();
             }
 
-            // CRITICAL FIX: Recalculate MBRs after redistribution
+            // Recalculate MBRs
             mbr1 = entries[g1[0]].rect;
             for (size_t i = 1; i < g1.size(); i++) {
                 mbr1 = Rectangle::calc_mbr(mbr1, entries[g1[i]].rect);
@@ -448,39 +511,28 @@ class RTree {
         t->mbr = mbr1;
 
         if (t->is_leaf) {
-            std::vector<std::pair<T*, Rectangle>> elems1;
-            std::vector<std::pair<T*, Rectangle>> elems2;
+            std::vector<std::pair<T*, Rectangle>> elems1, elems2;
+            elems1.reserve(g1.size());
+            elems2.reserve(g2.size());
 
             for (auto i : g1) elems1.push_back(t->elems[i]);
             for (auto i : g2) elems2.push_back(t->elems[i]);
 
-            for (auto& e : t->elems) {
-                e.first = nullptr;
-            }
-
-            t->elems = elems1;
-            tt->elems = elems2;
+            t->elems = std::move(elems1);
+            tt->elems = std::move(elems2);
         } else {
-            std::vector<Node<T>*> elems1;
-            std::vector<Node<T>*> elems2;
+            std::vector<Node<T>*> children1, children2;
+            children1.reserve(g1.size());
+            children2.reserve(g2.size());
 
-            for (auto i : g1) elems1.push_back(t->children[i]);
-            for (auto i : g2) elems2.push_back(t->children[i]);
+            for (auto i : g1) children1.push_back(t->children[i]);
+            for (auto i : g2) children2.push_back(t->children[i]);
 
-            for (auto& e : t->children) {
-                e = nullptr;
-            }
+            t->children = std::move(children1);
+            tt->children = std::move(children2);
 
-            t->children = elems1;
-            tt->children = elems2;
-
-            // Update parent pointers
-            for (auto child : t->children) {
-                child->parent = t;
-            }
-            for (auto child : tt->children) {
-                child->parent = tt;
-            }
+            for (auto child : t->children) child->parent = t;
+            for (auto child : tt->children) child->parent = tt;
         }
 
         return tt;
@@ -511,38 +563,70 @@ class RTree {
     }
 
     std::pair<int, int> pick_seeds(const std::vector<EntryWrapper>& entries) {
-        double max_waste = -1;
         int n = entries.size();
-        std::pair<int, int> seeds{-1, -1};
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                if (i == j)
-                    continue;
-                auto b = Rectangle::calc_mbr(entries[i].rect, entries[j].rect);
-                double d = b.area() - entries[i].rect.area() - entries[j].rect.area();
-                if (std::fabs(d) > max_waste) {
-                    max_waste = d;
-                    seeds.first = i;
-                    seeds.second = j;
+        if (n < 2)
+            return {0, 0};
+
+        // Linear time pick_seeds: find the pair with maximum separation along each dimension
+        int dimensions = entries[0].rect.min.size();
+        double max_separation = -1;
+        std::pair<int, int> seeds{0, 1};
+
+        for (int dim = 0; dim < dimensions; dim++) {
+            // Find entries with lowest and highest values in this dimension
+            int lowest_idx = 0, highest_idx = 0;
+            double lowest = entries[0].rect.min[dim];
+            double highest = entries[0].rect.max[dim];
+
+            for (int i = 1; i < n; i++) {
+                if (entries[i].rect.min[dim] < lowest) {
+                    lowest = entries[i].rect.min[dim];
+                    lowest_idx = i;
+                }
+                if (entries[i].rect.max[dim] > highest) {
+                    highest = entries[i].rect.max[dim];
+                    highest_idx = i;
+                }
+            }
+
+            if (lowest_idx != highest_idx) {
+                double separation = highest - lowest;
+                if (separation > max_separation) {
+                    max_separation = separation;
+                    seeds = {lowest_idx, highest_idx};
                 }
             }
         }
+
         return seeds;
     }
 
     int pick_next(const std::vector<struct EntryWrapper>& entries,
-                  const std::vector<bool>& assigned, const Rectangle& mbr1, const Rectangle& mbr2) {
+                  const std::vector<bool>& assigned, const Rectangle& mbr1, const Rectangle& mbr2,
+                  int remaining, int g1_size, int g2_size) {
         int n = entries.size();
-        double max_diff = -100000;
+
+        // Early termination: if we must put all remaining in one group, return any
+        if (remaining == m - g1_size || remaining == m - g2_size) {
+            for (int i = 0; i < n; i++) {
+                if (!assigned[i])
+                    return i;
+            }
+        }
+
+        double max_diff = -1;
         int max_i = -1;
         for (int i = 0; i < n; i++) {
             if (assigned[i])
                 continue;
+
             auto d1 = mbr1.enlargement_needed(entries[i].rect);
             auto d2 = mbr2.enlargement_needed(entries[i].rect);
-            if (std::fabs(d1 - d2) > max_diff) {
+            double diff = std::fabs(d1 - d2);
+
+            if (diff > max_diff) {
                 max_i = i;
-                max_diff = std::fabs(d1 - d2);
+                max_diff = diff;
             }
         }
         return max_i;
