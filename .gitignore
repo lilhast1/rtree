@@ -1,2 +1,12 @@
 build/*
+<<<<<<< HEAD
 perf.data
+=======
+_deps/*
+
+.DS_Store
+.DS_Store?
+._*
+CMakeFiles
+_deps
+>>>>>>> refs/remotes/origin/refactoring
