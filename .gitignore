@@ -7,3 +7,4 @@ _deps/*
 ._*
 CMakeFiles
 _deps
+.cache
