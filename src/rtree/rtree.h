@@ -31,7 +31,7 @@ struct Rectangle {
 
     Rectangle(const std::vector<double>& min, const std::vector<double>& max)
         : min(min), max(max) {}
-    double area() const {
+    [[nodiscard]] double area() const {
         double a = 1;
         for (int i = 0; i < min.size(); i++) {
             a *= std::fabs(min[i] - max[i]);
@@ -39,9 +39,19 @@ struct Rectangle {
         return a;
     }
 
-    double enlargement_needed(const Rectangle& b) const {
+    [[nodiscard]] double enlargement_needed(const Rectangle& b) const {
         auto mbr = calc_mbr(*this, b);
         return mbr.area() - area();
+    }
+
+    [[nodiscard]] bool contains(const Rectangle& a) const {
+        bool flag = true;
+        for (int i = 0; i < min.size(); i++) {
+            flag = flag && min[i] < a.min[i] && a.max[i] < max[i];
+            if (!flag)
+                break;
+        }
+        return flag;
     }
 
     template <typename Itr>
@@ -106,11 +116,27 @@ struct Node {
     std::vector<std::pair<T*, Rectangle>> elems;
     Rectangle mbr;
 
-    int count() const { return is_leaf ? elems.size() : children.size(); }
+    [[nodiscard]] int count() const { return is_leaf ? elems.size() : children.size(); }
 
-    Node(bool is_leaf, Rectangle mbr) : is_leaf(is_leaf), mbr(mbr), parent(nullptr) {}
+    Node(bool is_leaf, Rectangle mbr) : is_leaf(is_leaf), mbr(std::move(mbr)), parent(nullptr) {}
     ~Node() {
         for (auto child : children) delete child;
+    }
+
+    void update_mbr() {
+        if (is_leaf && elems.size()) {
+            auto mbr = elems[0].second;
+            for (auto& entry : elems) {
+                mbr = Rectangle::calc_mbr(mbr, entry.second);
+            }
+            this->mbr = mbr;
+        } else if (is_leaf && children.size()) {
+            auto mbr = children[0]->mbr;
+            for (auto node : children) {
+                mbr = Rectangle::calc_mbr(mbr, node->mbr);
+            }
+            this->mbr = mbr;
+        }
     }
 };
 
@@ -153,7 +179,7 @@ class RTree {
         // if root is split grow the tree taller
     }
 
-    void remove(Rectangle r) {
+    void remove(const Rectangle& r) {
         if (!root)
             return;
 
@@ -173,23 +199,32 @@ class RTree {
             size--;
 
             // Condense the tree
-            condense_tree(leaf);
+            leaf->update_mbr();
+            adjust_tree(leaf, nullptr);
+            _condense_tree(leaf);
 
-            // If root has only one child and is not a leaf, make that child the new root
-            if (root && !root->is_leaf && root->count() == 1) {
-                Node<T>* old_root = root;
-                root = root->children[0];
-                root->parent = nullptr;
-                old_root->children.clear();  // Prevent deletion of the new root
-                delete old_root;
-            }
+            // condense_tree(leaf);
+            // // If root has only one child and is not a leaf, make that child the new root
+            // if (root && !root->is_leaf && root->count() == 1) {
+            //     Node<T>* old_root = root;
+            //     root = root->children[0];
+            //     root->parent = nullptr;
+            //     for (auto& child : old_root->children) child = nullptr;
+            //     old_root->children.clear();  // Prevent deletion of the new root
+            //     delete old_root;
+            // }
 
-            // If root is a leaf and empty, set root to nullptr
-            if (root && root->is_leaf && root->count() == 0) {
-                delete root;
-                root = nullptr;
-            }
+            // // If root is a leaf and empty, set root to nullptr
+            // if (root && root->is_leaf && root->count() == 0) {
+            //     delete root;
+            //     root = nullptr;
+            // }
         }
+    }
+
+    void update(const Rectangle& current, Rectangle& desired, T* new_elem) {
+        remove(current);
+        insert(desired, new_elem);
     }
 
    private:
@@ -241,6 +276,9 @@ class RTree {
                     leaf_entries.push_back(elem);
                 }
                 // Clear to prevent destructor issues
+                for (auto& elem : orphan->elems) {
+                    elem.first = nullptr;
+                }
                 orphan->elems.clear();
                 delete orphan;
             } else {
@@ -536,6 +574,9 @@ class RTree {
             for (auto& elem : node->elems) {
                 data.push_back(elem);
             }
+            for (auto& elem : node->elems) {
+                elem.first = nullptr;
+            }
             // Clear to prevent double-delete
             node->elems.clear();
         } else {
@@ -544,7 +585,230 @@ class RTree {
             }
             // Clear children to prevent destructor from deleting them
             // (we already processed them recursively)
-            node->children.clear();
+            for (auto& child : node->children) child = nullptr;
+            node->children.clear();  // OVO NIJE TACNO .CLEAR zove destruktore
+        }
+    }
+
+    void _condense_tree(Node<T>* l) {
+        Node<T>* n = l;
+        std::vector<Node<T>*> orphans;
+
+        // 1. ASCEND AND COLLECT
+        while (n != root) {
+            Node<T>* p = n->parent;
+            if (n->count() < m) {
+                auto it = std::find(p->children.begin(), p->children.end(), n);
+                if (it != p->children.end())
+                    p->children.erase(it);
+                n->parent = nullptr;
+                orphans.push_back(n);
+            } else {
+                n->update_mbr();
+            }
+            n = p;
+        }
+
+        // 2. ROOT SANITY CHECK (Fixes Extreme Condense/Massive Delete)
+        // If root was internal but all children were removed, it is now invalid.
+        // Reset it to an empty leaf.
+        if (!root->is_leaf && root->children.empty()) {
+            root->is_leaf = true;
+            root->elems.clear();  // Ensure clean state
+        }
+
+        root->update_mbr();
+
+        // 3. RE-INSERT ORPHANS
+        for (Node<T>* orphan : orphans) {
+            if (orphan->is_leaf) {
+                // Re-insert Data
+                for (auto& entry : orphan->elems) {
+                    insert(entry.second, entry.first);
+                }
+            } else {
+                // Re-insert Subtrees (Internal Nodes)
+                for (Node<T>* child_subtree : orphan->children) {
+                    insert_internal(child_subtree);
+                }
+            }
+            // Cleanup Orphan Container
+            orphan->children.clear();
+            orphan->elems.clear();
+            delete orphan;
+        }
+
+        // 4. ROOT HEIGHT REDUCTION
+        if (!root->is_leaf && root->children.size() == 1) {
+            Node<T>* new_root = root->children[0];
+            root->children.clear();
+            delete root;
+            root = new_root;
+            root->parent = nullptr;
+        }
+    }
+
+    void insert_node_at_level(Node<T>* subtree, int level) {
+        // 1. Choose Subtree (Find the best parent for this node)
+        // We want a node at (level + 1) to be the parent.
+        Node<T>* target_parent = choose_subtree(root, subtree->mbr, level);
+
+        // 2. Add child
+        target_parent->children.push_back(subtree);
+        subtree->parent = target_parent;
+        target_parent->update_mbr();
+
+        // 3. Handle Overflow (Split) if necessary
+        // This propagates up just like a normal insert
+        if (target_parent->children.size() > M) {
+            auto ll = split(target_parent);
+            adjust_tree(target_parent, ll);
+        }
+    }
+
+    Node<T>* choose_subtree(Node<T>* node, const Rectangle& rect, int insertion_level) {
+        // Base Case: If we are at the level immediately above the insertion level,
+        // this node is the candidate parent.
+        // Example: Inserting a Leaf (level 0). We need a parent at Level 1 (Internal).
+        // Note: You need a way to determine node height/level.
+        // If you don't store 'level' in Node, you calculate it based on distance to leaves.
+
+        int current_level = get_level(node);  // See helper below
+        if (current_level == insertion_level + 1) {
+            return node;
+        }
+
+        // Standard R-Tree logic: Find child requiring least enlargement
+        Node<T>* best_child = nullptr;
+        double min_enlargement = std::numeric_limits<double>::max();
+        double best_area = std::numeric_limits<double>::max();
+
+        for (Node<T>* child : node->children) {
+            double area = child->mbr.area();
+            double enlargement = Rectangle::calc_mbr(child->mbr, rect).area() - area;
+
+            if (enlargement < min_enlargement) {
+                min_enlargement = enlargement;
+                best_area = area;
+                best_child = child;
+            } else if (enlargement == min_enlargement) {
+                if (area < best_area) {
+                    best_area = area;
+                    best_child = child;
+                }
+            }
+        }
+
+        // Recurse
+        return choose_subtree(best_child, rect, insertion_level);
+    }
+
+    int get_level(Node<T>* node) {
+        int lvl = 0;
+        while (!node->is_leaf) {
+            // Go down the first child until we hit a leaf
+            if (node->children.empty())
+                break;  // Should not happen in valid tree
+            node = node->children[0];
+            lvl++;
+        }
+        return lvl;
+    }
+
+    int get_height(Node<T>* n) {
+        int h = 0;
+        while (!n->is_leaf && !n->children.empty()) {
+            h++;
+            n = n->children[0];
+        }
+        return h;
+    }
+
+    Node<T>* choose_subtree_at_level(Node<T>* node, const Rectangle& mbr, int target_height) {
+        if (node->is_leaf)
+            return node;  // Should not happen for internal insert, but safety first
+
+        // Guard against empty internal nodes (e.g. root temporarily empty)
+        if (node->children.empty())
+            return node;
+
+        // Optimization: Check height of immediate children
+        // If children are at the target height, then 'node' is the parent we want.
+        int child_height = get_height(node->children[0]);
+        if (child_height == target_height) {
+            return node;
+        }
+
+        // Standard Min-Enlargement Search
+        Node<T>* best_child = nullptr;
+        double min_enlargement = std::numeric_limits<double>::max();
+        double best_area = std::numeric_limits<double>::max();
+
+        for (Node<T>* child : node->children) {
+            double area = child->mbr.area();
+            double enlargement = Rectangle::calc_mbr(child->mbr, mbr).area() - area;
+
+            if (enlargement < min_enlargement) {
+                min_enlargement = enlargement;
+                best_area = area;
+                best_child = child;
+            } else if (enlargement == min_enlargement) {
+                if (area < best_area) {
+                    best_area = area;
+                    best_child = child;
+                }
+            }
+        }
+
+        // If for some reason we didn't find a child (shouldn't happen), return node
+        if (!best_child)
+            return node;
+
+        return choose_subtree_at_level(best_child, mbr, target_height);
+    }
+
+    // Function to re-insert a subtree (internal node)
+    void insert_internal(Node<T>* subtree) {
+        int subtree_height = get_height(subtree);
+        int root_height = get_height(root);
+
+        // CASE: Tree is too short.
+        // If the orphan is as tall as the root, we must create a new root
+        // to hold both the old root and the orphan.
+        if (subtree_height >= root_height) {
+            Node<T>* new_root = new Node<T>(false, root->mbr);  // Internal
+            new_root->children.push_back(root);
+            root->parent = new_root;
+
+            // The subtree also goes into this new root (or its appropriate level,
+            // but if heights match, it goes here).
+            // However, to keep logic uniform, we just update root and let choose_subtree work.
+            root = new_root;
+            root->update_mbr();
+        }
+
+        // Find the correct parent (guaranteed to exist now)
+        Node<T>* target_parent = choose_subtree_at_level(root, subtree->mbr, subtree_height);
+
+        // Link
+        target_parent->children.push_back(subtree);
+        subtree->parent = target_parent;
+
+        // Update MBRs
+        target_parent->update_mbr();
+
+        // Check Overflow
+        if (target_parent->children.size() > M) {
+            // Assuming you have a standard split function
+            auto ll = split(target_parent);
+            adjust_tree(target_parent, ll);
+        } else {
+            // Propagate MBR changes up
+            Node<T>* p = target_parent->parent;
+            while (p) {
+                p->update_mbr();
+                p = p->parent;
+            }
         }
     }
 
