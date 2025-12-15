@@ -5,7 +5,7 @@
 #include <string>
 #include <utility>
 #include <vector>
-#include
+
 #include "rtree/rtree.h"
 #include "rtree_hilbert/hilbert_curve.h"
 
@@ -18,12 +18,64 @@ namespace hilbert {
 const auto not_implemented = std::logic_error("Not implemented"s);
 
 struct Rectangle {
-    Point get_center() const;
-    Point get_lower() const;
-    Point get_upper() const;
-    bool intersects(const Rectangle& rect) const;
-    bool contains(const Rectangle& rect) const;
-    bool operator==(const Rectangle& other) const;
+    Point lower;
+    Point higher;
+
+    Rectangle(Point lo, Point hi) : lower(std::move(lo)), higher(std::move(hi)) {
+        if (lower.size() != hi.size()) {
+            throw std::domain_error("Rectangle dimensions mismatch");
+        }
+    }
+
+    Point get_center() const {
+        auto center(lower);
+        for (int i = 0; i < lower.size(); i++) {
+            center[i] = (lower[i] + higher[i]) / 2;
+        }
+        return center;
+    }
+    Point get_lower() const { return lower; }
+    Point get_upper() const { return higher; }
+    bool intersects(const Rectangle& rect) const {
+        bool intersect = true;
+
+        if (this->lower.size() != rect.lower.size()) {
+            throw std::runtime_error("The two rectangles do not have the same dimension.");
+        }
+
+        for (size_t i = 0; intersect && i < this->lower.size(); ++i) {
+            intersect = (this->lower[i] <= rect.higher[i] && this->higher[i] >= rect.lower[i]);
+        }
+
+        return intersect;
+    }
+    bool contains(const Rectangle& rect) const {
+        bool contains = true;
+
+        if (this->lower.size() != rect.lower.size()) {
+            throw std::runtime_error("The two rectangles do not have the same dimension.");
+        }
+
+        for (size_t i = 0; i < this->lower.size() && contains == true; ++i) {
+            contains = (this->lower[i] <= rect.lower[i] && rect.lower[i] <= this->higher[i]
+                        && this->lower[i] <= rect.higher[i] && rect.higher[i] <= this->higher[i]);
+        }
+
+        return contains;
+    }
+    bool operator==(const Rectangle& other) const {
+        bool equal = true;
+
+        if (this->lower.size() != other.lower.size()) {
+            throw std::runtime_error("The two rectangles do not have the same dimension.");
+        }
+
+        for (size_t i = 0; equal && i < this->lower.size(); ++i) {
+            equal = (this->lower[i] == other.lower[i] && this->higher[i] == other.higher[i]);
+        }
+
+        return equal;
+    }
 };
 
 template <typename T>
@@ -46,6 +98,11 @@ struct InnerNode : NodeEntry<T> {
 
 template <typename T>
 struct Node {
+    bool leaf;
+    Node* parent;
+    Node* prev_sibling;
+    Node* next_sibling;
+
     Node(int min_entries, int max_entries, HilbertCurve& curve) { throw not_implemented; }
     bool overflow();
     bool underflow();
