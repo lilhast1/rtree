@@ -225,6 +225,7 @@ struct Node {
             auto entry = *it;
             if (dynamic_cast<LeafEntry<T>*>(entry)->get_mbr() == rect) {
                 entries.erase(it);
+                // delete entry list ne mora
                 break;
             }
         }
@@ -236,6 +237,7 @@ struct Node {
             auto entry = *it;
             if (dynamic_cast<InnerNode<T>*>(entry)->get_node() == child) {
                 entries.erase(it);
+                // delete entry
                 break;
             }
         }
@@ -285,37 +287,147 @@ struct Node {
 template <typename T>
 class RTree {
     Node<T>* root;
+    int min_entries;
+    int max_entries;
 
    public:
     RTree() { throw not_implemented; }
     ~RTree() { throw not_implemented; }
 
     std::vector<T*> search(const Rectangle& search_rect) {
-        auto _rez = _search(root, search_rect);
+        auto rez = _search(root, search_rect);
         std::vector<T*> result;
-        for (auto entry : _rez) {
+        for (auto entry : rez) {
             result.push_back(entry->elem);
         }
+        return result;
     }
     void insert(const Rectangle& rect, T* elem) { throw not_implemented; }
-    void remove(const Rectangle& rect) { throw not_implemented; }
+    void remove(const Rectangle& rect) {
+        Node<T>* DL = nullptr;
+
+        // List of siblings affected by the removal of an entry
+        std::vector<Node<T>*> out_siblings;
+
+        // Find the node containing the entry
+        auto L = exactSearch(this->root, rect);
+
+        // If there was a match
+        if (L != nullptr) {
+            // Remove the entry from the node
+            L->remove_leaf_entry(rect);
+
+            if (L->underflow()) {
+                // DL contains a pointer to the node that was deleted or NULL if no node was deleted
+                DL = handle_underflow(L, out_siblings);
+            }
+
+            condense_tree(L, DL, out_siblings);
+        }
+    }
 
    private:
     Node<T*> choose_leaf(Node<T>* node, ll hilbert_value) { throw not_implemented; }
-    void redistribute_entries(std::vector<NodeEntry<T>>& entries, std::vector<Node<T>*>& siblings) {
-        throw not_implemented;
+
+    void redistribute_entries(EntryMultiSet<T>& entries, std::vector<Node<T>*>& siblings) {
+        auto batch_size = (ll)std::ceil((double)entries.size() / (double)siblings.size());
+
+        auto siblings_it = siblings.begin();
+
+        ll current_batch = 0;
+
+        for (auto entry_it = entries.begin(); entry_it != entries.end(); entry_it++) {
+            if ((*entry_it)->isLeafEntry()) {
+                (*siblings_it)->insert_leaf_entry(dynamic_cast<LeafEntry<T>*>(*entry_it));
+            } else {
+                (*siblings_it)->insert_inner_entry(dynamic_cast<InnerNode<T>*>(*entry_it));
+            }
+
+            current_batch++;
+
+            // If the current sibling has received its share,
+            // adjust the MBR and LHV of the current node and
+            // move to the next sibling and reset that batch counter
+            if (current_batch == batch_size) {
+                current_batch = 0;
+                (*siblings_it)->adjust_lhv();
+                (*siblings_it)->adjust_mbr();
+                siblings_it++;
+            }
+        }
+
+        if (siblings_it != siblings.end()) {
+            (*siblings_it)->adjust_lhv();
+            (*siblings_it)->adjust_mbr();
+        }
     }
     Node<T>* handle_overflow(Node<T>* node, NodeEntry<T>* entry, std::vector<Node<T>*>& siblings) {
         throw not_implemented;
     }
-    Node<T>* handle_underflow(Node<T>* node, std::vector<Node<T>*>& siblings) {
-        throw not_implemented;
+    Node<T>* handle_underflow(Node<T>* target, std::vector<Node<T>*>& out_siblings) {
+        EntryMultiSet<T> entries;
+        // Pointer to the deleted node if any
+        Node<T>* removed = nullptr;
+
+        // This will contain the target node and at most SIBLINGS_NO of its siblings
+        out_siblings = target->get_siblings(2 + 1);
+
+        for (auto it = out_siblings.begin(); it != out_siblings.end(); ++it) {
+            entries.insert((*it)->get_entries().begin(), (*it)->get_entries().end());
+            (*it)->reset_entries();
+        }
+
+        // The nodes are underflowing and our node is not the root
+        if (entries.size() < out_siblings.size() * min_entries && target->get_parent() != nullptr) {
+            removed = out_siblings.front();
+            Node<T>* prevSib = removed->get_prev_siblings();
+            Node<T>* nextSib = removed->get_next_siblings();
+
+            if (prevSib != NULL) {
+                prevSib->set_next_siblings(nextSib);
+            }
+
+            if (nextSib != NULL) {
+                nextSib->set_prev_siblings(prevSib);
+            }
+
+            out_siblings.pop_front();
+        }
+
+        redistribute_entries(entries, out_siblings);
+
+        return removed;
     }
     Node<T>* adjust_tree(Node<T>* node, Node<T>* new_node, std::vector<Node<T>*>& siblings) {
         throw not_implemented;
     }
     void condense_tree(Node<T>* node, Node<T>* del_node, std::vector<Node<T>*>& siblings) {
         throw not_implemented;
+    }
+
+    Node<T>* exactSearch(Node<T>* subtree, const Rectangle& rect) {
+        auto entries = subtree->get_entries();
+        auto it = entries.begin();
+
+        // There are no duplicates in the tree
+        if (subtree->is_leaf()) {
+            for (it = entries.begin(); it != entries.end(); ++it) {
+                if (rect == *((*it)->get_mbr())) {
+                    return subtree;
+                }
+            }
+        } else {
+            for (it = entries.begin(); it != entries.end(); ++it) {
+                if ((*it)->getMBR()->contains(rect)) {
+                    auto res = exactSearch(dynamic_cast<InnerNode<T>*>(*it)->get_node(), rect);
+                    if (res != nullptr) {
+                        return res;
+                    }
+                }
+            }
+        }
+
+        return nullptr;
     }
 
     std::vector<LeafEntry<T>*> _search(Node<T>* subtree, const Rectangle& rect) {
@@ -333,6 +445,7 @@ class RTree {
         } else {
             for (it = entries.begin(); it != entries.end(); ++it) {
                 if ((*it)->get_mbr()->intersects(rect)) {
+                    // TODO: moze se optimizirati da se izbjegne kopiranja i to!
                     aux = _search(dynamic_cast<InnerNode<T>*>(*it)->getNode(), rect);
                     result.insert(result.end(), aux.begin(), aux.end());
                 }
