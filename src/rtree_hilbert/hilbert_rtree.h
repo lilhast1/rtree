@@ -83,17 +83,30 @@ struct Node;
 
 template <typename T>
 struct NodeEntry {
-    ll get_lhv();
-    Rectangle& get_mbr();
-    bool is_leaf();
+    virtual ll get_lhv() = 0;
+    virtual Rectangle& get_mbr() = 0;
+    virtual bool is_leaf() = 0;
+    virtual ~NodeEntry() = default;
 };
 
 template <typename T>
-struct LeafEntry : NodeEntry<T> {};
+struct LeafEntry : NodeEntry<T> {
+    Rectangle mbr;
+    ll lhv;
+    LeafEntry(Rectangle mbr, ll lhv) : lhv(lhv), mbr(std::move(mbr)) {}
+    ll get_lhv() { return lhv; }
+    bool is_leaf() { return true; }
+    Rectangle& get_mbr() { return mbr; }
+};
 
 template <typename T>
 struct InnerNode : NodeEntry<T> {
-    Node<T*> get_node();
+    Node<T>* node;
+    InnerNode(Node<T>* node) : node(node) {}
+    Node<T*> get_node() { return node; }
+    bool is_leaf() { return false; }
+    Rectangle& get_mbr() { return node->get_mbr(); }
+    ll get_lhv() { return node->get_lhv(); }
 };
 
 template <typename T>
