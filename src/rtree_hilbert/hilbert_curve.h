@@ -41,5 +41,6 @@ class HilbertCurve {
 
     [[nodiscard]] ll max_index() const;
 
-    [[nodiscard]] Ranges query(const Point& a, const Point& b, int max_ranges, int buffer_size = 1024) const;
+    [[nodiscard]] Ranges query(const Point& a, const Point& b, int max_ranges,
+                               int buffer_size = 1024) const;
 };
