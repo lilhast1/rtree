@@ -17,9 +17,9 @@ class HilbertCurve {
             throw std::domain_error("You can't have negative dimensions or bits");
     }
 
-    ll get_bits() const { return bits; }
-    ll get_dim() const { return dim; }
-    ll get_length() const { return len; }
+    [[nodiscard]] ll get_bits() const { return bits; }
+    [[nodiscard]] ll get_dim() const { return dim; }
+    [[nodiscard]] ll get_length() const { return len; }
 
     ll index(const Point& point) const;
 
@@ -37,9 +37,9 @@ class HilbertCurve {
 
     ll to_index(Point& transposed_index) const;
 
-    ll max_ordinate() const;
+    [[nodiscard]] ll max_ordinate() const;
 
-    ll max_index() const;
+    [[nodiscard]] ll max_index() const;
 
-    Ranges query(const Point& a, const Point& b, int max_ranges, int buffer_size = 1024) const;
+    [[nodiscard]] Ranges query(const Point& a, const Point& b, int max_ranges, int buffer_size = 1024) const;
 };

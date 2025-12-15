@@ -1,122 +1,100 @@
 #include <cstddef>
 #include <cstdint>
+#include <exception>
+#include <stdexcept>
+#include <string>
 #include <utility>
 #include <vector>
-
+#include
 #include "rtree/rtree.h"
 #include "rtree_hilbert/hilbert_curve.h"
 
 using ll = long long;
 using Point = std::vector<ll>;
+using namespace std::literals::string_literals;
 
 namespace hilbert {
 
-struct Rectangle {
-    Point min;
-    Point max;
-    mutable ll hilbert_value;
+const auto not_implemented = std::logic_error("Not implemented"s);
 
-    static bool overlap(const Rectangle& a, const Rectangle& b) {
-        for (int i = 0; i < a.min.size(); i++) {
-            if (a.max[i] < b.min[i] || a.min[i] > b.max[i])
-                return false;
-        }
-        return true;
-    }
+struct Rectangle {
+    Point get_center() const;
+    Point get_lower() const;
+    Point get_upper() const;
+    bool intersects(const Rectangle& rect) const;
+    bool contains(const Rectangle& rect) const;
+    bool operator==(const Rectangle& other) const;
+};
+
+template <typename T>
+struct Node;
+
+template <typename T>
+struct NodeEntry {
+    ll get_lhv();
+    Rectangle& get_mbr();
+    bool is_leaf();
+};
+
+template <typename T>
+struct LeafEntry : NodeEntry<T> {};
+
+template <typename T>
+struct InnerNode : NodeEntry<T> {
+    Node<T*> get_node();
 };
 
 template <typename T>
 struct Node {
-    ll lhv;
-    Rectangle mbr;
-    std::vector<Node*> children;
-    std::vector<std::pair<Rectangle, T*>> elems;
-    bool is_leaf;
-
-    size_t count() { return is_leaf ? elems.size() : children.size(); }
+    Node(int min_entries, int max_entries, HilbertCurve& curve) { throw not_implemented; }
+    bool overflow();
+    bool underflow();
+    Node<T>* get_prev_siblings();
+    Node<T>* get_next_siblings();
+    Node<T>* set_next_siblings();
+    Node<T>* get_parent();
+    Node<T>* set_parent();
+    bool is_leaf();
+    void set_leaf();
+    ll get_lhv();
+    Rectangle& get_mbr();
+    void insert_leaf_entry(LeafEntry<T>* entry);
+    void insert_inner_entry(InnerNode<T>* entry);
+    void remove_leaf_entry(Node<T>* child);
+    void remove_inner_entry(InnerNode<T>* entry);
+    void adjust_mbr();
+    void adjust_lhv();
+    std::vector<Node<T>*> get_siblings(int num);
+    std::vector<NodeEntry<T>*> get_entries();
+    void reset_entries();
 };
 
 template <typename T>
-class HilbertRTree {
-    Node<T>* root;
-    HilbertCurve curve;
-    int _max, _min;
-
+class RTree {
    public:
-    std::vector<T*> search(const Rectangle& search_rect) const {
-        std::vector<T*> result;
-        dispatch_search(search_rect, root, result);
-        return result;
-    }
+    RTree() { throw not_implemented; }
+    ~RTree() { throw not_implemented; }
 
-    void insert(const Rectangle& rectangle, T* elem) {
-        rectangle.hilbert_value = get_hilb_value(rectangle);
-        auto leaf = choose_leaf(rectangle, root);
-
-        if (leaf->count() == _max) {
-        } else {
-            // leaf->rects[leaf->num_entries] = r;
-            leaf->elems.push_back({rectangle, elem});
-            auto rect_hv = rectangle.hilbert_value;
-            int i = leaf->count() - 2;
-            while (i >= 0 && leaf->elems[i].first.hilbert_value > rect_hv) {
-                leaf->rects[i + 1] = leaf->rects[i];
-                i--;
-            }
-            leaf->rects[i + 1] = std::make_pair(rectangle, elem);
-
-            if (rect_hv > leaf->lhv)
-                leaf->lhv = rect_hv;
-        }
-    }
+    std::vector<T*> search(const Rectangle& search_rect) { throw not_implemented; }
+    void insert(const Rectangle& rect, T* elem) { throw not_implemented; }
+    void remove(const Rectangle& rect) { throw not_implemented; }
 
    private:
-    void dispatch_search(const Rectangle& search_rect, Node<T>* p, std::vector<T*>& result) {
-        if (p->is_leaf) {
-            for (auto const& [rect, elem] : p->elems) {
-                if (Rectangle::overlap(rect, search_rect)) {
-                    result.push_back(elem);
-                }
-            }
-        } else {
-            for (auto node : p->children) {
-                const auto rect = node->mbr;
-                if (Rectangle::overlap(rect, search_rect)) {
-                    // std::vector<T*> partial;
-                    dispatch_search(search_rect, node, result);
-                    // result.insert(partial.begin(), partial.end());
-                }
-            }
-        }
+    Node<T*> choose_leaf(Node<T>* node, ll hilbert_value) { throw not_implemented; }
+    void redistribute_entries(std::vector<NodeEntry<T>>& entries, std::vector<Node<T>*>& siblings) {
+        throw not_implemented;
     }
-
-    Node<T>* choose_leaf(const Rectangle& rect, Node<T>* node) {
-        if (node->is_leaf)
-            return node;
-
-        int count = node->count();
-        int chosen_entry = count - 1;
-        auto max_lhv = INT64_MAX;
-        auto rect_hv = rect.hilbert_value;
-        for (int i = 0; i < count; i++) {
-            if (node->children[i]->lhv > rect_hv) {
-                if (node->children[i]->lhv < max_lhv) {
-                    chosen_entry = i;
-                    max_lhv = node->children[i]->lhv;
-                }
-            }
-        }
-        return chosen_entry(rect, node->children[chosen_entry]);
+    Node<T>* handle_overflow(Node<T>* node, NodeEntry<T>* entry, std::vector<Node<T>*>& siblings) {
+        throw not_implemented;
     }
-
-    ll get_hilb_value(const Rectangle& r) {
-        Point p(r.min);
-
-        for (int i = 0; i < p.size(); i++) {
-            p[i] = (r.max[i] + r.min[i]) / 2;
-        }
-
-        return curve.index(p);
+    Node<T>* handle_underflow(Node<T>* node, std::vector<Node<T>*>& siblings) {
+        throw not_implemented;
+    }
+    Node<T>* adjust_tree(Node<T>* node, Node<T>* new_node, std::vector<Node<T>*>& siblings) {
+        throw not_implemented;
+    }
+    void condense_tree(Node<T>* node, Node<T>* del_node, std::vector<Node<T>*>& siblings) {
+        throw not_implemented;
     }
 };
 
