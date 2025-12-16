@@ -404,7 +404,7 @@ class RTreeTest {
         }
 
         auto search_rect = makeRect({-1.0, -1.0}, {20.0, 20.0});
-        std::vector<int*> results =  tree.search(search_rect);
+        std::vector<int*> results = tree.search(search_rect);
 
         assert_true(results.size() == 10, "Mixed insert/delete operations");
     }

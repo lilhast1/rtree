@@ -1,4 +1,5 @@
 build/*
+perf.data
 _deps/*
 
 .DS_Store
@@ -6,3 +7,4 @@ _deps/*
 ._*
 CMakeFiles
 _deps
+.cache
