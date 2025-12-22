@@ -96,7 +96,7 @@ struct LeafEntry : NodeEntry<T> {
     Rectangle mbr;
     T* elem;
     ll lhv;
-    LeafEntry(Rectangle mbr, ll lhv) : lhv(lhv), mbr(std::move(mbr)) {}
+    LeafEntry(Rectangle mbr, ll lhv, T* elem) : lhv(lhv), mbr(std::move(mbr)), elem(elem) {}
     ll get_lhv() { return lhv; }
     bool is_leaf() { return true; }
     Rectangle& get_mbr() { return mbr; }
@@ -289,6 +289,7 @@ class RTree {
     Node<T>* root;
     int min_entries;
     int max_entries;
+    HilbertCurve curve;
 
    public:
     RTree() { throw not_implemented; }
@@ -302,7 +303,40 @@ class RTree {
         }
         return result;
     }
-    void insert(const Rectangle& rect, T* elem) { throw not_implemented; }
+    void insert(const Rectangle& rect,
+                T* elem) {  // Compute the hilbert value of the center of the rectangle
+        ll h = curve.index(rect.get_center());
+
+        // List which contains:
+        // 1. The leaf into which the new entry was inserted
+        // 2. The siblings of the leaf node (if an overflow happened)
+        // 3. The newly created node(if one was created)
+        std::vector<Node<T>*> out_siblings;
+
+        // Create a new entry to insert
+        auto* newEntry = new LeafEntry<T>(rect, h, elem);
+
+        // Node that is created if an overflow occurs.
+        Node<T>* NN = nullptr;
+
+        // Find a leaf into which we can insert this value
+        Node<T>* L = choose_leaf(this->root, h);
+
+        // if the leaf is not full, we can simply insert the value in this node
+        if (!L->overflow()) {
+            L->insert_leaf_entry(newEntry);
+            // After insertion, we must adjust the LHV and the MBR
+            L->adjust_lhv();
+            L->adjust_mbr();
+            // The siblings list will only contain L.
+            out_siblings.push_back(L);
+        } else {
+            // Handle the overflow of the node
+            NN = handleOverflow(L, newEntry, out_siblings);
+        }
+
+        this->root = adjust_tree(this->root, L, NN, out_siblings);
+    }
     void remove(const Rectangle& rect) {
         Node<T>* DL = nullptr;
 
@@ -327,7 +361,23 @@ class RTree {
     }
 
    private:
-    Node<T*> choose_leaf(Node<T>* node, ll hilbert_value) { throw not_implemented; }
+    Node<T*> choose_leaf(Node<T>* node, ll hilbert_value) {
+        if (node->is_leaf()) {
+            return node;
+        } else {
+            for (auto it = node->get_entries().begin(); it != node->get_entries().end(); ++it) {
+                // Choose the entry that has the LHV larger than the inserted value
+                if (*((*it)->get_lhv()) >= hilbert_value) {
+                    assert(!(*it)->is_leaf());
+                    return chooseLeaf(dynamic_cast<InnerNode<T>*>(*it)->getNode(), hilbert_value);
+                }
+            }
+            auto it = node->get_entries().end();
+            it--;
+
+            return chooseLeaf(dynamic_cast<InnerNode<T>*>(*it)->getNode(), hilbert_value);
+        }
+    }
 
     void redistribute_entries(EntryMultiSet<T>& entries, std::vector<Node<T>*>& siblings) {
         auto batch_size = (ll)std::ceil((double)entries.size() / (double)siblings.size());
@@ -361,8 +411,67 @@ class RTree {
             (*siblings_it)->adjust_mbr();
         }
     }
-    Node<T>* handle_overflow(Node<T>* node, NodeEntry<T>* entry, std::vector<Node<T>*>& siblings) {
-        throw not_implemented;
+    Node<T>* handle_overflow(Node<T>* target, NodeEntry<T>* entry,
+                             std::vector<Node<T>*>& out_siblings) {
+        EntryMultiSet<T> entries;
+
+        // Node that will be created if there is no room for redistribution
+        Node<T>* newNode = nullptr;
+
+        // Position of the target node in the siblings list
+        auto targetPos = out_siblings.begin();
+
+        // The list will contain the siblings of the target
+        out_siblings = target->get_siblings(2);
+
+        // Insert the new entry in the set of entries that have to be redistributed
+        entries.insert(entry);
+
+        // Copy the entries of the siblings node into the set of entries that must be redistributed
+        for (auto it = out_siblings.begin(); it != out_siblings.end(); ++it) {
+            assert((*it)->isLeaf() == entry->isLeafEntry());
+            entries.insert((*it)->get_entries().begin(), (*it)->get_entries().end());
+            // Clear the entries in each node
+            (*it)->reset_entries();
+
+            if (*it == target) {
+                targetPos = it;
+            }
+        }
+
+        // If there is not enough room, create e new node
+        if (entries.size() > out_siblings.size() * max_entries) {
+            // The new node is a sibling of the target.
+            newNode = new Node<T>(min_entries, max_entries);
+            // The new node will be a leaf only if its entries are leaf entries
+            newNode->setLeaf(entry->isLeafEntry());
+
+            // The previous sibling of the new node will be the
+            // previous sibling of the first node in the set of siblings
+            auto prevSib = target->get_prev_siblings();
+            newNode->set_prev_siblings(prevSib);
+            if (prevSib != nullptr) {
+                // assert(prevSib->isLeaf() == newNode->isLeaf());
+                prevSib->set_next_siblings(newNode);
+            }
+
+            // The next sibling of the new node will be the next sibling
+            // of the first node
+            newNode->set_next_siblings(target);
+            target->set_prev_siblings(newNode);
+
+            // Insert the new node in the list of cooperating siblings
+            out_siblings.insert(targetPos, newNode);
+        }
+
+        // Redistribute the entries and adjust the nodes
+        redistribute_entries(entries, out_siblings);
+
+        for (auto it = out_siblings.begin(); it != out_siblings.end(); ++it) {
+            assert((*it)->isLeaf() == entry->isLeafEntry());
+        }
+
+        return newNode;
     }
     Node<T>* handle_underflow(Node<T>* target, std::vector<Node<T>*>& out_siblings) {
         EntryMultiSet<T> entries;
@@ -398,11 +507,144 @@ class RTree {
 
         return removed;
     }
-    Node<T>* adjust_tree(Node<T>* node, Node<T>* new_node, std::vector<Node<T>*>& siblings) {
-        throw not_implemented;
+    Node<T>* adjust_tree(Node<T>* root, Node<T>* N, Node<T>* NN, std::vector<Node<T>*>& siblings) {
+        // Node that is created if the parent needs to be split
+        Node<T>* PP = NULL;
+
+        // The new root
+
+        auto newRoot = root;
+
+        std::vector<Node<T>*> newSiblings;
+
+        // Set of parent nodes of the sibling nodes
+        std::set<Node<T>*> P;
+
+        // Flag determining if a new node was created
+        std::set<Node<T>*> S;
+        S.insert(siblings.begin(), siblings.end());
+
+        bool ok = true;
+
+        while (ok) {
+            // The parent of the node being updated
+            Node<T>* Np = N->get_parent();
+
+            if (Np == nullptr) {
+                // N is the root, we must exit the loop
+                ok = false;
+
+                // If the root has overflown, a new root will be created
+                if (NN != nullptr) {
+                    auto n = new InnerNode<T>(N);
+                    auto nn = new InnerNode<T>(NN);
+
+                    newRoot = new Node<T>(min_entries, max_entries);
+                    newRoot->insert_inner_entry(n);
+                    newRoot->insert_inner_entry(nn);
+                }
+
+                // Adjust the LHV and MBR of the root
+                newRoot->adjust_lhv();
+                newRoot->adjust_mbr();
+            } else {
+                if (NN != nullptr) {
+                    // Insert the entry containing the newly created node into the tree
+                    auto nn = new InnerNode<T>(NN);
+                    // try to insert the new node into the parent
+                    if (!Np->overflow()) {
+                        Np->insert_inner_entry(nn);
+
+                        // After insertion, we must adjust the LHV and MBR
+                        Np->adjust_lhv();
+                        Np->adjust_mbr();
+                        // The new siblings list will only contain the node into which
+                        // the new entry was inserted
+                        newSiblings.push_back(Np);
+                    } else {
+                        // All the nodes in newsiblings will have their LHV and MBR adjusted
+                        PP = handleOverflow(Np, nn, newSiblings);
+                    }
+                } else {
+                    // the new entry was inserted
+                    newSiblings.push_back(Np);
+                }
+
+                for (auto node = S.begin(); node != S.end(); ++node) {
+                    P.insert((*node)->get_parent());
+                }
+
+                for (auto node = P.begin(); node != P.end(); ++node) {
+                    (*node)->adjust_lhv();
+                    (*node)->adjust_mbr();
+                }
+
+                N = Np;
+                NN = PP;
+
+                S.clear();
+                P.clear();
+
+                S.insert(newSiblings.begin(), newSiblings.end());
+            }
+        }
+
+        return newRoot;
     }
     void condense_tree(Node<T>* node, Node<T>* del_node, std::vector<Node<T>*>& siblings) {
-        throw not_implemented;
+        std::vector<Node<T>*> new_siblings;
+
+        std::set<Node<T>*> s, p;
+        s.insert(siblings.begin(), siblings.end());
+
+        bool stop_flag = false;
+
+        while (!stop_flag) {
+            auto np = node->get_parent();
+            Node<T>* dpparent = nullptr;
+            if (np == nullptr) {
+                stop_flag = true;
+                auto main_entry = dynamic_cast<Node<T>*>(*node->get_entries().begin())->get_node();
+                auto data = main_entry->get_entries();
+                node->reset_entries();
+                if (main_entry->is_leaf()) {
+                    node->set_leaf(true);
+                    for (auto it = data.begin(); it != data.end(); it++) {
+                        node->insert_leaf_entry(dynamic_cast<LeafEntry<T>*>(*it));
+                    }
+                } else {
+                    for (auto it = data.begin(); it != data.end(); it++) {
+                        node->insert_leaf_entry(dynamic_cast<InnerNode<T>*>(*it));
+                    }
+                }
+                node->adjust_lhv();
+                node->adjust_mbr();
+            } else {
+                if (del_node != nullptr) {
+                    auto dnparent = del_node->get_parent();
+                    dnparent->remove_inner_entry(del_node);
+                    if (dnparent->underflow()) {
+                        dpparent = handle_underflow(dnparent, new_siblings);
+                    } else {
+                        new_siblings.push_back(dnparent);
+                    }
+                }
+                new_siblings.push_back(np);
+                for (auto it = s.begin(); it != s.end(); ++it) {
+                    p.insert((*it)->get_parent());
+                }
+
+                for (auto it = p.begin(); it != p.end(); ++it) {
+                    (*it)->adjust_lhv();
+                    (*it)->adjust_mbr();
+                }
+                node = np;
+                del_node = dpparent;
+                s.clear();
+                p.clear();
+                s.insert(new_siblings.begin(), new_siblings.end());
+            }
+        }
     }
 
     Node<T>* exactSearch(Node<T>* subtree, const Rectangle& rect) {
