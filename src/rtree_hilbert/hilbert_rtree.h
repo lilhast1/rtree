@@ -1,6 +1,7 @@
 #include <climits>
 #include <cstddef>
 #include <cstdint>
+#include <deque>
 #include <exception>
 #include <set>
 #include <stdexcept>
@@ -24,7 +25,7 @@ struct Rectangle {
     Point higher;
 
     Rectangle(Point lo, Point hi) : lower(std::move(lo)), higher(std::move(hi)) {
-        if (lower.size() != hi.size()) {
+        if (lo.size() != hi.size()) {
             throw std::domain_error("Rectangle dimensions mismatch");
         }
     }
@@ -85,36 +86,36 @@ struct Node;
 
 template <typename T>
 struct NodeEntry {
-    virtual ll get_lhv() = 0;
-    virtual Rectangle& get_mbr() = 0;
-    virtual bool is_leaf() = 0;
+    virtual ll get_lhv() const = 0;
+    virtual Rectangle& get_mbr() const = 0;
+    virtual bool is_leaf() const = 0;
     virtual ~NodeEntry() = default;
 };
 
 template <typename T>
 struct LeafEntry : NodeEntry<T> {
-    Rectangle mbr;
+    mutable Rectangle mbr;
     T* elem;
     ll lhv;
     LeafEntry(Rectangle mbr, ll lhv, T* elem) : lhv(lhv), mbr(std::move(mbr)), elem(elem) {}
-    ll get_lhv() { return lhv; }
-    bool is_leaf() { return true; }
-    Rectangle& get_mbr() { return mbr; }
+    ll get_lhv() const { return lhv; }
+    bool is_leaf() const { return true; }
+    Rectangle& get_mbr() const { return mbr; }
 };
 
 template <typename T>
 struct InnerNode : NodeEntry<T> {
     Node<T>* node;
     InnerNode(Node<T>* node) : node(node) {}
-    Node<T*> get_node() { return node; }
-    bool is_leaf() { return false; }
-    Rectangle& get_mbr() { return node->get_mbr(); }
-    ll get_lhv() { return node->get_lhv(); }
+    Node<T>* get_node() { return node; }
+    bool is_leaf() const { return false; }
+    Rectangle& get_mbr() const { return node->get_mbr(); }
+    ll get_lhv() const { return node->get_lhv(); }
 };
 
 template <typename T>
 struct nodeEntryComparison {
-    bool operator()(const NodeEntry<T>* first, const NodeEntry<T>* second) {
+    bool operator()(NodeEntry<T>* first, NodeEntry<T>* second) const {
         auto l = first->get_lhv();
         auto r = second->get_lhv();
         return l < r;
@@ -130,19 +131,19 @@ struct Node {
     Node* parent;
     Node* prev_sibling;
     Node* next_sibling;
-    HilbertCurve curve;
+    HilbertCurve& curve;
     int min_entries, max_entries;
     EntryMultiSet<T> entries;
     Rectangle mbr;
     ll lhv;
     int dims;
 
-    Node(int min_entries, int max_entries, int dims, int bits)
+    Node(int min_entries, int max_entries, HilbertCurve& curve)
         : leaf(false),
           parent(nullptr),
           prev_sibling(nullptr),
           next_sibling(nullptr),
-          curve(HilbertCurve(bits, dims)),
+          curve(curve),
           min_entries(min_entries),
           max_entries(max_entries),
           dims(dims),
@@ -197,12 +198,12 @@ struct Node {
         if (it != this->entries.begin()) {
             auto prevIt = it;
             prevIt--;
-            prevSib = dynamic_cast<InnerNode<T>*>(*prevIt)->getNode();
+            prevSib = dynamic_cast<InnerNode<T>*>(*prevIt)->get_node();
         }
         entry->get_node()->prev_sibling = prevSib;
         if (prevSib != NULL) {
-            prevSib->next_sibling = entry->getNode();
-            assert(entry->getNode()->leaf == prevSib->leaf);
+            prevSib->next_sibling = entry->get_node();
+            assert(entry->get_node()->leaf == prevSib->leaf);
         }
 
         aux = this->entries.end();
@@ -210,12 +211,12 @@ struct Node {
         if (it != aux) {
             auto nextIt = it;
             nextIt++;
-            nextSib = dynamic_cast<InnerNode<T>*>(*nextIt)->getNode();
+            nextSib = dynamic_cast<InnerNode<T>*>(*nextIt)->get_node();
         }
-        entry->getNode()->nextSibling = nextSib;
+        entry->get_node()->next_sibling = nextSib;
         if (nextSib != NULL) {
             nextSib->prev_sibling = entry->get_node();
-            assert(entry->getNode()->leaf == nextSib->leaf);
+            assert(entry->get_node()->leaf == nextSib->leaf);
         }
     }
     void remove_leaf_entry(const Rectangle& rect) {
@@ -230,7 +231,7 @@ struct Node {
             }
         }
     }
-    void remove_inner_entry(InnerNode<T>* child) {
+    void remove_inner_entry(Node<T>* child) {
         if (leaf)
             throw std::runtime_error("Can't remove child node as inner node");
         for (auto it = entries.begin(); it != entries.end(); ++it) {
@@ -264,8 +265,8 @@ struct Node {
                 lhv = entry->get_lhv();
         }
     }
-    std::vector<Node<T>*> get_siblings(int num) {
-        std::vector<Node<T>*> result;
+    std::deque<Node<T>*> get_siblings(int num) {
+        std::deque<Node<T>*> result;
         result.push_back(this);
 
         auto right = next_sibling;
@@ -292,12 +293,13 @@ class RTree {
     HilbertCurve curve;
 
    public:
-    RTree() { throw not_implemented; }
-    ~RTree() { throw not_implemented; }
+    RTree(int min, int max, int dims, int bits)
+        : min_entries(min), max_entries(max), curve(bits, dims), root(nullptr) {}
+    ~RTree() { delete root; }
 
-    std::vector<T*> search(const Rectangle& search_rect) {
+    std::deque<T*> search(const Rectangle& search_rect) {
         auto rez = _search(root, search_rect);
-        std::vector<T*> result;
+        std::deque<T*> result;
         for (auto entry : rez) {
             result.push_back(entry->elem);
         }
@@ -311,7 +313,7 @@ class RTree {
         // 1. The leaf into which the new entry was inserted
         // 2. The siblings of the leaf node (if an overflow happened)
         // 3. The newly created node(if one was created)
-        std::vector<Node<T>*> out_siblings;
+        std::deque<Node<T>*> out_siblings;
 
         // Create a new entry to insert
         auto* newEntry = new LeafEntry<T>(rect, h, elem);
@@ -332,7 +334,7 @@ class RTree {
             out_siblings.push_back(L);
         } else {
             // Handle the overflow of the node
-            NN = handleOverflow(L, newEntry, out_siblings);
+            NN = handle_overflow(L, newEntry, out_siblings);
         }
 
         this->root = adjust_tree(this->root, L, NN, out_siblings);
@@ -341,7 +343,7 @@ class RTree {
         Node<T>* DL = nullptr;
 
         // List of siblings affected by the removal of an entry
-        std::vector<Node<T>*> out_siblings;
+        std::deque<Node<T>*> out_siblings;
 
         // Find the node containing the entry
         auto L = exactSearch(this->root, rect);
@@ -361,25 +363,25 @@ class RTree {
     }
 
    private:
-    Node<T*> choose_leaf(Node<T>* node, ll hilbert_value) {
+    Node<T>* choose_leaf(Node<T>* node, ll hilbert_value) {
         if (node->is_leaf()) {
             return node;
         } else {
             for (auto it = node->get_entries().begin(); it != node->get_entries().end(); ++it) {
                 // Choose the entry that has the LHV larger than the inserted value
-                if (*((*it)->get_lhv()) >= hilbert_value) {
+                if ((*it)->get_lhv() >= hilbert_value) {
                     assert(!(*it)->is_leaf());
-                    return chooseLeaf(dynamic_cast<InnerNode<T>*>(*it)->getNode(), hilbert_value);
+                    return choose_leaf(dynamic_cast<InnerNode<T>*>(*it)->get_node(), hilbert_value);
                 }
             }
             auto it = node->get_entries().end();
             it--;
 
-            return chooseLeaf(dynamic_cast<InnerNode<T>*>(*it)->getNode(), hilbert_value);
+            return choose_leaf(dynamic_cast<InnerNode<T>*>(*it)->get_node(), hilbert_value);
         }
     }
 
-    void redistribute_entries(EntryMultiSet<T>& entries, std::vector<Node<T>*>& siblings) {
+    void redistribute_entries(EntryMultiSet<T>& entries, std::deque<Node<T>*>& siblings) {
         auto batch_size = (ll)std::ceil((double)entries.size() / (double)siblings.size());
 
         auto siblings_it = siblings.begin();
@@ -387,7 +389,7 @@ class RTree {
         ll current_batch = 0;
 
         for (auto entry_it = entries.begin(); entry_it != entries.end(); entry_it++) {
-            if ((*entry_it)->isLeafEntry()) {
+            if ((*entry_it)->is_leaf()) {
                 (*siblings_it)->insert_leaf_entry(dynamic_cast<LeafEntry<T>*>(*entry_it));
             } else {
                 (*siblings_it)->insert_inner_entry(dynamic_cast<InnerNode<T>*>(*entry_it));
@@ -412,7 +414,7 @@ class RTree {
         }
     }
     Node<T>* handle_overflow(Node<T>* target, NodeEntry<T>* entry,
-                             std::vector<Node<T>*>& out_siblings) {
+                             std::deque<Node<T>*>& out_siblings) {
         EntryMultiSet<T> entries;
 
         // Node that will be created if there is no room for redistribution
@@ -429,7 +431,7 @@ class RTree {
 
         // Copy the entries of the siblings node into the set of entries that must be redistributed
         for (auto it = out_siblings.begin(); it != out_siblings.end(); ++it) {
-            assert((*it)->isLeaf() == entry->isLeafEntry());
+            assert((*it)->is_leaf() == entry->is_leaf());
             entries.insert((*it)->get_entries().begin(), (*it)->get_entries().end());
             // Clear the entries in each node
             (*it)->reset_entries();
@@ -442,9 +444,9 @@ class RTree {
         // If there is not enough room, create e new node
         if (entries.size() > out_siblings.size() * max_entries) {
             // The new node is a sibling of the target.
-            newNode = new Node<T>(min_entries, max_entries);
+            newNode = new Node<T>(min_entries, max_entries, curve);
             // The new node will be a leaf only if its entries are leaf entries
-            newNode->setLeaf(entry->isLeafEntry());
+            newNode->set_leaf(entry->is_leaf());
 
             // The previous sibling of the new node will be the
             // previous sibling of the first node in the set of siblings
@@ -468,12 +470,12 @@ class RTree {
         redistribute_entries(entries, out_siblings);
 
         for (auto it = out_siblings.begin(); it != out_siblings.end(); ++it) {
-            assert((*it)->isLeaf() == entry->isLeafEntry());
+            assert((*it)->is_leaf() == entry->is_leaf());
         }
 
         return newNode;
     }
-    Node<T>* handle_underflow(Node<T>* target, std::vector<Node<T>*>& out_siblings) {
+    Node<T>* handle_underflow(Node<T>* target, std::deque<Node<T>*>& out_siblings) {
         EntryMultiSet<T> entries;
         // Pointer to the deleted node if any
         Node<T>* removed = nullptr;
@@ -507,7 +509,7 @@ class RTree {
 
         return removed;
     }
-    Node<T>* adjust_tree(Node<T>* root, Node<T>* N, Node<T>* NN, std::vector<Node<T>*>& siblings) {
+    Node<T>* adjust_tree(Node<T>* root, Node<T>* N, Node<T>* NN, std::deque<Node<T>*>& siblings) {
         // Node that is created if the parent needs to be split
         Node<T>* PP = NULL;
 
@@ -515,7 +517,7 @@ class RTree {
 
         auto newRoot = root;
 
-        std::vector<Node<T>*> newSiblings;
+        std::deque<Node<T>*> newSiblings;
 
         // Set of parent nodes of the sibling nodes
         std::set<Node<T>*> P;
@@ -539,7 +541,7 @@ class RTree {
                     auto n = new InnerNode<T>(N);
                     auto nn = new InnerNode<T>(NN);
 
-                    newRoot = new Node<T>(min_entries, max_entries);
+                    newRoot = new Node<T>(min_entries, max_entries, curve);
                     newRoot->insert_inner_entry(n);
                     newRoot->insert_inner_entry(nn);
                 }
@@ -563,7 +565,7 @@ class RTree {
                         newSiblings.push_back(Np);
                     } else {
                         // All the nodes in newsiblings will have their LHV and MBR adjusted
-                        PP = handleOverflow(Np, nn, newSiblings);
+                        PP = handle_overflow(Np, nn, newSiblings);
                     }
                 } else {
                     // the new entry was inserted
@@ -591,8 +593,8 @@ class RTree {
 
         return newRoot;
     }
-    void condense_tree(Node<T>* node, Node<T>* del_node, std::vector<Node<T>*>& siblings) {
-        std::vector<Node<T>*> new_siblings;
+    void condense_tree(Node<T>* node, Node<T>* del_node, std::deque<Node<T>*>& siblings) {
+        std::deque<Node<T>*> new_siblings;
 
         std::set<Node<T>*> s, p;
         s.insert(siblings.begin(), siblings.end());
@@ -604,7 +606,8 @@ class RTree {
             Node<T>* dpparent = nullptr;
             if (np == nullptr) {
                 stop_flag = true;
-                auto main_entry = dynamic_cast<Node<T>*>(*node->get_entries().begin())->get_node();
+                auto main_entry =
+                    dynamic_cast<InnerNode<T>*>(*node->get_entries().begin())->get_node();
                 auto data = main_entry->get_entries();
                 node->reset_entries();
                 if (main_entry->is_leaf()) {
@@ -614,7 +617,7 @@ class RTree {
                     }
                 } else {
                     for (auto it = data.begin(); it != data.end(); it++) {
-                        node->insert_leaf_entry(dynamic_cast<InnerNode<T>*>(*it));
+                        node->insert_inner_entry(dynamic_cast<InnerNode<T>*>(*it));
                     }
                 }
                 node->adjust_lhv();
@@ -654,13 +657,13 @@ class RTree {
         // There are no duplicates in the tree
         if (subtree->is_leaf()) {
             for (it = entries.begin(); it != entries.end(); ++it) {
-                if (rect == *((*it)->get_mbr())) {
+                if (rect == (*it)->get_mbr()) {
                     return subtree;
                 }
             }
         } else {
             for (it = entries.begin(); it != entries.end(); ++it) {
-                if ((*it)->getMBR()->contains(rect)) {
+                if ((*it)->get_mbr().contains(rect)) {
                     auto res = exactSearch(dynamic_cast<InnerNode<T>*>(*it)->get_node(), rect);
                     if (res != nullptr) {
                         return res;
@@ -672,23 +675,23 @@ class RTree {
         return nullptr;
     }
 
-    std::vector<LeafEntry<T>*> _search(Node<T>* subtree, const Rectangle& rect) {
-        std::vector<LeafEntry<T>*> result;
-        std::vector<LeafEntry<T>*> aux;
+    std::deque<LeafEntry<T>*> _search(Node<T>* subtree, const Rectangle& rect) {
+        std::deque<LeafEntry<T>*> result;
+        std::deque<LeafEntry<T>*> aux;
         auto entries = subtree->get_entries();
         auto it = entries.begin();
 
         if (subtree->is_leaf()) {
             for (it = entries.begin(); it != entries.end(); ++it) {
-                if ((*it)->get_mbr()->intersects(rect)) {
+                if ((*it)->get_mbr().intersects(rect)) {
                     result.push_back(dynamic_cast<LeafEntry<T>*>(*it));
                 }
             }
         } else {
             for (it = entries.begin(); it != entries.end(); ++it) {
-                if ((*it)->get_mbr()->intersects(rect)) {
+                if ((*it)->get_mbr().intersects(rect)) {
                     // TODO: moze se optimizirati da se izbjegne kopiranja i to!
-                    aux = _search(dynamic_cast<InnerNode<T>*>(*it)->getNode(), rect);
+                    aux = _search(dynamic_cast<InnerNode<T>*>(*it)->get_node(), rect);
                     result.insert(result.end(), aux.begin(), aux.end());
                 }
             }

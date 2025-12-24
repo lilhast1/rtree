@@ -21,7 +21,7 @@
 
 namespace Gutman {
 
-bool equal(double x, double y, double eps = 1e-7) {
+inline bool equal(double x, double y, double eps = 1e-7) {
     return std::fabs(x - y) <= eps * (std::fabs(x) + std::fabs(y));
 }
 
