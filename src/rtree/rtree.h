@@ -21,16 +21,33 @@
 
 namespace Gutman {
 
+/**
+ * @brief Compares two doubles for approximate equality.
+ * @param x First value
+ * @param y Second value
+ * @param eps Relative tolerance (default 1e-7)
+ * @return true if |x - y| <= eps * (|x| + |y|), false otherwise
+ */
 inline bool equal(double x, double y, double eps = 1e-7) {
     return std::fabs(x - y) <= eps * (std::fabs(x) + std::fabs(y));
 }
-
+/**
+ * @struct Rectangle
+ * @brief Axis-aligned rectangle/hyperrectangle in N-dimensional space.
+ *
+ * Contains operations for area computation, MBR calculation, overlap checks, and containment tests.
+ */
 struct Rectangle {
-    std::vector<double> min;
-    std::vector<double> max;
-
+    std::vector<double> min;  ///< Lower bounds for each dimension
+    std::vector<double> max;  ///< Upper bounds for each dimension
+                              /**
+                               * @brief Construct a rectangle from min and max vectors
+                               * @param min Lower bounds
+                               * @param max Upper bounds
+                               */
     Rectangle(const std::vector<double>& min, const std::vector<double>& max)
         : min(min), max(max) {}
+    /** @brief Compute the area/volume of the rectangle */
     [[nodiscard]] double area() const {
         double a = 1;
         for (int i = 0; i < min.size(); i++) {
@@ -38,12 +55,16 @@ struct Rectangle {
         }
         return a;
     }
-
+    /**
+     * @brief Compute how much the rectangle needs to enlarge to include another rectangle
+     * @param b Rectangle to include
+     * @return Enlargement area/volume needed
+     */
     [[nodiscard]] double enlargement_needed(const Rectangle& b) const {
         auto mbr = calc_mbr(*this, b);
         return mbr.area() - area();
     }
-
+    /** @brief Check if this rectangle completely contains another rectangle */
     [[nodiscard]] bool contains(const Rectangle& a) const {
         bool flag = true;
         for (int i = 0; i < min.size(); i++) {
@@ -53,7 +74,7 @@ struct Rectangle {
         }
         return flag;
     }
-
+    /** @brief Compute the minimum bounding rectangle (MBR) of a range of nodes */
     template <typename Itr>
     static Rectangle calc_mbr(Itr p, Itr q) {
         if (q == p)
@@ -69,7 +90,7 @@ struct Rectangle {
         }
         return agg;
     }
-
+    /** @brief Compute MBR of two rectangles */
     static Rectangle calc_mbr(const Rectangle& a, const Rectangle& b) {
         auto c = a;
         std::transform(a.min.begin(), a.min.end(), b.min.begin(), c.min.begin(),
@@ -78,11 +99,11 @@ struct Rectangle {
                        [](double a, double b) { return std::max(a, b); });
         return c;
     }
-
+    /** @brief Compute the area of MBR containing two rectangles */
     static double calc_mbr_area(const Rectangle& a, const Rectangle& b) {
         return calc_mbr(a, b).area();
     }
-
+    /** @brief Compare two vectors of doubles for approximate equality */
     static bool vec_equal(const std::vector<double>& x, const std::vector<double>& y) {
         bool f = true;
         for (int i = 0; i < x.size(); i++) {
@@ -92,11 +113,11 @@ struct Rectangle {
         }
         return f;
     }
-
+    /** @brief Check if two rectangles are equal */
     static bool equal(const Rectangle& a, const Rectangle& b) {
         return vec_equal(a.min, b.min) && vec_equal(a.max, b.max);
     }
-
+    /** @brief Check if two rectangles overlap */
     static bool overlap(const Rectangle& a, const Rectangle& b) {
         bool f = true;
         for (int i = 0; i < a.min.size(); i++) {
@@ -107,22 +128,28 @@ struct Rectangle {
         return f;
     }
 };
-
+/**
+ * @struct Node
+ * @brief Node in an R-Tree, can be a leaf or internal.
+ * @tparam T Type of data stored in leaves
+ */
 template <typename T>
 struct Node {
-    bool is_leaf;
-    Node* parent;
-    std::vector<Node*> children;
-    std::vector<std::pair<T*, Rectangle>> elems;
-    Rectangle mbr;
-
+    bool is_leaf;                                 ///< True if node is leaf
+    Node* parent;                                 ///< Parent node
+    std::vector<Node*> children;                  ///< Children nodes (for internal nodes)
+    std::vector<std::pair<T*, Rectangle>> elems;  ///< Elements stored (for leaf nodes)
+    Rectangle mbr;                                ///< Minimum bounding rectangle of this node
+    /** @brief Number of elements or children in the node */
     [[nodiscard]] int count() const { return is_leaf ? elems.size() : children.size(); }
-
+    /** @brief Construct a node */
     Node(bool is_leaf, Rectangle mbr) : is_leaf(is_leaf), mbr(std::move(mbr)), parent(nullptr) {}
+    /** @brief Destructor frees children */
     ~Node() {
         for (auto child : children) delete child;
     }
 
+    /** @brief Recalculate MBR of this node based on elements or children */
     void update_mbr() {
         if (is_leaf && elems.size()) {
             auto mbr = elems[0].second;
@@ -140,22 +167,40 @@ struct Node {
     }
 };
 
+/**
+ * @class RTree
+ * @brief Generic R-Tree implementation for N-dimensional rectangles
+ * @tparam T Type of data stored in the leaves
+ *
+ * Supports insertion, search, removal, update, and MBR-based operations.
+ */
 template <typename T>
 class RTree {
-    int m, M;
-    Node<T>* root;
-    size_t size;
+    int m;          ///< Minimum number of entries per node
+    int M;          ///< Maximum number of entries per node
+    Node<T>* root;  ///< Root node
+    size_t size;    ///< Total number of elements
 
    public:
+    /** @brief Construct an empty R-Tree */
     RTree(int m, int M) : root(nullptr), m(m), M(M), size(0) {}
+    /** @brief Destructor frees the tree */
     ~RTree() { delete root; }
-
+    /**
+     * @brief Search for elements overlapping a rectangle
+     * @param search_rect Search rectangle
+     * @return Vector of pointers to matching elements
+     */
     std::vector<T*> search(const Rectangle& search_rect) const {
         std::vector<T*> result;
         _impl_search(search_rect, result, root);
         return result;
     }
-
+    /**
+     * @brief Insert an element with associated rectangle
+     * @param mbr Minimum bounding rectangle
+     * @param elem Pointer to element
+     */
     void insert(const Rectangle& mbr, T* elem) {
         if (!root) {
             root = new Node<T>(true, mbr);
@@ -178,7 +223,7 @@ class RTree {
         size++;
         // if root is split grow the tree taller
     }
-
+    /** @brief Remove an element by its rectangle */
     void remove(const Rectangle& r) {
         if (!root)
             return;
@@ -221,7 +266,7 @@ class RTree {
             // }
         }
     }
-
+    /** @brief Update an element by removing the old rectangle and inserting a new one */
     void update(const Rectangle& current, Rectangle& desired, T* new_elem) {
         remove(current);
         insert(desired, new_elem);

@@ -8,3 +8,5 @@ _deps/*
 CMakeFiles
 _deps
 .cache
+docs
+docs/*

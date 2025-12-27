@@ -1,3 +1,12 @@
+/**
+ * @file hilbert_rtree.h
+ * @brief Hilbert R-Tree implementation for multidimensional rectangles.
+ *
+ * This file implements a Hilbert-curve-ordered R-Tree supporting
+ * insertion, deletion, search, overflow/underflow handling, and
+ * sibling chains.
+ */
+
 #include <climits>
 #include <cstddef>
 #include <cstdint>
@@ -21,16 +30,24 @@ namespace hilbert {
 
 const auto not_implemented = std::logic_error("Not implemented"s);
 
+/**
+ * @brief Represents an axis-aligned rectangle in d-dimensional space.
+ */
 struct Rectangle {
-    Point lower;
-    Point higher;
-
+    Point lower;   ///< lower-left corner
+    Point higher;  ///< upper-right corner
+                   /**
+                    * @brief Construct a rectangle from lower and upper corners.
+                    * @param lo lower point
+                    * @param hi upper point
+                    * @throws std::domain_error if dimensions mismatch
+                    */
     Rectangle(Point lo, Point hi) : lower(std::move(lo)), higher(std::move(hi)) {
         if (lo.size() != hi.size()) {
             throw std::domain_error("Rectangle dimensions mismatch");
         }
     }
-
+    /** @brief Get the center of the rectangle */
     Point get_center() const {
         auto center(lower);
         for (size_t i = 0; i < lower.size(); i++) {
@@ -38,9 +55,16 @@ struct Rectangle {
         }
         return center;
     }
+    /** @brief Get the lower corner */
     Point get_lower() const { return lower; }
+    /** @brief Get the upper corner */
     Point get_upper() const { return higher; }
-
+    /**
+     * @brief Check if this rectangle intersects another
+     * @param rect other rectangle
+     * @return true if intersects
+     * @throws std::runtime_error if dimensions mismatch
+     */
     bool intersects(const Rectangle& rect) const {
         if (this->lower.size() != rect.lower.size()) {
             throw std::runtime_error("The two rectangles do not have the same dimension.");
@@ -53,7 +77,12 @@ struct Rectangle {
         }
         return true;
     }
-
+    /**
+     * @brief Check if this rectangle contains another
+     * @param rect other rectangle
+     * @return true if fully contains
+     * @throws std::runtime_error if dimensions mismatch
+     */
     bool contains(const Rectangle& rect) const {
         if (this->lower.size() != rect.lower.size()) {
             throw std::runtime_error("The two rectangles do not have the same dimension.");
@@ -84,28 +113,40 @@ struct Rectangle {
 template <typename T>
 struct Node;
 
+/**
+ * @brief Base interface for node entries (leaf or inner node).
+ */
 template <typename T>
 struct NodeEntry {
+    /** @brief Get Largest Hilbert Value (LHV) */
     virtual ll get_lhv() const = 0;
+    /** @brief Get Minimum Bounding Rectangle (MBR) */
     virtual Rectangle& get_mbr() const = 0;
+    /** @brief Returns true if this is a leaf entry */
     virtual bool is_leaf() const = 0;
     virtual ~NodeEntry() = default;
 };
 
+/**
+ * @brief Leaf entry containing a single element.
+ */
 template <typename T>
 struct LeafEntry : NodeEntry<T> {
-    mutable Rectangle mbr;
-    T* elem;
-    ll lhv;
+    mutable Rectangle mbr;  ///< bounding rectangle
+    T* elem;                ///< element pointer
+    ll lhv;                 ///< Hilbert value
     LeafEntry(Rectangle mbr, ll lhv, T* elem) : lhv(lhv), mbr(std::move(mbr)), elem(elem) {}
     ll get_lhv() const { return lhv; }
     bool is_leaf() const { return true; }
     Rectangle& get_mbr() const { return mbr; }
 };
 
+/**
+ * @brief Inner node entry pointing to a child node.
+ */
 template <typename T>
 struct InnerNode : NodeEntry<T> {
-    Node<T>* node;
+    Node<T>* node;  ///< child node
     InnerNode(Node<T>* node) : node(node) {}
     Node<T>* get_node() { return node; }
     bool is_leaf() const { return false; }
@@ -113,7 +154,10 @@ struct InnerNode : NodeEntry<T> {
     ll get_lhv() const { return node->get_lhv(); }
 };
 
-// FIX: Use proper comparison that prevents duplicate pointers
+/**
+ * @brief Comparison for node entries by LHV.
+ * Ensures uniqueness by comparing pointer if LHV is equal.
+ */
 template <typename T>
 struct nodeEntryComparison {
     bool operator()(NodeEntry<T>* first, NodeEntry<T>* second) const {
@@ -126,22 +170,25 @@ struct nodeEntryComparison {
     }
 };
 
-// FIX: Use std::set instead of std::multiset to prevent duplicates
+/** @brief Set of node entries with custom comparator */
 template <typename T>
 using EntrySet = std::set<NodeEntry<T>*, nodeEntryComparison<T>>;
 
+/**
+ * @brief Node in the R-Tree (leaf or inner)
+ */
 template <typename T>
 struct Node {
-    bool leaf;
+    bool leaf;  ///< is leaf node
     Node* parent;
     Node* prev_sibling;
     Node* next_sibling;
     HilbertCurve& curve;
     int min_entries, max_entries;
-    EntrySet<T> entries;  // Changed from EntryMultiSet
-    Rectangle mbr;
-    ll lhv;
-    int dims;
+    EntrySet<T> entries;  ///< set of node entries
+    Rectangle mbr;        ///< bounding rectangle of node
+    ll lhv;               ///< largest Hilbert value
+    int dims;             ///< number of dimensions
 
     Node(int min_entries, int max_entries, HilbertCurve& curve)
         : leaf(false),
@@ -353,6 +400,9 @@ struct Node {
     }
 };
 
+/**
+ * @brief R-Tree class with Hilbert curve ordering.
+ */
 template <typename T>
 class RTree {
     Node<T>* root;
@@ -371,7 +421,11 @@ class RTree {
             delete node;
         }
     }
-
+    /**
+     * @brief Search all elements intersecting a rectangle.
+     * @param search_rect search rectangle
+     * @return deque of element pointers
+     */
     std::deque<T*> search(const Rectangle& search_rect) {
         if (!root)
             return std::deque<T*>();
@@ -383,7 +437,11 @@ class RTree {
         }
         return result;
     }
-
+    /**
+     * @brief Insert an element with rectangle.
+     * @param rect rectangle of element
+     * @param elem pointer to element
+     */
     void insert(const Rectangle& rect, T* elem) {
         ll h = curve.index(rect.get_center());
         if (this->root == nullptr) {
@@ -408,7 +466,10 @@ class RTree {
 
         this->root = adjust_tree(this->root, L, NN, out_siblings);
     }
-
+    /**
+     * @brief Remove element by exact rectangle.
+     * @param rect rectangle of element to remove
+     */
     void remove(const Rectangle& rect) {
         if (!root)
             return;
@@ -871,7 +932,7 @@ class RTree {
         s.insert(siblings.begin(), siblings.end());
 
         int safety_counter = 0;
-        const int MAX_ITERATIONS = 1000;
+        const int MAX_ITERATIONS = INT_MAX;
 
         while (true) {
             safety_counter++;
