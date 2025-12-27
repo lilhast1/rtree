@@ -42,11 +42,8 @@ struct Rectangle {
     Point get_upper() const { return higher; }
 
     bool intersects(const Rectangle& rect) const {
-        if (this->lower.size() != rect.lower.size()) {
-            throw std::runtime_error("The two rectangles do not have the same dimension.");
-        }
-
-        for (size_t i = 0; i < this->lower.size(); ++i) {
+        size_t d = this->lower.size();
+        for (size_t i = 0; i < d; ++i) {
             if (this->lower[i] > rect.higher[i] || this->higher[i] < rect.lower[i]) {
                 return false;
             }
@@ -373,14 +370,10 @@ class RTree {
     }
 
     std::deque<T*> search(const Rectangle& search_rect) {
-        if (!root)
-            return std::deque<T*>();
-
-        auto rez = _search(root, search_rect);
         std::deque<T*> result;
-        for (auto entry : rez) {
-            result.push_back(entry->elem);
-        }
+        if (!root)
+            return result;
+        _search(root, search_rect, result);
         return result;
     }
 
@@ -681,7 +674,6 @@ class RTree {
 
         // CRITICAL: If no entries collected, something is wrong - abort
         if (entries.empty()) {
-            std::cerr << "ERROR: No entries collected from siblings in underflow\n";
             return nullptr;
         }
 
@@ -947,14 +939,16 @@ class RTree {
                         }
                     }
 
-                    // CRITICAL: Clear all pointers TO the deleted node before freeing it
+                    // CRITICAL: Clear all pointers TO the deleted node BEFORE freeing
+                    // Do this REGARDLESS of whether neighbors are in all_nodes
+                    // because they might have been removed but not yet deleted
                     auto del_prev = del_node->get_prev_siblings();
                     auto del_next = del_node->get_next_siblings();
 
-                    if (del_prev != nullptr && all_nodes.find(del_prev) != all_nodes.end()) {
+                    if (del_prev != nullptr) {
                         del_prev->set_next_siblings(del_next);
                     }
-                    if (del_next != nullptr && all_nodes.find(del_next) != all_nodes.end()) {
+                    if (del_next != nullptr) {
                         del_next->set_prev_siblings(del_prev);
                     }
 
@@ -1036,32 +1030,30 @@ class RTree {
         return nullptr;
     }
 
-    std::deque<LeafEntry<T>*> _search(Node<T>* subtree, const Rectangle& rect) {
-        std::deque<LeafEntry<T>*> result;
+    void _search(Node<T>* subtree, const Rectangle& rect, std::deque<T*>& result) {
+        if (!subtree)
+            return;
 
-        if (subtree == nullptr || all_nodes.find(subtree) == all_nodes.end()) {
-            return result;
-        }
+        auto it = subtree->entries.begin();
+        auto end = subtree->entries.end();
 
         if (subtree->is_leaf()) {
-            for (auto entry : subtree->get_entries()) {
-                if (entry != nullptr && entry->get_mbr().intersects(rect)) {
-                    result.push_back(dynamic_cast<LeafEntry<T>*>(entry));
+            for (; it != end; ++it) {
+                auto* entry = static_cast<LeafEntry<T>*>(*it);
+
+                if (entry->mbr.intersects(rect)) {
+                    result.push_back(entry->elem);
                 }
             }
         } else {
-            for (auto entry : subtree->get_entries()) {
-                if (entry != nullptr && entry->get_mbr().intersects(rect)) {
-                    auto inner = dynamic_cast<InnerNode<T>*>(entry);
-                    if (inner && inner->get_node() != nullptr) {
-                        auto aux = _search(inner->get_node(), rect);
-                        result.insert(result.end(), aux.begin(), aux.end());
-                    }
+            for (; it != end; ++it) {
+                auto* inner = static_cast<InnerNode<T>*>(*it);
+
+                if (inner->node && inner->node->mbr.intersects(rect)) {
+                    _search(inner->node, rect, result);
                 }
             }
         }
-
-        return result;
     }
 };
 
