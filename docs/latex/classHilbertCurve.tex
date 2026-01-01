@@ -1,0 +1,310 @@
+\doxysection{Hilbert\+Curve Class Reference}
+\hypertarget{classHilbertCurve}{}\label{classHilbertCurve}\index{HilbertCurve@{HilbertCurve}}
+
+
+Implements a d-\/dimensional Hilbert curve for mapping between points and Hilbert indices.  
+
+
+
+
+{\ttfamily \#include $<$hilbert\+\_\+curve.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classHilbertCurve_a1b003fde360ac354c4e817a2b3d22bf6}{Hilbert\+Curve}} (int bits, int dim)
+\begin{DoxyCompactList}\small\item\em Construct a Hilbert curve with specified bits and dimensions. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}} \mbox{\hyperlink{classHilbertCurve_ad7eae6b200b68000008f64303305ce43}{get\+\_\+bits}} () const
+\begin{DoxyCompactList}\small\item\em Get the number of bits per dimension. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}} \mbox{\hyperlink{classHilbertCurve_a1ab65a79a648220ae7ac3b1b8ca890f5}{get\+\_\+dim}} () const
+\begin{DoxyCompactList}\small\item\em Get the number of dimensions. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}} \mbox{\hyperlink{classHilbertCurve_ac4ed20daf58ccf72a61e22c870a24557}{get\+\_\+length}} () const
+\begin{DoxyCompactList}\small\item\em Get the total number of bits. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}} \mbox{\hyperlink{classHilbertCurve_a732ad631f522a007e65ae079a04c5d44}{index}} (const \mbox{\hyperlink{hilbert__curve_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}} \&\mbox{\hyperlink{classHilbertCurve_a8cd77f30c2c17bf1b3fb357cbaa2fcf9}{point}}) const
+\begin{DoxyCompactList}\small\item\em Convert a point to its Hilbert curve index. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{hilbert__curve_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}} \mbox{\hyperlink{classHilbertCurve_a8cd77f30c2c17bf1b3fb357cbaa2fcf9}{point}} (\mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}} \mbox{\hyperlink{classHilbertCurve_a732ad631f522a007e65ae079a04c5d44}{index}}) const
+\begin{DoxyCompactList}\small\item\em Convert a Hilbert index to its corresponding point. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classHilbertCurve_a6dc283cac203fffb65430b271aa38e9c}{point}} (\mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}} \mbox{\hyperlink{classHilbertCurve_a732ad631f522a007e65ae079a04c5d44}{index}}, \mbox{\hyperlink{hilbert__curve_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}} \&x) const
+\begin{DoxyCompactList}\small\item\em Convert a Hilbert index to a point (output parameter version). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classHilbertCurve_ab6744473c936bdae6586f00b15b40796}{transpose}} (\mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}} indes, \mbox{\hyperlink{hilbert__curve_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}} \&x) const
+\begin{DoxyCompactList}\small\item\em Compute the transposed representation of a Hilbert index. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{hilbert__curve_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}} \mbox{\hyperlink{classHilbertCurve_acfcda6b523cdda6a22cde35ae7b79613}{transpose}} (\mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}} \mbox{\hyperlink{classHilbertCurve_a732ad631f522a007e65ae079a04c5d44}{index}}) const
+\begin{DoxyCompactList}\small\item\em Compute the transposed representation of a Hilbert index. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}} \mbox{\hyperlink{classHilbertCurve_a227c58b7b29c1f856549b7a60a86d2e7}{to\+\_\+index}} (\mbox{\hyperlink{hilbert__curve_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}} \&\mbox{\hyperlink{classHilbertCurve_a3c6e910cd06648a1925827bc90855d67}{transposed\+\_\+index}}) const
+\begin{DoxyCompactList}\small\item\em Convert a transposed index to a Hilbert index. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}} \mbox{\hyperlink{classHilbertCurve_a127354d4b55d381eecdd9f3a3cb51f64}{max\+\_\+ordinate}} () const
+\begin{DoxyCompactList}\small\item\em Maximum ordinate (coordinate value) allowed for this curve. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}} \mbox{\hyperlink{classHilbertCurve_ae86f9fb7ba86b3dfa80465076ff78051}{max\+\_\+index}} () const
+\begin{DoxyCompactList}\small\item\em Maximum Hilbert index value for this curve. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classRanges}{Ranges}} \mbox{\hyperlink{classHilbertCurve_a36cd87a4654cb3cc023cc4602c6f99da}{query}} (const \mbox{\hyperlink{hilbert__curve_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}} \&a, const \mbox{\hyperlink{hilbert__curve_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}} \&b, int max\+\_\+ranges, int buffer\+\_\+size=1024) const
+\begin{DoxyCompactList}\small\item\em Query the Hilbert curve for a hyper-\/rectangular range. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{hilbert__curve_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}} \mbox{\hyperlink{classHilbertCurve_a3c6e910cd06648a1925827bc90855d67}{transposed\+\_\+index}} (int bits, \mbox{\hyperlink{hilbert__curve_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}} \&x)
+\begin{DoxyCompactList}\small\item\em Static\+: convert a point to a transposed index (vector of integers). \end{DoxyCompactList}\item 
+static \mbox{\hyperlink{hilbert__curve_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}} \mbox{\hyperlink{classHilbertCurve_aa62209fe4872063c977e0473c7f018fa}{transposed\+\_\+index\+\_\+to\+\_\+point}} (int bits, \mbox{\hyperlink{hilbert__curve_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}} \&x)
+\begin{DoxyCompactList}\small\item\em Static\+: convert a transposed index back to a point. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Implements a d-\/dimensional Hilbert curve for mapping between points and Hilbert indices. 
+
+This class provides functions to convert between d-\/dimensional points and their corresponding Hilbert curve index, as well as transposition operations used in Hilbert indexing. 
+
+\label{doc-constructors}
+\Hypertarget{classHilbertCurve_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classHilbertCurve_a1b003fde360ac354c4e817a2b3d22bf6}\index{HilbertCurve@{HilbertCurve}!HilbertCurve@{HilbertCurve}}
+\index{HilbertCurve@{HilbertCurve}!HilbertCurve@{HilbertCurve}}
+\doxysubsubsection{\texorpdfstring{HilbertCurve()}{HilbertCurve()}}
+{\footnotesize\ttfamily \label{classHilbertCurve_a1b003fde360ac354c4e817a2b3d22bf6} 
+Hilbert\+Curve\+::\+Hilbert\+Curve (\begin{DoxyParamCaption}\item[{int}]{bits}{, }\item[{int}]{dim}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Construct a Hilbert curve with specified bits and dimensions. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em bits} & number of bits per dimension \\
+\hline
+{\em dim} & number of dimensions \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::domain\+\_\+error} & if bits or dimensions are less than 1 \\
+\hline
+\end{DoxyExceptions}
+
+
+\label{doc-func-members}
+\Hypertarget{classHilbertCurve_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classHilbertCurve_ad7eae6b200b68000008f64303305ce43}\index{HilbertCurve@{HilbertCurve}!get\_bits@{get\_bits}}
+\index{get\_bits@{get\_bits}!HilbertCurve@{HilbertCurve}}
+\doxysubsubsection{\texorpdfstring{get\_bits()}{get\_bits()}}
+{\footnotesize\ttfamily \label{classHilbertCurve_ad7eae6b200b68000008f64303305ce43} 
+\mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}} Hilbert\+Curve\+::get\+\_\+bits (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Get the number of bits per dimension. 
+
+\Hypertarget{classHilbertCurve_a1ab65a79a648220ae7ac3b1b8ca890f5}\index{HilbertCurve@{HilbertCurve}!get\_dim@{get\_dim}}
+\index{get\_dim@{get\_dim}!HilbertCurve@{HilbertCurve}}
+\doxysubsubsection{\texorpdfstring{get\_dim()}{get\_dim()}}
+{\footnotesize\ttfamily \label{classHilbertCurve_a1ab65a79a648220ae7ac3b1b8ca890f5} 
+\mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}} Hilbert\+Curve\+::get\+\_\+dim (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Get the number of dimensions. 
+
+\Hypertarget{classHilbertCurve_ac4ed20daf58ccf72a61e22c870a24557}\index{HilbertCurve@{HilbertCurve}!get\_length@{get\_length}}
+\index{get\_length@{get\_length}!HilbertCurve@{HilbertCurve}}
+\doxysubsubsection{\texorpdfstring{get\_length()}{get\_length()}}
+{\footnotesize\ttfamily \label{classHilbertCurve_ac4ed20daf58ccf72a61e22c870a24557} 
+\mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}} Hilbert\+Curve\+::get\+\_\+length (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Get the total number of bits. 
+
+\Hypertarget{classHilbertCurve_a732ad631f522a007e65ae079a04c5d44}\index{HilbertCurve@{HilbertCurve}!index@{index}}
+\index{index@{index}!HilbertCurve@{HilbertCurve}}
+\doxysubsubsection{\texorpdfstring{index()}{index()}}
+{\footnotesize\ttfamily \label{classHilbertCurve_a732ad631f522a007e65ae079a04c5d44} 
+\mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}} Hilbert\+Curve\+::index (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{hilbert__curve_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}} \&}]{point}{}\end{DoxyParamCaption}) const}
+
+
+
+Convert a point to its Hilbert curve index. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em point} & d-\/dimensional point \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Hilbert index of the point 
+\end{DoxyReturn}
+\Hypertarget{classHilbertCurve_ae86f9fb7ba86b3dfa80465076ff78051}\index{HilbertCurve@{HilbertCurve}!max\_index@{max\_index}}
+\index{max\_index@{max\_index}!HilbertCurve@{HilbertCurve}}
+\doxysubsubsection{\texorpdfstring{max\_index()}{max\_index()}}
+{\footnotesize\ttfamily \label{classHilbertCurve_ae86f9fb7ba86b3dfa80465076ff78051} 
+\mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}} Hilbert\+Curve\+::max\+\_\+index (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Maximum Hilbert index value for this curve. 
+
+\Hypertarget{classHilbertCurve_a127354d4b55d381eecdd9f3a3cb51f64}\index{HilbertCurve@{HilbertCurve}!max\_ordinate@{max\_ordinate}}
+\index{max\_ordinate@{max\_ordinate}!HilbertCurve@{HilbertCurve}}
+\doxysubsubsection{\texorpdfstring{max\_ordinate()}{max\_ordinate()}}
+{\footnotesize\ttfamily \label{classHilbertCurve_a127354d4b55d381eecdd9f3a3cb51f64} 
+\mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}} Hilbert\+Curve\+::max\+\_\+ordinate (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Maximum ordinate (coordinate value) allowed for this curve. 
+
+\Hypertarget{classHilbertCurve_a8cd77f30c2c17bf1b3fb357cbaa2fcf9}\index{HilbertCurve@{HilbertCurve}!point@{point}}
+\index{point@{point}!HilbertCurve@{HilbertCurve}}
+\doxysubsubsection{\texorpdfstring{point()}{point()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{classHilbertCurve_a8cd77f30c2c17bf1b3fb357cbaa2fcf9} 
+\mbox{\hyperlink{hilbert__curve_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}} Hilbert\+Curve\+::point (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}}}]{index}{}\end{DoxyParamCaption}) const}
+
+
+
+Convert a Hilbert index to its corresponding point. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em index} & Hilbert index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+d-\/dimensional point 
+\end{DoxyReturn}
+\Hypertarget{classHilbertCurve_a6dc283cac203fffb65430b271aa38e9c}\index{HilbertCurve@{HilbertCurve}!point@{point}}
+\index{point@{point}!HilbertCurve@{HilbertCurve}}
+\doxysubsubsection{\texorpdfstring{point()}{point()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{classHilbertCurve_a6dc283cac203fffb65430b271aa38e9c} 
+void Hilbert\+Curve\+::point (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}}}]{index}{, }\item[{\mbox{\hyperlink{hilbert__curve_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}} \&}]{x}{}\end{DoxyParamCaption}) const}
+
+
+
+Convert a Hilbert index to a point (output parameter version). 
+
+
+\begin{DoxyParams}{Parameters}
+{\em index} & Hilbert index \\
+\hline
+{\em x} & output point \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classHilbertCurve_a36cd87a4654cb3cc023cc4602c6f99da}\index{HilbertCurve@{HilbertCurve}!query@{query}}
+\index{query@{query}!HilbertCurve@{HilbertCurve}}
+\doxysubsubsection{\texorpdfstring{query()}{query()}}
+{\footnotesize\ttfamily \label{classHilbertCurve_a36cd87a4654cb3cc023cc4602c6f99da} 
+\mbox{\hyperlink{classRanges}{Ranges}} Hilbert\+Curve\+::query (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{hilbert__curve_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}} \&}]{a}{, }\item[{const \mbox{\hyperlink{hilbert__curve_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}} \&}]{b}{, }\item[{int}]{max\+\_\+ranges}{, }\item[{int}]{buffer\+\_\+size}{ = {\ttfamily 1024}}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Query the Hilbert curve for a hyper-\/rectangular range. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & lower corner of the range \\
+\hline
+{\em b} & upper corner of the range \\
+\hline
+{\em max\+\_\+ranges} & maximum number of ranges to return \\
+\hline
+{\em buffer\+\_\+size} & optional buffer size for internal computation \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\doxylink{classRanges}{Ranges} object containing the Hilbert indices covering the query range 
+\end{DoxyReturn}
+\Hypertarget{classHilbertCurve_a227c58b7b29c1f856549b7a60a86d2e7}\index{HilbertCurve@{HilbertCurve}!to\_index@{to\_index}}
+\index{to\_index@{to\_index}!HilbertCurve@{HilbertCurve}}
+\doxysubsubsection{\texorpdfstring{to\_index()}{to\_index()}}
+{\footnotesize\ttfamily \label{classHilbertCurve_a227c58b7b29c1f856549b7a60a86d2e7} 
+\mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}} Hilbert\+Curve\+::to\+\_\+index (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{hilbert__curve_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}} \&}]{transposed\+\_\+index}{}\end{DoxyParamCaption}) const}
+
+
+
+Convert a transposed index to a Hilbert index. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em transposed\+\_\+index} & vector representing transposed index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Hilbert index 
+\end{DoxyReturn}
+\Hypertarget{classHilbertCurve_ab6744473c936bdae6586f00b15b40796}\index{HilbertCurve@{HilbertCurve}!transpose@{transpose}}
+\index{transpose@{transpose}!HilbertCurve@{HilbertCurve}}
+\doxysubsubsection{\texorpdfstring{transpose()}{transpose()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{classHilbertCurve_ab6744473c936bdae6586f00b15b40796} 
+void Hilbert\+Curve\+::transpose (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}}}]{indes}{, }\item[{\mbox{\hyperlink{hilbert__curve_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}} \&}]{x}{}\end{DoxyParamCaption}) const}
+
+
+
+Compute the transposed representation of a Hilbert index. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em index} & Hilbert index \\
+\hline
+{\em x} & output transposed point \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classHilbertCurve_acfcda6b523cdda6a22cde35ae7b79613}\index{HilbertCurve@{HilbertCurve}!transpose@{transpose}}
+\index{transpose@{transpose}!HilbertCurve@{HilbertCurve}}
+\doxysubsubsection{\texorpdfstring{transpose()}{transpose()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{classHilbertCurve_acfcda6b523cdda6a22cde35ae7b79613} 
+\mbox{\hyperlink{hilbert__curve_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}} Hilbert\+Curve\+::transpose (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}}}]{index}{}\end{DoxyParamCaption}) const}
+
+
+
+Compute the transposed representation of a Hilbert index. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em index} & Hilbert index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+transposed point 
+\end{DoxyReturn}
+\Hypertarget{classHilbertCurve_a3c6e910cd06648a1925827bc90855d67}\index{HilbertCurve@{HilbertCurve}!transposed\_index@{transposed\_index}}
+\index{transposed\_index@{transposed\_index}!HilbertCurve@{HilbertCurve}}
+\doxysubsubsection{\texorpdfstring{transposed\_index()}{transposed\_index()}}
+{\footnotesize\ttfamily \label{classHilbertCurve_a3c6e910cd06648a1925827bc90855d67} 
+\mbox{\hyperlink{hilbert__curve_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}} Hilbert\+Curve\+::transposed\+\_\+index (\begin{DoxyParamCaption}\item[{int}]{bits}{, }\item[{\mbox{\hyperlink{hilbert__curve_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}} \&}]{x}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Static\+: convert a point to a transposed index (vector of integers). 
+
+
+\begin{DoxyParams}{Parameters}
+{\em bits} & number of bits per dimension \\
+\hline
+{\em x} & point \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+transposed index 
+\end{DoxyReturn}
+\Hypertarget{classHilbertCurve_aa62209fe4872063c977e0473c7f018fa}\index{HilbertCurve@{HilbertCurve}!transposed\_index\_to\_point@{transposed\_index\_to\_point}}
+\index{transposed\_index\_to\_point@{transposed\_index\_to\_point}!HilbertCurve@{HilbertCurve}}
+\doxysubsubsection{\texorpdfstring{transposed\_index\_to\_point()}{transposed\_index\_to\_point()}}
+{\footnotesize\ttfamily \label{classHilbertCurve_aa62209fe4872063c977e0473c7f018fa} 
+\mbox{\hyperlink{hilbert__curve_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}} Hilbert\+Curve\+::transposed\+\_\+index\+\_\+to\+\_\+point (\begin{DoxyParamCaption}\item[{int}]{bits}{, }\item[{\mbox{\hyperlink{hilbert__curve_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}} \&}]{x}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Static\+: convert a transposed index back to a point. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em bits} & number of bits per dimension \\
+\hline
+{\em x} & transposed index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+d-\/dimensional point 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/rtree\+\_\+hilbert/\mbox{\hyperlink{hilbert__curve_8h}{hilbert\+\_\+curve.\+h}}\item 
+src/rtree\+\_\+hilbert/\mbox{\hyperlink{hilbert__curve_8cpp}{hilbert\+\_\+curve.\+cpp}}\end{DoxyCompactItemize}

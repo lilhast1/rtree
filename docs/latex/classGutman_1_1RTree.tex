@@ -1,0 +1,134 @@
+\doxysection{Gutman\+::RTree\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classGutman_1_1RTree}{}\label{classGutman_1_1RTree}\index{Gutman::RTree$<$ T $>$@{Gutman::RTree$<$ T $>$}}
+
+
+Generic R-\/\+Tree implementation for N-\/dimensional rectangles.  
+
+
+
+
+{\ttfamily \#include $<$rtree.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classGutman_1_1RTree_a071ba9586d0b5cde478abd863fa5da8d}{RTree}} (int m, int M)
+\begin{DoxyCompactList}\small\item\em Construct an empty R-\/\+Tree. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classGutman_1_1RTree_af5c6c2cfee4cee858b1632a4694f93a3}{\texorpdfstring{$\sim$}{\string~}\+RTree}} ()
+\begin{DoxyCompactList}\small\item\em Destructor frees the tree. \end{DoxyCompactList}\item 
+std\+::vector$<$ T \texorpdfstring{$\ast$}{*} $>$ \mbox{\hyperlink{classGutman_1_1RTree_a62adfb6e363cd7c19fd1c8580cc24302}{search}} (const \mbox{\hyperlink{structGutman_1_1Rectangle}{Rectangle}} \&search\+\_\+rect) const
+\begin{DoxyCompactList}\small\item\em Search for elements overlapping a rectangle. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classGutman_1_1RTree_aaeb73e39deab43186fcd102d7c021903}{insert}} (const \mbox{\hyperlink{structGutman_1_1Rectangle}{Rectangle}} \&mbr, T \texorpdfstring{$\ast$}{*}elem)
+\begin{DoxyCompactList}\small\item\em Insert an element with associated rectangle. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classGutman_1_1RTree_a8b49800eb4985480a273777a7c7492cc}{remove}} (const \mbox{\hyperlink{structGutman_1_1Rectangle}{Rectangle}} \&r)
+\begin{DoxyCompactList}\small\item\em Remove an element by its rectangle. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classGutman_1_1RTree_a061bd65595c90ca5c7b6999540b32e69}{update}} (const \mbox{\hyperlink{structGutman_1_1Rectangle}{Rectangle}} \&current, \mbox{\hyperlink{structGutman_1_1Rectangle}{Rectangle}} \&desired, T \texorpdfstring{$\ast$}{*}new\+\_\+elem)
+\begin{DoxyCompactList}\small\item\em Update an element by removing the old rectangle and inserting a new one. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$\newline
+class Gutman\+::\+RTree$<$ T $>$}
+Generic R-\/\+Tree implementation for N-\/dimensional rectangles. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & Type of data stored in the leaves\\
+\hline
+\end{DoxyTemplParams}
+Supports insertion, search, removal, update, and MBR-\/based operations. 
+
+\label{doc-constructors}
+\Hypertarget{classGutman_1_1RTree_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classGutman_1_1RTree_a071ba9586d0b5cde478abd863fa5da8d}\index{Gutman::RTree$<$ T $>$@{Gutman::RTree$<$ T $>$}!RTree@{RTree}}
+\index{RTree@{RTree}!Gutman::RTree$<$ T $>$@{Gutman::RTree$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{RTree()}{RTree()}}
+{\footnotesize\ttfamily \label{classGutman_1_1RTree_a071ba9586d0b5cde478abd863fa5da8d} 
+template$<$typename T$>$ \\
+\mbox{\hyperlink{classGutman_1_1RTree}{Gutman\+::\+RTree}}$<$ T $>$\+::\+RTree (\begin{DoxyParamCaption}\item[{int}]{m}{, }\item[{int}]{M}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Construct an empty R-\/\+Tree. 
+
+\Hypertarget{classGutman_1_1RTree_af5c6c2cfee4cee858b1632a4694f93a3}\index{Gutman::RTree$<$ T $>$@{Gutman::RTree$<$ T $>$}!````~RTree@{\texorpdfstring{$\sim$}{\string~}RTree}}
+\index{````~RTree@{\texorpdfstring{$\sim$}{\string~}RTree}!Gutman::RTree$<$ T $>$@{Gutman::RTree$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{\texorpdfstring{$\sim$}{\string~}RTree()}{\string~RTree()}}
+{\footnotesize\ttfamily \label{classGutman_1_1RTree_af5c6c2cfee4cee858b1632a4694f93a3} 
+template$<$typename T$>$ \\
+\mbox{\hyperlink{classGutman_1_1RTree}{Gutman\+::\+RTree}}$<$ T $>$\+::\texorpdfstring{$\sim$}{\string~}\mbox{\hyperlink{classGutman_1_1RTree_a071ba9586d0b5cde478abd863fa5da8d}{RTree}} (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Destructor frees the tree. 
+
+
+
+\label{doc-func-members}
+\Hypertarget{classGutman_1_1RTree_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classGutman_1_1RTree_aaeb73e39deab43186fcd102d7c021903}\index{Gutman::RTree$<$ T $>$@{Gutman::RTree$<$ T $>$}!insert@{insert}}
+\index{insert@{insert}!Gutman::RTree$<$ T $>$@{Gutman::RTree$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{insert()}{insert()}}
+{\footnotesize\ttfamily \label{classGutman_1_1RTree_aaeb73e39deab43186fcd102d7c021903} 
+template$<$typename T$>$ \\
+void \mbox{\hyperlink{classGutman_1_1RTree}{Gutman\+::\+RTree}}$<$ T $>$\+::insert (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structGutman_1_1Rectangle}{Rectangle}} \&}]{mbr}{, }\item[{T \texorpdfstring{$\ast$}{*}}]{elem}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Insert an element with associated rectangle. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em mbr} & Minimum bounding rectangle \\
+\hline
+{\em elem} & Pointer to element \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classGutman_1_1RTree_a8b49800eb4985480a273777a7c7492cc}\index{Gutman::RTree$<$ T $>$@{Gutman::RTree$<$ T $>$}!remove@{remove}}
+\index{remove@{remove}!Gutman::RTree$<$ T $>$@{Gutman::RTree$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{remove()}{remove()}}
+{\footnotesize\ttfamily \label{classGutman_1_1RTree_a8b49800eb4985480a273777a7c7492cc} 
+template$<$typename T$>$ \\
+void \mbox{\hyperlink{classGutman_1_1RTree}{Gutman\+::\+RTree}}$<$ T $>$\+::remove (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structGutman_1_1Rectangle}{Rectangle}} \&}]{r}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Remove an element by its rectangle. 
+
+\Hypertarget{classGutman_1_1RTree_a62adfb6e363cd7c19fd1c8580cc24302}\index{Gutman::RTree$<$ T $>$@{Gutman::RTree$<$ T $>$}!search@{search}}
+\index{search@{search}!Gutman::RTree$<$ T $>$@{Gutman::RTree$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{search()}{search()}}
+{\footnotesize\ttfamily \label{classGutman_1_1RTree_a62adfb6e363cd7c19fd1c8580cc24302} 
+template$<$typename T$>$ \\
+std\+::vector$<$ T \texorpdfstring{$\ast$}{*} $>$ \mbox{\hyperlink{classGutman_1_1RTree}{Gutman\+::\+RTree}}$<$ T $>$\+::search (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structGutman_1_1Rectangle}{Rectangle}} \&}]{search\+\_\+rect}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Search for elements overlapping a rectangle. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em search\+\_\+rect} & Search rectangle \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Vector of pointers to matching elements 
+\end{DoxyReturn}
+\Hypertarget{classGutman_1_1RTree_a061bd65595c90ca5c7b6999540b32e69}\index{Gutman::RTree$<$ T $>$@{Gutman::RTree$<$ T $>$}!update@{update}}
+\index{update@{update}!Gutman::RTree$<$ T $>$@{Gutman::RTree$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{update()}{update()}}
+{\footnotesize\ttfamily \label{classGutman_1_1RTree_a061bd65595c90ca5c7b6999540b32e69} 
+template$<$typename T$>$ \\
+void \mbox{\hyperlink{classGutman_1_1RTree}{Gutman\+::\+RTree}}$<$ T $>$\+::update (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structGutman_1_1Rectangle}{Rectangle}} \&}]{current}{, }\item[{\mbox{\hyperlink{structGutman_1_1Rectangle}{Rectangle}} \&}]{desired}{, }\item[{T \texorpdfstring{$\ast$}{*}}]{new\+\_\+elem}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Update an element by removing the old rectangle and inserting a new one. 
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/rtree/\mbox{\hyperlink{rtree_8h}{rtree.\+h}}\end{DoxyCompactItemize}

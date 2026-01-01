@@ -1,0 +1,72 @@
+\doxysection{src/rtree\+\_\+hilbert/hilbert\+\_\+rtree.h File Reference}
+\hypertarget{hilbert__rtree_8h}{}\label{hilbert__rtree_8h}\index{src/rtree\_hilbert/hilbert\_rtree.h@{src/rtree\_hilbert/hilbert\_rtree.h}}
+
+
+Hilbert R-\/\+Tree implementation for multidimensional rectangles.  
+
+
+{\ttfamily \#include $<$climits$>$}\newline
+{\ttfamily \#include $<$cstddef$>$}\newline
+{\ttfamily \#include $<$cstdint$>$}\newline
+{\ttfamily \#include $<$deque$>$}\newline
+{\ttfamily \#include $<$exception$>$}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$set$>$}\newline
+{\ttfamily \#include $<$stdexcept$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$utility$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include "{}rtree/rtree.\+h"{}}\newline
+{\ttfamily \#include "{}rtree\+\_\+hilbert/hilbert\+\_\+curve.\+h"{}}\newline
+Include dependency graph for hilbert\+\_\+rtree.\+h\+:
+% FIG 0
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structhilbert_1_1Rectangle}{hilbert\+::\+Rectangle}}
+\begin{DoxyCompactList}\small\item\em Represents an axis-\/aligned rectangle in d-\/dimensional space. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structhilbert_1_1NodeEntry}{hilbert\+::\+Node\+Entry$<$ T $>$}}
+\begin{DoxyCompactList}\small\item\em Base interface for node entries (leaf or inner node). \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structhilbert_1_1LeafEntry}{hilbert\+::\+Leaf\+Entry$<$ T $>$}}
+\begin{DoxyCompactList}\small\item\em Leaf entry containing a single element. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structhilbert_1_1InnerNode}{hilbert\+::\+Inner\+Node$<$ T $>$}}
+\begin{DoxyCompactList}\small\item\em Inner node entry pointing to a child node. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structhilbert_1_1nodeEntryComparison}{hilbert\+::node\+Entry\+Comparison$<$ T $>$}}
+\begin{DoxyCompactList}\small\item\em Comparison for node entries by LHV. Ensures uniqueness by comparing pointer if LHV is equal. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structhilbert_1_1Node}{hilbert\+::\+Node$<$ T $>$}}
+\begin{DoxyCompactList}\small\item\em \doxylink{structhilbert_1_1Node}{Node} in the R-\/\+Tree (leaf or inner). \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classhilbert_1_1RTree}{hilbert\+::\+RTree$<$ T $>$}}
+\begin{DoxyCompactList}\small\item\em R-\/\+Tree class with Hilbert curve ordering. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespacehilbert}{hilbert}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{hilbert__rtree_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}} = std\+::vector$<$\mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}}$>$
+\item 
+{\footnotesize template$<$typename T$>$ }\\using \mbox{\hyperlink{namespacehilbert_aa7ad03b6a321800f9790ee3dbb97d814}{hilbert\+::\+Entry\+Set}} = std\+::set$<$\mbox{\hyperlink{structhilbert_1_1NodeEntry}{Node\+Entry}}$<$T$>$\texorpdfstring{$\ast$}{*}, \mbox{\hyperlink{structhilbert_1_1nodeEntryComparison}{node\+Entry\+Comparison}}$<$T$>$$>$
+\begin{DoxyCompactList}\small\item\em Set of node entries with custom comparator. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const auto \mbox{\hyperlink{namespacehilbert_a0e4f58e6e92e468cca58f72578fa6df1}{hilbert\+::not\+\_\+implemented}} = std\+::logic\+\_\+error("{}Not implemented"{}s)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Hilbert R-\/\+Tree implementation for multidimensional rectangles. 
+
+This file implements a Hilbert-\/curve-\/ordered R-\/\+Tree supporting insertion, deletion, search, overflow/underflow handling, and sibling chains. 
+
+\label{doc-typedef-members}
+\Hypertarget{hilbert__rtree_8h_doc-typedef-members}
+\doxysubsection{Typedef Documentation}
+\Hypertarget{hilbert__rtree_8h_aa7a3b94320bd53499c2f7eba814d491d}\index{hilbert\_rtree.h@{hilbert\_rtree.h}!Point@{Point}}
+\index{Point@{Point}!hilbert\_rtree.h@{hilbert\_rtree.h}}
+\doxysubsubsection{\texorpdfstring{Point}{Point}}
+{\footnotesize\ttfamily \label{hilbert__rtree_8h_aa7a3b94320bd53499c2f7eba814d491d} 
+using \mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}} = std\+::vector$<$\mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}}$>$}
+

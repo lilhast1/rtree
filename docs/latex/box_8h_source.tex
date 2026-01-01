@@ -1,0 +1,52 @@
+\doxysection{box.\+h}
+\hypertarget{box_8h_source}{}\label{box_8h_source}\index{src/rtree\_hilbert/box.h@{src/rtree\_hilbert/box.h}}
+\mbox{\hyperlink{box_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#include\ <functional>}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <stdexcept>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00005\ \textcolor{keyword}{using\ }\mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}}\ =\ \textcolor{keywordtype}{long}\ long;}
+\DoxyCodeLine{00006\ \textcolor{keyword}{using\ }\mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}}\ =\ std::vector<ll>;}
+\DoxyCodeLine{00014\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classBox_ad7167a7f1070e03ef9ca0e55fd9b6ee3}{Box}}\ \{}
+\DoxyCodeLine{00015\ \ \ \ \ \mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}}\ lo;\ \ }
+\DoxyCodeLine{00016\ \ \ \ \ \mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}}\ hi;\ \ }
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keywordtype}{int}\ dim;\ \ \ }
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00026\ \ \ \ \ \mbox{\hyperlink{classBox_ad7167a7f1070e03ef9ca0e55fd9b6ee3}{Box}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}}\&\ a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}}\&\ b)\ :\ lo(a),\ hi(b),\ dim(a.size())\ \{}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (lo.size()\ !=\ hi.size())}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::invalid\_argument(\textcolor{stringliteral}{"{}Dimension\ mismatched\ for\ Box\ construction"{}});}
+\DoxyCodeLine{00029\ \ \ \ \ \}}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classBox_a681d0021ab9657cc74051df8a84153f5}{contains}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}}\&\ p)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ dim;\ i++)}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (p[i]\ <\ lo[i]\ ||\ p[i]\ >\ hi[i])}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00040\ \ \ \ \ \}}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classBox_afab0744a388cc257fd654e816e20ecd3}{visit\_perimiter}}(std::function<\textcolor{keywordtype}{void}(\textcolor{keyword}{const}\ \mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}}\&)>\ func)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}}\ p(dim);}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ std::function<void(\textcolor{keywordtype}{int})>\ dfs\ =\ [\&](\textcolor{keywordtype}{int}\ d)\ \{}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (d\ ==\ dim)\ \{}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ isPerimiter\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ dim;\ i++)\ \{}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (p[i]\ ==\ lo[i]\ ||\ p[i]\ ==\ hi[i])\ \{}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ isPerimiter\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (isPerimiter)}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ func(p);}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ x\ =\ lo[d];\ x\ <=\ hi[d];\ x++)\ \{}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ p[d]\ =\ x;}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ dfs(d\ +\ 1);}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ dfs(0);}
+\DoxyCodeLine{00072\ \ \ \ \ \}}
+\DoxyCodeLine{00073\ \};}
+
+\end{DoxyCode}

@@ -1,0 +1,43 @@
+\doxysection{src/rtree/rtree.h File Reference}
+\hypertarget{rtree_8h}{}\label{rtree_8h}\index{src/rtree/rtree.h@{src/rtree/rtree.h}}
+{\ttfamily \#include $<$assert.\+h$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$algorithm$>$}\newline
+{\ttfamily \#include $<$any$>$}\newline
+{\ttfamily \#include $<$functional$>$}\newline
+{\ttfamily \#include $<$initializer\+\_\+list$>$}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$iterator$>$}\newline
+{\ttfamily \#include $<$limits$>$}\newline
+{\ttfamily \#include $<$memory$>$}\newline
+{\ttfamily \#include $<$queue$>$}\newline
+{\ttfamily \#include $<$stack$>$}\newline
+{\ttfamily \#include $<$stdexcept$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$utility$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+Include dependency graph for rtree.\+h\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structGutman_1_1Rectangle}{Gutman\+::\+Rectangle}}
+\begin{DoxyCompactList}\small\item\em Axis-\/aligned rectangle/hyperrectangle in N-\/dimensional space. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structGutman_1_1Node}{Gutman\+::\+Node$<$ T $>$}}
+\begin{DoxyCompactList}\small\item\em \doxylink{structGutman_1_1Node}{Node} in an R-\/\+Tree, can be a leaf or internal. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classGutman_1_1RTree}{Gutman\+::\+RTree$<$ T $>$}}
+\begin{DoxyCompactList}\small\item\em Generic R-\/\+Tree implementation for N-\/dimensional rectangles. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespaceGutman}{Gutman}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{namespaceGutman_a6fc9dea3297bbff7cccd3b5c350bbb0e}{Gutman\+::equal}} (double x, double y, double eps=1e-\/7)
+\begin{DoxyCompactList}\small\item\em Compares two doubles for approximate equality. \end{DoxyCompactList}\end{DoxyCompactItemize}

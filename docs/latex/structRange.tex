@@ -1,0 +1,85 @@
+\doxysection{Range Struct Reference}
+\hypertarget{structRange}{}\label{structRange}\index{Range@{Range}}
+
+
+Represents a one-\/dimensional closed interval \mbox{[}start, end\mbox{]}.  
+
+
+
+
+{\ttfamily \#include $<$ranges.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structRange_a2dcf721003d3ce10f6cb1d4ab2586061}{Range}} (\mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}} \mbox{\hyperlink{structRange_a62e2e156c0365a0717a666debdeb9c7c}{start}}, \mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}} \mbox{\hyperlink{structRange_a6a0ca851730ce7ca0e63bee307478335}{end}})
+\begin{DoxyCompactList}\small\item\em Construct a \doxylink{structRange}{Range} with start and end. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}} \mbox{\hyperlink{structRange_a62e2e156c0365a0717a666debdeb9c7c}{start}}
+\begin{DoxyCompactList}\small\item\em Start of the range. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}} \mbox{\hyperlink{structRange_a6a0ca851730ce7ca0e63bee307478335}{end}}
+\begin{DoxyCompactList}\small\item\em End of the range. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Represents a one-\/dimensional closed interval \mbox{[}start, end\mbox{]}. 
+
+Ensures that the start is not greater than the end. 
+
+\label{doc-constructors}
+\Hypertarget{structRange_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{structRange_a2dcf721003d3ce10f6cb1d4ab2586061}\index{Range@{Range}!Range@{Range}}
+\index{Range@{Range}!Range@{Range}}
+\doxysubsubsection{\texorpdfstring{Range()}{Range()}}
+{\footnotesize\ttfamily \label{structRange_a2dcf721003d3ce10f6cb1d4ab2586061} 
+Range\+::\+Range (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}}}]{start}{, }\item[{\mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}}}]{end}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Construct a \doxylink{structRange}{Range} with start and end. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em start} & range start \\
+\hline
+{\em end} & range end \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::invalid\+\_\+argument} & if start \texorpdfstring{$>$}{>} end \\
+\hline
+\end{DoxyExceptions}
+
+
+\label{doc-variable-members}
+\Hypertarget{structRange_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{structRange_a6a0ca851730ce7ca0e63bee307478335}\index{Range@{Range}!end@{end}}
+\index{end@{end}!Range@{Range}}
+\doxysubsubsection{\texorpdfstring{end}{end}}
+{\footnotesize\ttfamily \label{structRange_a6a0ca851730ce7ca0e63bee307478335} 
+\mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}} Range\+::end}
+
+
+
+End of the range. 
+
+\Hypertarget{structRange_a62e2e156c0365a0717a666debdeb9c7c}\index{Range@{Range}!start@{start}}
+\index{start@{start}!Range@{Range}}
+\doxysubsubsection{\texorpdfstring{start}{start}}
+{\footnotesize\ttfamily \label{structRange_a62e2e156c0365a0717a666debdeb9c7c} 
+\mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}} Range\+::start}
+
+
+
+Start of the range. 
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/rtree\+\_\+hilbert/\mbox{\hyperlink{ranges_8h}{ranges.\+h}}\end{DoxyCompactItemize}

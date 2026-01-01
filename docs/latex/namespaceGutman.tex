@@ -1,0 +1,43 @@
+\doxysection{Gutman Namespace Reference}
+\hypertarget{namespaceGutman}{}\label{namespaceGutman}\index{Gutman@{Gutman}}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structGutman_1_1Rectangle}{Rectangle}}
+\begin{DoxyCompactList}\small\item\em Axis-\/aligned rectangle/hyperrectangle in N-\/dimensional space. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structGutman_1_1Node}{Node}}
+\begin{DoxyCompactList}\small\item\em \doxylink{structGutman_1_1Node}{Node} in an R-\/\+Tree, can be a leaf or internal. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classGutman_1_1RTree}{RTree}}
+\begin{DoxyCompactList}\small\item\em Generic R-\/\+Tree implementation for N-\/dimensional rectangles. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{namespaceGutman_a6fc9dea3297bbff7cccd3b5c350bbb0e}{equal}} (double x, double y, double eps=1e-\/7)
+\begin{DoxyCompactList}\small\item\em Compares two doubles for approximate equality. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\label{doc-func-members}
+\Hypertarget{namespaceGutman_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{namespaceGutman_a6fc9dea3297bbff7cccd3b5c350bbb0e}\index{Gutman@{Gutman}!equal@{equal}}
+\index{equal@{equal}!Gutman@{Gutman}}
+\doxysubsubsection{\texorpdfstring{equal()}{equal()}}
+{\footnotesize\ttfamily \label{namespaceGutman_a6fc9dea3297bbff7cccd3b5c350bbb0e} 
+bool Gutman\+::equal (\begin{DoxyParamCaption}\item[{double}]{x}{, }\item[{double}]{y}{, }\item[{double}]{eps}{ = {\ttfamily 1e-\/7}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Compares two doubles for approximate equality. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & First value \\
+\hline
+{\em y} & Second value \\
+\hline
+{\em eps} & Relative tolerance (default 1e-\/7) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if \texorpdfstring{$\vert$}{|}x -\/ y\texorpdfstring{$\vert$}{|} \texorpdfstring{$<$}{<}= eps \texorpdfstring{$\ast$}{*} (\texorpdfstring{$\vert$}{|}x\texorpdfstring{$\vert$}{|} + \texorpdfstring{$\vert$}{|}y\texorpdfstring{$\vert$}{|}), false otherwise 
+\end{DoxyReturn}

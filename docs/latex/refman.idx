@@ -1,0 +1,349 @@
+\indexentry{src/rtree Directory Reference@{src/rtree Directory Reference}|hyperpage}{11}
+\indexentry{src/rtree\_hilbert Directory Reference@{src/rtree\_hilbert Directory Reference}|hyperpage}{11}
+\indexentry{src Directory Reference@{src Directory Reference}|hyperpage}{11}
+\indexentry{Gutman@{Gutman}|hyperpage}{13}
+\indexentry{Gutman@{Gutman}!equal@{equal}|hyperpage}{13}
+\indexentry{equal@{equal}!Gutman@{Gutman}|hyperpage}{13}
+\indexentry{hilbert@{hilbert}|hyperpage}{14}
+\indexentry{hilbert@{hilbert}!EntrySet@{EntrySet}|hyperpage}{14}
+\indexentry{EntrySet@{EntrySet}!hilbert@{hilbert}|hyperpage}{14}
+\indexentry{hilbert@{hilbert}!not\_implemented@{not\_implemented}|hyperpage}{14}
+\indexentry{not\_implemented@{not\_implemented}!hilbert@{hilbert}|hyperpage}{14}
+\indexentry{Box@{Box}|hyperpage}{15}
+\indexentry{Box@{Box}!Box@{Box}|hyperpage}{15}
+\indexentry{Box@{Box}!Box@{Box}|hyperpage}{15}
+\indexentry{Box@{Box}!contains@{contains}|hyperpage}{16}
+\indexentry{contains@{contains}!Box@{Box}|hyperpage}{16}
+\indexentry{Box@{Box}!visit\_perimiter@{visit\_perimiter}|hyperpage}{16}
+\indexentry{visit\_perimiter@{visit\_perimiter}!Box@{Box}|hyperpage}{16}
+\indexentry{HilbertCurve@{HilbertCurve}|hyperpage}{16}
+\indexentry{HilbertCurve@{HilbertCurve}!HilbertCurve@{HilbertCurve}|hyperpage}{17}
+\indexentry{HilbertCurve@{HilbertCurve}!HilbertCurve@{HilbertCurve}|hyperpage}{17}
+\indexentry{HilbertCurve@{HilbertCurve}!get\_bits@{get\_bits}|hyperpage}{17}
+\indexentry{get\_bits@{get\_bits}!HilbertCurve@{HilbertCurve}|hyperpage}{17}
+\indexentry{HilbertCurve@{HilbertCurve}!get\_dim@{get\_dim}|hyperpage}{17}
+\indexentry{get\_dim@{get\_dim}!HilbertCurve@{HilbertCurve}|hyperpage}{17}
+\indexentry{HilbertCurve@{HilbertCurve}!get\_length@{get\_length}|hyperpage}{18}
+\indexentry{get\_length@{get\_length}!HilbertCurve@{HilbertCurve}|hyperpage}{18}
+\indexentry{HilbertCurve@{HilbertCurve}!index@{index}|hyperpage}{18}
+\indexentry{index@{index}!HilbertCurve@{HilbertCurve}|hyperpage}{18}
+\indexentry{HilbertCurve@{HilbertCurve}!max\_index@{max\_index}|hyperpage}{18}
+\indexentry{max\_index@{max\_index}!HilbertCurve@{HilbertCurve}|hyperpage}{18}
+\indexentry{HilbertCurve@{HilbertCurve}!max\_ordinate@{max\_ordinate}|hyperpage}{18}
+\indexentry{max\_ordinate@{max\_ordinate}!HilbertCurve@{HilbertCurve}|hyperpage}{18}
+\indexentry{HilbertCurve@{HilbertCurve}!point@{point}|hyperpage}{18}
+\indexentry{point@{point}!HilbertCurve@{HilbertCurve}|hyperpage}{18}
+\indexentry{HilbertCurve@{HilbertCurve}!point@{point}|hyperpage}{18}
+\indexentry{point@{point}!HilbertCurve@{HilbertCurve}|hyperpage}{18}
+\indexentry{HilbertCurve@{HilbertCurve}!query@{query}|hyperpage}{18}
+\indexentry{query@{query}!HilbertCurve@{HilbertCurve}|hyperpage}{18}
+\indexentry{HilbertCurve@{HilbertCurve}!to\_index@{to\_index}|hyperpage}{19}
+\indexentry{to\_index@{to\_index}!HilbertCurve@{HilbertCurve}|hyperpage}{19}
+\indexentry{HilbertCurve@{HilbertCurve}!transpose@{transpose}|hyperpage}{19}
+\indexentry{transpose@{transpose}!HilbertCurve@{HilbertCurve}|hyperpage}{19}
+\indexentry{HilbertCurve@{HilbertCurve}!transpose@{transpose}|hyperpage}{19}
+\indexentry{transpose@{transpose}!HilbertCurve@{HilbertCurve}|hyperpage}{19}
+\indexentry{HilbertCurve@{HilbertCurve}!transposed\_index@{transposed\_index}|hyperpage}{19}
+\indexentry{transposed\_index@{transposed\_index}!HilbertCurve@{HilbertCurve}|hyperpage}{19}
+\indexentry{HilbertCurve@{HilbertCurve}!transposed\_index\_to\_point@{transposed\_index\_to\_point}|hyperpage}{20}
+\indexentry{transposed\_index\_to\_point@{transposed\_index\_to\_point}!HilbertCurve@{HilbertCurve}|hyperpage}{20}
+\indexentry{hilbert::InnerNode$<$ T $>$@{hilbert::InnerNode$<$ T $>$}|hyperpage}{20}
+\indexentry{hilbert::InnerNode$<$ T $>$@{hilbert::InnerNode$<$ T $>$}!InnerNode@{InnerNode}|hyperpage}{21}
+\indexentry{InnerNode@{InnerNode}!hilbert::InnerNode$<$ T $>$@{hilbert::InnerNode$<$ T $>$}|hyperpage}{21}
+\indexentry{hilbert::InnerNode$<$ T $>$@{hilbert::InnerNode$<$ T $>$}!get\_lhv@{get\_lhv}|hyperpage}{21}
+\indexentry{get\_lhv@{get\_lhv}!hilbert::InnerNode$<$ T $>$@{hilbert::InnerNode$<$ T $>$}|hyperpage}{21}
+\indexentry{hilbert::InnerNode$<$ T $>$@{hilbert::InnerNode$<$ T $>$}!get\_mbr@{get\_mbr}|hyperpage}{21}
+\indexentry{get\_mbr@{get\_mbr}!hilbert::InnerNode$<$ T $>$@{hilbert::InnerNode$<$ T $>$}|hyperpage}{21}
+\indexentry{hilbert::InnerNode$<$ T $>$@{hilbert::InnerNode$<$ T $>$}!get\_node@{get\_node}|hyperpage}{21}
+\indexentry{get\_node@{get\_node}!hilbert::InnerNode$<$ T $>$@{hilbert::InnerNode$<$ T $>$}|hyperpage}{21}
+\indexentry{hilbert::InnerNode$<$ T $>$@{hilbert::InnerNode$<$ T $>$}!is\_leaf@{is\_leaf}|hyperpage}{21}
+\indexentry{is\_leaf@{is\_leaf}!hilbert::InnerNode$<$ T $>$@{hilbert::InnerNode$<$ T $>$}|hyperpage}{21}
+\indexentry{hilbert::InnerNode$<$ T $>$@{hilbert::InnerNode$<$ T $>$}!node@{node}|hyperpage}{21}
+\indexentry{node@{node}!hilbert::InnerNode$<$ T $>$@{hilbert::InnerNode$<$ T $>$}|hyperpage}{21}
+\indexentry{hilbert::LeafEntry$<$ T $>$@{hilbert::LeafEntry$<$ T $>$}|hyperpage}{22}
+\indexentry{hilbert::LeafEntry$<$ T $>$@{hilbert::LeafEntry$<$ T $>$}!LeafEntry@{LeafEntry}|hyperpage}{22}
+\indexentry{LeafEntry@{LeafEntry}!hilbert::LeafEntry$<$ T $>$@{hilbert::LeafEntry$<$ T $>$}|hyperpage}{22}
+\indexentry{hilbert::LeafEntry$<$ T $>$@{hilbert::LeafEntry$<$ T $>$}!get\_lhv@{get\_lhv}|hyperpage}{22}
+\indexentry{get\_lhv@{get\_lhv}!hilbert::LeafEntry$<$ T $>$@{hilbert::LeafEntry$<$ T $>$}|hyperpage}{22}
+\indexentry{hilbert::LeafEntry$<$ T $>$@{hilbert::LeafEntry$<$ T $>$}!get\_mbr@{get\_mbr}|hyperpage}{22}
+\indexentry{get\_mbr@{get\_mbr}!hilbert::LeafEntry$<$ T $>$@{hilbert::LeafEntry$<$ T $>$}|hyperpage}{22}
+\indexentry{hilbert::LeafEntry$<$ T $>$@{hilbert::LeafEntry$<$ T $>$}!is\_leaf@{is\_leaf}|hyperpage}{23}
+\indexentry{is\_leaf@{is\_leaf}!hilbert::LeafEntry$<$ T $>$@{hilbert::LeafEntry$<$ T $>$}|hyperpage}{23}
+\indexentry{hilbert::LeafEntry$<$ T $>$@{hilbert::LeafEntry$<$ T $>$}!elem@{elem}|hyperpage}{23}
+\indexentry{elem@{elem}!hilbert::LeafEntry$<$ T $>$@{hilbert::LeafEntry$<$ T $>$}|hyperpage}{23}
+\indexentry{hilbert::LeafEntry$<$ T $>$@{hilbert::LeafEntry$<$ T $>$}!lhv@{lhv}|hyperpage}{23}
+\indexentry{lhv@{lhv}!hilbert::LeafEntry$<$ T $>$@{hilbert::LeafEntry$<$ T $>$}|hyperpage}{23}
+\indexentry{hilbert::LeafEntry$<$ T $>$@{hilbert::LeafEntry$<$ T $>$}!mbr@{mbr}|hyperpage}{23}
+\indexentry{mbr@{mbr}!hilbert::LeafEntry$<$ T $>$@{hilbert::LeafEntry$<$ T $>$}|hyperpage}{23}
+\indexentry{Gutman::Node$<$ T $>$@{Gutman::Node$<$ T $>$}|hyperpage}{23}
+\indexentry{Gutman::Node$<$ T $>$@{Gutman::Node$<$ T $>$}!Node@{Node}|hyperpage}{25}
+\indexentry{Node@{Node}!Gutman::Node$<$ T $>$@{Gutman::Node$<$ T $>$}|hyperpage}{25}
+\indexentry{Gutman::Node$<$ T $>$@{Gutman::Node$<$ T $>$}!````~Node@{\texorpdfstring{$\sim$}{\string~}Node}|hyperpage}{25}
+\indexentry{````~Node@{\texorpdfstring{$\sim$}{\string~}Node}!Gutman::Node$<$ T $>$@{Gutman::Node$<$ T $>$}|hyperpage}{25}
+\indexentry{Gutman::Node$<$ T $>$@{Gutman::Node$<$ T $>$}!count@{count}|hyperpage}{25}
+\indexentry{count@{count}!Gutman::Node$<$ T $>$@{Gutman::Node$<$ T $>$}|hyperpage}{25}
+\indexentry{Gutman::Node$<$ T $>$@{Gutman::Node$<$ T $>$}!update\_mbr@{update\_mbr}|hyperpage}{25}
+\indexentry{update\_mbr@{update\_mbr}!Gutman::Node$<$ T $>$@{Gutman::Node$<$ T $>$}|hyperpage}{25}
+\indexentry{Gutman::Node$<$ T $>$@{Gutman::Node$<$ T $>$}!children@{children}|hyperpage}{25}
+\indexentry{children@{children}!Gutman::Node$<$ T $>$@{Gutman::Node$<$ T $>$}|hyperpage}{25}
+\indexentry{Gutman::Node$<$ T $>$@{Gutman::Node$<$ T $>$}!elems@{elems}|hyperpage}{25}
+\indexentry{elems@{elems}!Gutman::Node$<$ T $>$@{Gutman::Node$<$ T $>$}|hyperpage}{25}
+\indexentry{Gutman::Node$<$ T $>$@{Gutman::Node$<$ T $>$}!is\_leaf@{is\_leaf}|hyperpage}{25}
+\indexentry{is\_leaf@{is\_leaf}!Gutman::Node$<$ T $>$@{Gutman::Node$<$ T $>$}|hyperpage}{25}
+\indexentry{Gutman::Node$<$ T $>$@{Gutman::Node$<$ T $>$}!mbr@{mbr}|hyperpage}{25}
+\indexentry{mbr@{mbr}!Gutman::Node$<$ T $>$@{Gutman::Node$<$ T $>$}|hyperpage}{25}
+\indexentry{Gutman::Node$<$ T $>$@{Gutman::Node$<$ T $>$}!parent@{parent}|hyperpage}{25}
+\indexentry{parent@{parent}!Gutman::Node$<$ T $>$@{Gutman::Node$<$ T $>$}|hyperpage}{25}
+\indexentry{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}|hyperpage}{26}
+\indexentry{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!Node@{Node}|hyperpage}{27}
+\indexentry{Node@{Node}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}|hyperpage}{27}
+\indexentry{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!````~Node@{\texorpdfstring{$\sim$}{\string~}Node}|hyperpage}{27}
+\indexentry{````~Node@{\texorpdfstring{$\sim$}{\string~}Node}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}|hyperpage}{27}
+\indexentry{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!adjust\_lhv@{adjust\_lhv}|hyperpage}{27}
+\indexentry{adjust\_lhv@{adjust\_lhv}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}|hyperpage}{27}
+\indexentry{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!adjust\_mbr@{adjust\_mbr}|hyperpage}{27}
+\indexentry{adjust\_mbr@{adjust\_mbr}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}|hyperpage}{27}
+\indexentry{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!get\_entries@{get\_entries}|hyperpage}{27}
+\indexentry{get\_entries@{get\_entries}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}|hyperpage}{27}
+\indexentry{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!get\_lhv@{get\_lhv}|hyperpage}{27}
+\indexentry{get\_lhv@{get\_lhv}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}|hyperpage}{27}
+\indexentry{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!get\_mbr@{get\_mbr}|hyperpage}{27}
+\indexentry{get\_mbr@{get\_mbr}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}|hyperpage}{27}
+\indexentry{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!get\_next\_siblings@{get\_next\_siblings}|hyperpage}{27}
+\indexentry{get\_next\_siblings@{get\_next\_siblings}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}|hyperpage}{27}
+\indexentry{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!get\_parent@{get\_parent}|hyperpage}{27}
+\indexentry{get\_parent@{get\_parent}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}|hyperpage}{27}
+\indexentry{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!get\_prev\_siblings@{get\_prev\_siblings}|hyperpage}{27}
+\indexentry{get\_prev\_siblings@{get\_prev\_siblings}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}|hyperpage}{27}
+\indexentry{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!get\_siblings@{get\_siblings}|hyperpage}{27}
+\indexentry{get\_siblings@{get\_siblings}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}|hyperpage}{27}
+\indexentry{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!insert\_inner\_entry@{insert\_inner\_entry}|hyperpage}{27}
+\indexentry{insert\_inner\_entry@{insert\_inner\_entry}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}|hyperpage}{27}
+\indexentry{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!insert\_leaf\_entry@{insert\_leaf\_entry}|hyperpage}{27}
+\indexentry{insert\_leaf\_entry@{insert\_leaf\_entry}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}|hyperpage}{27}
+\indexentry{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!is\_leaf@{is\_leaf}|hyperpage}{27}
+\indexentry{is\_leaf@{is\_leaf}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}|hyperpage}{27}
+\indexentry{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!overflow@{overflow}|hyperpage}{27}
+\indexentry{overflow@{overflow}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}|hyperpage}{27}
+\indexentry{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!remove\_inner\_entry@{remove\_inner\_entry}|hyperpage}{27}
+\indexentry{remove\_inner\_entry@{remove\_inner\_entry}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}|hyperpage}{27}
+\indexentry{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!remove\_leaf\_entry@{remove\_leaf\_entry}|hyperpage}{28}
+\indexentry{remove\_leaf\_entry@{remove\_leaf\_entry}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}|hyperpage}{28}
+\indexentry{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!reset\_entries@{reset\_entries}|hyperpage}{28}
+\indexentry{reset\_entries@{reset\_entries}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}|hyperpage}{28}
+\indexentry{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!set\_leaf@{set\_leaf}|hyperpage}{28}
+\indexentry{set\_leaf@{set\_leaf}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}|hyperpage}{28}
+\indexentry{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!set\_next\_siblings@{set\_next\_siblings}|hyperpage}{28}
+\indexentry{set\_next\_siblings@{set\_next\_siblings}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}|hyperpage}{28}
+\indexentry{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!set\_parent@{set\_parent}|hyperpage}{28}
+\indexentry{set\_parent@{set\_parent}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}|hyperpage}{28}
+\indexentry{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!set\_prev\_siblings@{set\_prev\_siblings}|hyperpage}{28}
+\indexentry{set\_prev\_siblings@{set\_prev\_siblings}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}|hyperpage}{28}
+\indexentry{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!underflow@{underflow}|hyperpage}{28}
+\indexentry{underflow@{underflow}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}|hyperpage}{28}
+\indexentry{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!curve@{curve}|hyperpage}{28}
+\indexentry{curve@{curve}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}|hyperpage}{28}
+\indexentry{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!dims@{dims}|hyperpage}{28}
+\indexentry{dims@{dims}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}|hyperpage}{28}
+\indexentry{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!entries@{entries}|hyperpage}{28}
+\indexentry{entries@{entries}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}|hyperpage}{28}
+\indexentry{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!leaf@{leaf}|hyperpage}{28}
+\indexentry{leaf@{leaf}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}|hyperpage}{28}
+\indexentry{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!lhv@{lhv}|hyperpage}{28}
+\indexentry{lhv@{lhv}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}|hyperpage}{28}
+\indexentry{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!max\_entries@{max\_entries}|hyperpage}{28}
+\indexentry{max\_entries@{max\_entries}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}|hyperpage}{28}
+\indexentry{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!mbr@{mbr}|hyperpage}{28}
+\indexentry{mbr@{mbr}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}|hyperpage}{28}
+\indexentry{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!min\_entries@{min\_entries}|hyperpage}{29}
+\indexentry{min\_entries@{min\_entries}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}|hyperpage}{29}
+\indexentry{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!next\_sibling@{next\_sibling}|hyperpage}{29}
+\indexentry{next\_sibling@{next\_sibling}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}|hyperpage}{29}
+\indexentry{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!parent@{parent}|hyperpage}{29}
+\indexentry{parent@{parent}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}|hyperpage}{29}
+\indexentry{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!prev\_sibling@{prev\_sibling}|hyperpage}{29}
+\indexentry{prev\_sibling@{prev\_sibling}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}|hyperpage}{29}
+\indexentry{hilbert::NodeEntry$<$ T $>$@{hilbert::NodeEntry$<$ T $>$}|hyperpage}{29}
+\indexentry{hilbert::NodeEntry$<$ T $>$@{hilbert::NodeEntry$<$ T $>$}!````~NodeEntry@{\texorpdfstring{$\sim$}{\string~}NodeEntry}|hyperpage}{29}
+\indexentry{````~NodeEntry@{\texorpdfstring{$\sim$}{\string~}NodeEntry}!hilbert::NodeEntry$<$ T $>$@{hilbert::NodeEntry$<$ T $>$}|hyperpage}{29}
+\indexentry{hilbert::NodeEntry$<$ T $>$@{hilbert::NodeEntry$<$ T $>$}!get\_lhv@{get\_lhv}|hyperpage}{29}
+\indexentry{get\_lhv@{get\_lhv}!hilbert::NodeEntry$<$ T $>$@{hilbert::NodeEntry$<$ T $>$}|hyperpage}{29}
+\indexentry{hilbert::NodeEntry$<$ T $>$@{hilbert::NodeEntry$<$ T $>$}!get\_mbr@{get\_mbr}|hyperpage}{29}
+\indexentry{get\_mbr@{get\_mbr}!hilbert::NodeEntry$<$ T $>$@{hilbert::NodeEntry$<$ T $>$}|hyperpage}{29}
+\indexentry{hilbert::NodeEntry$<$ T $>$@{hilbert::NodeEntry$<$ T $>$}!is\_leaf@{is\_leaf}|hyperpage}{30}
+\indexentry{is\_leaf@{is\_leaf}!hilbert::NodeEntry$<$ T $>$@{hilbert::NodeEntry$<$ T $>$}|hyperpage}{30}
+\indexentry{hilbert::nodeEntryComparison$<$ T $>$@{hilbert::nodeEntryComparison$<$ T $>$}|hyperpage}{30}
+\indexentry{hilbert::nodeEntryComparison$<$ T $>$@{hilbert::nodeEntryComparison$<$ T $>$}!operator()@{operator()}|hyperpage}{30}
+\indexentry{operator()@{operator()}!hilbert::nodeEntryComparison$<$ T $>$@{hilbert::nodeEntryComparison$<$ T $>$}|hyperpage}{30}
+\indexentry{Range@{Range}|hyperpage}{30}
+\indexentry{Range@{Range}!Range@{Range}|hyperpage}{30}
+\indexentry{Range@{Range}!Range@{Range}|hyperpage}{30}
+\indexentry{Range@{Range}!end@{end}|hyperpage}{31}
+\indexentry{end@{end}!Range@{Range}|hyperpage}{31}
+\indexentry{Range@{Range}!start@{start}|hyperpage}{31}
+\indexentry{start@{start}!Range@{Range}|hyperpage}{31}
+\indexentry{Ranges@{Ranges}|hyperpage}{31}
+\indexentry{Ranges@{Ranges}!Ranges@{Ranges}|hyperpage}{31}
+\indexentry{Ranges@{Ranges}!Ranges@{Ranges}|hyperpage}{31}
+\indexentry{Ranges@{Ranges}!add@{add}|hyperpage}{32}
+\indexentry{add@{add}!Ranges@{Ranges}|hyperpage}{32}
+\indexentry{Ranges@{Ranges}!begin@{begin}|hyperpage}{32}
+\indexentry{begin@{begin}!Ranges@{Ranges}|hyperpage}{32}
+\indexentry{Ranges@{Ranges}!end@{end}|hyperpage}{32}
+\indexentry{end@{end}!Ranges@{Ranges}|hyperpage}{32}
+\indexentry{Ranges@{Ranges}!size@{size}|hyperpage}{32}
+\indexentry{size@{size}!Ranges@{Ranges}|hyperpage}{32}
+\indexentry{Gutman::Rectangle@{Gutman::Rectangle}|hyperpage}{32}
+\indexentry{Gutman::Rectangle@{Gutman::Rectangle}!Rectangle@{Rectangle}|hyperpage}{33}
+\indexentry{Rectangle@{Rectangle}!Gutman::Rectangle@{Gutman::Rectangle}|hyperpage}{33}
+\indexentry{Gutman::Rectangle@{Gutman::Rectangle}!area@{area}|hyperpage}{34}
+\indexentry{area@{area}!Gutman::Rectangle@{Gutman::Rectangle}|hyperpage}{34}
+\indexentry{Gutman::Rectangle@{Gutman::Rectangle}!calc\_mbr@{calc\_mbr}|hyperpage}{34}
+\indexentry{calc\_mbr@{calc\_mbr}!Gutman::Rectangle@{Gutman::Rectangle}|hyperpage}{34}
+\indexentry{Gutman::Rectangle@{Gutman::Rectangle}!calc\_mbr@{calc\_mbr}|hyperpage}{34}
+\indexentry{calc\_mbr@{calc\_mbr}!Gutman::Rectangle@{Gutman::Rectangle}|hyperpage}{34}
+\indexentry{Gutman::Rectangle@{Gutman::Rectangle}!calc\_mbr\_area@{calc\_mbr\_area}|hyperpage}{34}
+\indexentry{calc\_mbr\_area@{calc\_mbr\_area}!Gutman::Rectangle@{Gutman::Rectangle}|hyperpage}{34}
+\indexentry{Gutman::Rectangle@{Gutman::Rectangle}!contains@{contains}|hyperpage}{34}
+\indexentry{contains@{contains}!Gutman::Rectangle@{Gutman::Rectangle}|hyperpage}{34}
+\indexentry{Gutman::Rectangle@{Gutman::Rectangle}!enlargement\_needed@{enlargement\_needed}|hyperpage}{34}
+\indexentry{enlargement\_needed@{enlargement\_needed}!Gutman::Rectangle@{Gutman::Rectangle}|hyperpage}{34}
+\indexentry{Gutman::Rectangle@{Gutman::Rectangle}!equal@{equal}|hyperpage}{34}
+\indexentry{equal@{equal}!Gutman::Rectangle@{Gutman::Rectangle}|hyperpage}{34}
+\indexentry{Gutman::Rectangle@{Gutman::Rectangle}!overlap@{overlap}|hyperpage}{34}
+\indexentry{overlap@{overlap}!Gutman::Rectangle@{Gutman::Rectangle}|hyperpage}{34}
+\indexentry{Gutman::Rectangle@{Gutman::Rectangle}!vec\_equal@{vec\_equal}|hyperpage}{34}
+\indexentry{vec\_equal@{vec\_equal}!Gutman::Rectangle@{Gutman::Rectangle}|hyperpage}{34}
+\indexentry{Gutman::Rectangle@{Gutman::Rectangle}!max@{max}|hyperpage}{35}
+\indexentry{max@{max}!Gutman::Rectangle@{Gutman::Rectangle}|hyperpage}{35}
+\indexentry{Gutman::Rectangle@{Gutman::Rectangle}!min@{min}|hyperpage}{35}
+\indexentry{min@{min}!Gutman::Rectangle@{Gutman::Rectangle}|hyperpage}{35}
+\indexentry{hilbert::Rectangle@{hilbert::Rectangle}|hyperpage}{35}
+\indexentry{hilbert::Rectangle@{hilbert::Rectangle}!Rectangle@{Rectangle}|hyperpage}{35}
+\indexentry{Rectangle@{Rectangle}!hilbert::Rectangle@{hilbert::Rectangle}|hyperpage}{35}
+\indexentry{hilbert::Rectangle@{hilbert::Rectangle}!contains@{contains}|hyperpage}{36}
+\indexentry{contains@{contains}!hilbert::Rectangle@{hilbert::Rectangle}|hyperpage}{36}
+\indexentry{hilbert::Rectangle@{hilbert::Rectangle}!get\_center@{get\_center}|hyperpage}{36}
+\indexentry{get\_center@{get\_center}!hilbert::Rectangle@{hilbert::Rectangle}|hyperpage}{36}
+\indexentry{hilbert::Rectangle@{hilbert::Rectangle}!get\_lower@{get\_lower}|hyperpage}{36}
+\indexentry{get\_lower@{get\_lower}!hilbert::Rectangle@{hilbert::Rectangle}|hyperpage}{36}
+\indexentry{hilbert::Rectangle@{hilbert::Rectangle}!get\_upper@{get\_upper}|hyperpage}{36}
+\indexentry{get\_upper@{get\_upper}!hilbert::Rectangle@{hilbert::Rectangle}|hyperpage}{36}
+\indexentry{hilbert::Rectangle@{hilbert::Rectangle}!intersects@{intersects}|hyperpage}{36}
+\indexentry{intersects@{intersects}!hilbert::Rectangle@{hilbert::Rectangle}|hyperpage}{36}
+\indexentry{hilbert::Rectangle@{hilbert::Rectangle}!operator==@{operator==}|hyperpage}{37}
+\indexentry{operator==@{operator==}!hilbert::Rectangle@{hilbert::Rectangle}|hyperpage}{37}
+\indexentry{hilbert::Rectangle@{hilbert::Rectangle}!higher@{higher}|hyperpage}{37}
+\indexentry{higher@{higher}!hilbert::Rectangle@{hilbert::Rectangle}|hyperpage}{37}
+\indexentry{hilbert::Rectangle@{hilbert::Rectangle}!lower@{lower}|hyperpage}{37}
+\indexentry{lower@{lower}!hilbert::Rectangle@{hilbert::Rectangle}|hyperpage}{37}
+\indexentry{Gutman::RTree$<$ T $>$@{Gutman::RTree$<$ T $>$}|hyperpage}{37}
+\indexentry{Gutman::RTree$<$ T $>$@{Gutman::RTree$<$ T $>$}!RTree@{RTree}|hyperpage}{38}
+\indexentry{RTree@{RTree}!Gutman::RTree$<$ T $>$@{Gutman::RTree$<$ T $>$}|hyperpage}{38}
+\indexentry{Gutman::RTree$<$ T $>$@{Gutman::RTree$<$ T $>$}!````~RTree@{\texorpdfstring{$\sim$}{\string~}RTree}|hyperpage}{38}
+\indexentry{````~RTree@{\texorpdfstring{$\sim$}{\string~}RTree}!Gutman::RTree$<$ T $>$@{Gutman::RTree$<$ T $>$}|hyperpage}{38}
+\indexentry{Gutman::RTree$<$ T $>$@{Gutman::RTree$<$ T $>$}!insert@{insert}|hyperpage}{38}
+\indexentry{insert@{insert}!Gutman::RTree$<$ T $>$@{Gutman::RTree$<$ T $>$}|hyperpage}{38}
+\indexentry{Gutman::RTree$<$ T $>$@{Gutman::RTree$<$ T $>$}!remove@{remove}|hyperpage}{38}
+\indexentry{remove@{remove}!Gutman::RTree$<$ T $>$@{Gutman::RTree$<$ T $>$}|hyperpage}{38}
+\indexentry{Gutman::RTree$<$ T $>$@{Gutman::RTree$<$ T $>$}!search@{search}|hyperpage}{38}
+\indexentry{search@{search}!Gutman::RTree$<$ T $>$@{Gutman::RTree$<$ T $>$}|hyperpage}{38}
+\indexentry{Gutman::RTree$<$ T $>$@{Gutman::RTree$<$ T $>$}!update@{update}|hyperpage}{38}
+\indexentry{update@{update}!Gutman::RTree$<$ T $>$@{Gutman::RTree$<$ T $>$}|hyperpage}{38}
+\indexentry{hilbert::RTree$<$ T $>$@{hilbert::RTree$<$ T $>$}|hyperpage}{39}
+\indexentry{hilbert::RTree$<$ T $>$@{hilbert::RTree$<$ T $>$}!RTree@{RTree}|hyperpage}{39}
+\indexentry{RTree@{RTree}!hilbert::RTree$<$ T $>$@{hilbert::RTree$<$ T $>$}|hyperpage}{39}
+\indexentry{hilbert::RTree$<$ T $>$@{hilbert::RTree$<$ T $>$}!````~RTree@{\texorpdfstring{$\sim$}{\string~}RTree}|hyperpage}{39}
+\indexentry{````~RTree@{\texorpdfstring{$\sim$}{\string~}RTree}!hilbert::RTree$<$ T $>$@{hilbert::RTree$<$ T $>$}|hyperpage}{39}
+\indexentry{hilbert::RTree$<$ T $>$@{hilbert::RTree$<$ T $>$}!insert@{insert}|hyperpage}{39}
+\indexentry{insert@{insert}!hilbert::RTree$<$ T $>$@{hilbert::RTree$<$ T $>$}|hyperpage}{39}
+\indexentry{hilbert::RTree$<$ T $>$@{hilbert::RTree$<$ T $>$}!remove@{remove}|hyperpage}{40}
+\indexentry{remove@{remove}!hilbert::RTree$<$ T $>$@{hilbert::RTree$<$ T $>$}|hyperpage}{40}
+\indexentry{hilbert::RTree$<$ T $>$@{hilbert::RTree$<$ T $>$}!search@{search}|hyperpage}{40}
+\indexentry{search@{search}!hilbert::RTree$<$ T $>$@{hilbert::RTree$<$ T $>$}|hyperpage}{40}
+\indexentry{RTreeTest@{RTreeTest}|hyperpage}{40}
+\indexentry{RTreeTest@{RTreeTest}!assert\_true@{assert\_true}|hyperpage}{41}
+\indexentry{assert\_true@{assert\_true}!RTreeTest@{RTreeTest}|hyperpage}{41}
+\indexentry{RTreeTest@{RTreeTest}!print\_summary@{print\_summary}|hyperpage}{41}
+\indexentry{print\_summary@{print\_summary}!RTreeTest@{RTreeTest}|hyperpage}{41}
+\indexentry{RTreeTest@{RTreeTest}!run\_all\_tests@{run\_all\_tests}|hyperpage}{41}
+\indexentry{run\_all\_tests@{run\_all\_tests}!RTreeTest@{RTreeTest}|hyperpage}{41}
+\indexentry{RTreeTest@{RTreeTest}!test\_3d\_rectangles@{test\_3d\_rectangles}|hyperpage}{41}
+\indexentry{test\_3d\_rectangles@{test\_3d\_rectangles}!RTreeTest@{RTreeTest}|hyperpage}{41}
+\indexentry{RTreeTest@{RTreeTest}!test\_deep\_tree\_with\_condense@{test\_deep\_tree\_with\_condense}|hyperpage}{41}
+\indexentry{test\_deep\_tree\_with\_condense@{test\_deep\_tree\_with\_condense}!RTreeTest@{RTreeTest}|hyperpage}{41}
+\indexentry{RTreeTest@{RTreeTest}!test\_deep\_tree\_with\_extreme\_condense@{test\_deep\_tree\_with\_extreme\_condense}|hyperpage}{41}
+\indexentry{test\_deep\_tree\_with\_extreme\_condense@{test\_deep\_tree\_with\_extreme\_condense}!RTreeTest@{RTreeTest}|hyperpage}{41}
+\indexentry{RTreeTest@{RTreeTest}!test\_delete\_and\_reinsert@{test\_delete\_and\_reinsert}|hyperpage}{41}
+\indexentry{test\_delete\_and\_reinsert@{test\_delete\_and\_reinsert}!RTreeTest@{RTreeTest}|hyperpage}{41}
+\indexentry{RTreeTest@{RTreeTest}!test\_delete\_every\_other\_element@{test\_delete\_every\_other\_element}|hyperpage}{41}
+\indexentry{test\_delete\_every\_other\_element@{test\_delete\_every\_other\_element}!RTreeTest@{RTreeTest}|hyperpage}{41}
+\indexentry{RTreeTest@{RTreeTest}!test\_delete\_from\_multiple@{test\_delete\_from\_multiple}|hyperpage}{41}
+\indexentry{test\_delete\_from\_multiple@{test\_delete\_from\_multiple}!RTreeTest@{RTreeTest}|hyperpage}{41}
+\indexentry{RTreeTest@{RTreeTest}!test\_delete\_from\_single\_element\_tree@{test\_delete\_from\_single\_element\_tree}|hyperpage}{41}
+\indexentry{test\_delete\_from\_single\_element\_tree@{test\_delete\_from\_single\_element\_tree}!RTreeTest@{RTreeTest}|hyperpage}{41}
+\indexentry{RTreeTest@{RTreeTest}!test\_delete\_multiple\_sequential@{test\_delete\_multiple\_sequential}|hyperpage}{41}
+\indexentry{test\_delete\_multiple\_sequential@{test\_delete\_multiple\_sequential}!RTreeTest@{RTreeTest}|hyperpage}{41}
+\indexentry{RTreeTest@{RTreeTest}!test\_delete\_nonexistent@{test\_delete\_nonexistent}|hyperpage}{41}
+\indexentry{test\_delete\_nonexistent@{test\_delete\_nonexistent}!RTreeTest@{RTreeTest}|hyperpage}{41}
+\indexentry{RTreeTest@{RTreeTest}!test\_delete\_single\_element@{test\_delete\_single\_element}|hyperpage}{41}
+\indexentry{test\_delete\_single\_element@{test\_delete\_single\_element}!RTreeTest@{RTreeTest}|hyperpage}{41}
+\indexentry{RTreeTest@{RTreeTest}!test\_extra\_delete\_and\_reinsert@{test\_extra\_delete\_and\_reinsert}|hyperpage}{41}
+\indexentry{test\_extra\_delete\_and\_reinsert@{test\_extra\_delete\_and\_reinsert}!RTreeTest@{RTreeTest}|hyperpage}{41}
+\indexentry{RTreeTest@{RTreeTest}!test\_high\_dimensional@{test\_high\_dimensional}|hyperpage}{41}
+\indexentry{test\_high\_dimensional@{test\_high\_dimensional}!RTreeTest@{RTreeTest}|hyperpage}{41}
+\indexentry{RTreeTest@{RTreeTest}!test\_insert\_and\_search\_large\_dataset@{test\_insert\_and\_search\_large\_dataset}|hyperpage}{41}
+\indexentry{test\_insert\_and\_search\_large\_dataset@{test\_insert\_and\_search\_large\_dataset}!RTreeTest@{RTreeTest}|hyperpage}{41}
+\indexentry{RTreeTest@{RTreeTest}!test\_insert\_identical\_rectangles@{test\_insert\_identical\_rectangles}|hyperpage}{41}
+\indexentry{test\_insert\_identical\_rectangles@{test\_insert\_identical\_rectangles}!RTreeTest@{RTreeTest}|hyperpage}{41}
+\indexentry{RTreeTest@{RTreeTest}!test\_insert\_multiple\_elements@{test\_insert\_multiple\_elements}|hyperpage}{41}
+\indexentry{test\_insert\_multiple\_elements@{test\_insert\_multiple\_elements}!RTreeTest@{RTreeTest}|hyperpage}{41}
+\indexentry{RTreeTest@{RTreeTest}!test\_insert\_overlapping\_rectangles@{test\_insert\_overlapping\_rectangles}|hyperpage}{41}
+\indexentry{test\_insert\_overlapping\_rectangles@{test\_insert\_overlapping\_rectangles}!RTreeTest@{RTreeTest}|hyperpage}{41}
+\indexentry{RTreeTest@{RTreeTest}!test\_insert\_single\_element@{test\_insert\_single\_element}|hyperpage}{41}
+\indexentry{test\_insert\_single\_element@{test\_insert\_single\_element}!RTreeTest@{RTreeTest}|hyperpage}{41}
+\indexentry{RTreeTest@{RTreeTest}!test\_insert\_trigger\_split@{test\_insert\_trigger\_split}|hyperpage}{42}
+\indexentry{test\_insert\_trigger\_split@{test\_insert\_trigger\_split}!RTreeTest@{RTreeTest}|hyperpage}{42}
+\indexentry{RTreeTest@{RTreeTest}!test\_massive\_delete\_and\_reinsert@{test\_massive\_delete\_and\_reinsert}|hyperpage}{42}
+\indexentry{test\_massive\_delete\_and\_reinsert@{test\_massive\_delete\_and\_reinsert}!RTreeTest@{RTreeTest}|hyperpage}{42}
+\indexentry{RTreeTest@{RTreeTest}!test\_mixed\_insert\_delete\_operations@{test\_mixed\_insert\_delete\_operations}|hyperpage}{42}
+\indexentry{test\_mixed\_insert\_delete\_operations@{test\_mixed\_insert\_delete\_operations}!RTreeTest@{RTreeTest}|hyperpage}{42}
+\indexentry{RTreeTest@{RTreeTest}!test\_search\_empty\_tree@{test\_search\_empty\_tree}|hyperpage}{42}
+\indexentry{test\_search\_empty\_tree@{test\_search\_empty\_tree}!RTreeTest@{RTreeTest}|hyperpage}{42}
+\indexentry{RTreeTest@{RTreeTest}!test\_search\_no\_overlap@{test\_search\_no\_overlap}|hyperpage}{42}
+\indexentry{test\_search\_no\_overlap@{test\_search\_no\_overlap}!RTreeTest@{RTreeTest}|hyperpage}{42}
+\indexentry{RTreeTest@{RTreeTest}!test\_search\_partial\_overlap@{test\_search\_partial\_overlap}|hyperpage}{42}
+\indexentry{test\_search\_partial\_overlap@{test\_search\_partial\_overlap}!RTreeTest@{RTreeTest}|hyperpage}{42}
+\indexentry{RTreeTest@{RTreeTest}!test\_search\_point\_query@{test\_search\_point\_query}|hyperpage}{42}
+\indexentry{test\_search\_point\_query@{test\_search\_point\_query}!RTreeTest@{RTreeTest}|hyperpage}{42}
+\indexentry{RTreeTest@{RTreeTest}!test\_search\_with\_exact\_boundaries@{test\_search\_with\_exact\_boundaries}|hyperpage}{42}
+\indexentry{test\_search\_with\_exact\_boundaries@{test\_search\_with\_exact\_boundaries}!RTreeTest@{RTreeTest}|hyperpage}{42}
+\indexentry{RTreeTest@{RTreeTest}!test\_stress\_test\_splits@{test\_stress\_test\_splits}|hyperpage}{42}
+\indexentry{test\_stress\_test\_splits@{test\_stress\_test\_splits}!RTreeTest@{RTreeTest}|hyperpage}{42}
+\indexentry{RTreeTest@{RTreeTest}!test\_zero\_area\_rectangle@{test\_zero\_area\_rectangle}|hyperpage}{42}
+\indexentry{test\_zero\_area\_rectangle@{test\_zero\_area\_rectangle}!RTreeTest@{RTreeTest}|hyperpage}{42}
+\indexentry{src/main.cpp@{src/main.cpp}|hyperpage}{43}
+\indexentry{main.cpp@{main.cpp}!Rectangle@{Rectangle}|hyperpage}{43}
+\indexentry{Rectangle@{Rectangle}!main.cpp@{main.cpp}|hyperpage}{43}
+\indexentry{main.cpp@{main.cpp}!main@{main}|hyperpage}{43}
+\indexentry{main@{main}!main.cpp@{main.cpp}|hyperpage}{43}
+\indexentry{main.cpp@{main.cpp}!makeRect@{makeRect}|hyperpage}{43}
+\indexentry{makeRect@{makeRect}!main.cpp@{main.cpp}|hyperpage}{43}
+\indexentry{src/rtree/rtree.cpp@{src/rtree/rtree.cpp}|hyperpage}{43}
+\indexentry{src/rtree/rtree.h@{src/rtree/rtree.h}|hyperpage}{44}
+\indexentry{src/rtree/rtree.h@{src/rtree/rtree.h}|hyperpage}{44}
+\indexentry{src/rtree\_hilbert/box.h@{src/rtree\_hilbert/box.h}|hyperpage}{52}
+\indexentry{src/rtree\_hilbert/box.h@{src/rtree\_hilbert/box.h}|hyperpage}{52}
+\indexentry{src/rtree\_hilbert/hilbert\_curve.cpp@{src/rtree\_hilbert/hilbert\_curve.cpp}|hyperpage}{53}
+\indexentry{hilbert\_curve.cpp@{hilbert\_curve.cpp}!Point@{Point}|hyperpage}{53}
+\indexentry{Point@{Point}!hilbert\_curve.cpp@{hilbert\_curve.cpp}|hyperpage}{53}
+\indexentry{src/rtree\_hilbert/hilbert\_curve.h@{src/rtree\_hilbert/hilbert\_curve.h}|hyperpage}{53}
+\indexentry{hilbert\_curve.h@{hilbert\_curve.h}!Point@{Point}|hyperpage}{53}
+\indexentry{Point@{Point}!hilbert\_curve.h@{hilbert\_curve.h}|hyperpage}{53}
+\indexentry{src/rtree\_hilbert/hilbert\_curve.h@{src/rtree\_hilbert/hilbert\_curve.h}|hyperpage}{54}
+\indexentry{src/rtree\_hilbert/hilbert\_rtree.h@{src/rtree\_hilbert/hilbert\_rtree.h}|hyperpage}{54}
+\indexentry{hilbert\_rtree.h@{hilbert\_rtree.h}!Point@{Point}|hyperpage}{55}
+\indexentry{Point@{Point}!hilbert\_rtree.h@{hilbert\_rtree.h}|hyperpage}{55}
+\indexentry{src/rtree\_hilbert/hilbert\_rtree.h@{src/rtree\_hilbert/hilbert\_rtree.h}|hyperpage}{55}
+\indexentry{src/rtree\_hilbert/ranges.h@{src/rtree\_hilbert/ranges.h}|hyperpage}{65}
+\indexentry{src/rtree\_hilbert/ranges.h@{src/rtree\_hilbert/ranges.h}|hyperpage}{65}

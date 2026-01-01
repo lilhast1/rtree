@@ -1,0 +1,182 @@
+\doxysection{hilbert\+::Rectangle Struct Reference}
+\hypertarget{structhilbert_1_1Rectangle}{}\label{structhilbert_1_1Rectangle}\index{hilbert::Rectangle@{hilbert::Rectangle}}
+
+
+Represents an axis-\/aligned rectangle in d-\/dimensional space.  
+
+
+
+
+{\ttfamily \#include $<$hilbert\+\_\+rtree.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structhilbert_1_1Rectangle_afa33a49a77f038ef8695a66c1a8ff903}{Rectangle}} (\mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}} lo, \mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}} hi)
+\begin{DoxyCompactList}\small\item\em Construct a rectangle from lower and upper corners. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}} \mbox{\hyperlink{structhilbert_1_1Rectangle_af37316679d8a65d330bd145e28ed3e76}{get\+\_\+center}} () const
+\begin{DoxyCompactList}\small\item\em Get the center of the rectangle. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}} \mbox{\hyperlink{structhilbert_1_1Rectangle_ac4f7f1ba57897e93a61c7cba4df10526}{get\+\_\+lower}} () const
+\begin{DoxyCompactList}\small\item\em Get the lower corner. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}} \mbox{\hyperlink{structhilbert_1_1Rectangle_ae473c071f7f98f792c48ae1af19a6b8a}{get\+\_\+upper}} () const
+\begin{DoxyCompactList}\small\item\em Get the upper corner. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{structhilbert_1_1Rectangle_acd498e108ca13f52624b8babcc62aa59}{intersects}} (const \mbox{\hyperlink{structhilbert_1_1Rectangle_afa33a49a77f038ef8695a66c1a8ff903}{Rectangle}} \&rect) const
+\begin{DoxyCompactList}\small\item\em Check if this rectangle intersects another. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{structhilbert_1_1Rectangle_a8a7eec1a34ecc6628dae91ab8ac60046}{contains}} (const \mbox{\hyperlink{structhilbert_1_1Rectangle_afa33a49a77f038ef8695a66c1a8ff903}{Rectangle}} \&rect) const
+\begin{DoxyCompactList}\small\item\em Check if this rectangle contains another. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{structhilbert_1_1Rectangle_a1d0d347a533528c191babc5a503d14ad}{operator==}} (const \mbox{\hyperlink{structhilbert_1_1Rectangle_afa33a49a77f038ef8695a66c1a8ff903}{Rectangle}} \&other) const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}} \mbox{\hyperlink{structhilbert_1_1Rectangle_a313da04d276c39031d6ff54138e2537b}{lower}}
+\begin{DoxyCompactList}\small\item\em lower-\/left corner \end{DoxyCompactList}\item 
+\mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}} \mbox{\hyperlink{structhilbert_1_1Rectangle_a582da7e94a86b9b52e168abc34a26cdd}{higher}}
+\begin{DoxyCompactList}\small\item\em upper-\/right corner \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Represents an axis-\/aligned rectangle in d-\/dimensional space. 
+
+\label{doc-constructors}
+\Hypertarget{structhilbert_1_1Rectangle_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{structhilbert_1_1Rectangle_afa33a49a77f038ef8695a66c1a8ff903}\index{hilbert::Rectangle@{hilbert::Rectangle}!Rectangle@{Rectangle}}
+\index{Rectangle@{Rectangle}!hilbert::Rectangle@{hilbert::Rectangle}}
+\doxysubsubsection{\texorpdfstring{Rectangle()}{Rectangle()}}
+{\footnotesize\ttfamily \label{structhilbert_1_1Rectangle_afa33a49a77f038ef8695a66c1a8ff903} 
+\mbox{\hyperlink{structGutman_1_1Rectangle_a0cfa9a835bac4414bcf6feb7c392f564}{hilbert\+::\+Rectangle\+::\+Rectangle}} (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}}}]{lo}{, }\item[{\mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}}}]{hi}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Construct a rectangle from lower and upper corners. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em lo} & lower point \\
+\hline
+{\em hi} & upper point \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::domain\+\_\+error} & if dimensions mismatch \\
+\hline
+\end{DoxyExceptions}
+
+
+\label{doc-func-members}
+\Hypertarget{structhilbert_1_1Rectangle_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{structhilbert_1_1Rectangle_a8a7eec1a34ecc6628dae91ab8ac60046}\index{hilbert::Rectangle@{hilbert::Rectangle}!contains@{contains}}
+\index{contains@{contains}!hilbert::Rectangle@{hilbert::Rectangle}}
+\doxysubsubsection{\texorpdfstring{contains()}{contains()}}
+{\footnotesize\ttfamily \label{structhilbert_1_1Rectangle_a8a7eec1a34ecc6628dae91ab8ac60046} 
+bool \mbox{\hyperlink{structGutman_1_1Rectangle_a85c5e27db8fa1982b91a47e616e365dc}{hilbert\+::\+Rectangle\+::contains}} (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structhilbert_1_1Rectangle_afa33a49a77f038ef8695a66c1a8ff903}{Rectangle}} \&}]{rect}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Check if this rectangle contains another. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rect} & other rectangle \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if fully contains 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::runtime\+\_\+error} & if dimensions mismatch \\
+\hline
+\end{DoxyExceptions}
+\Hypertarget{structhilbert_1_1Rectangle_af37316679d8a65d330bd145e28ed3e76}\index{hilbert::Rectangle@{hilbert::Rectangle}!get\_center@{get\_center}}
+\index{get\_center@{get\_center}!hilbert::Rectangle@{hilbert::Rectangle}}
+\doxysubsubsection{\texorpdfstring{get\_center()}{get\_center()}}
+{\footnotesize\ttfamily \label{structhilbert_1_1Rectangle_af37316679d8a65d330bd145e28ed3e76} 
+\mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}} hilbert\+::\+Rectangle\+::get\+\_\+center (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Get the center of the rectangle. 
+
+\Hypertarget{structhilbert_1_1Rectangle_ac4f7f1ba57897e93a61c7cba4df10526}\index{hilbert::Rectangle@{hilbert::Rectangle}!get\_lower@{get\_lower}}
+\index{get\_lower@{get\_lower}!hilbert::Rectangle@{hilbert::Rectangle}}
+\doxysubsubsection{\texorpdfstring{get\_lower()}{get\_lower()}}
+{\footnotesize\ttfamily \label{structhilbert_1_1Rectangle_ac4f7f1ba57897e93a61c7cba4df10526} 
+\mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}} hilbert\+::\+Rectangle\+::get\+\_\+lower (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Get the lower corner. 
+
+\Hypertarget{structhilbert_1_1Rectangle_ae473c071f7f98f792c48ae1af19a6b8a}\index{hilbert::Rectangle@{hilbert::Rectangle}!get\_upper@{get\_upper}}
+\index{get\_upper@{get\_upper}!hilbert::Rectangle@{hilbert::Rectangle}}
+\doxysubsubsection{\texorpdfstring{get\_upper()}{get\_upper()}}
+{\footnotesize\ttfamily \label{structhilbert_1_1Rectangle_ae473c071f7f98f792c48ae1af19a6b8a} 
+\mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}} hilbert\+::\+Rectangle\+::get\+\_\+upper (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Get the upper corner. 
+
+\Hypertarget{structhilbert_1_1Rectangle_acd498e108ca13f52624b8babcc62aa59}\index{hilbert::Rectangle@{hilbert::Rectangle}!intersects@{intersects}}
+\index{intersects@{intersects}!hilbert::Rectangle@{hilbert::Rectangle}}
+\doxysubsubsection{\texorpdfstring{intersects()}{intersects()}}
+{\footnotesize\ttfamily \label{structhilbert_1_1Rectangle_acd498e108ca13f52624b8babcc62aa59} 
+bool hilbert\+::\+Rectangle\+::intersects (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structhilbert_1_1Rectangle_afa33a49a77f038ef8695a66c1a8ff903}{Rectangle}} \&}]{rect}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Check if this rectangle intersects another. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rect} & other rectangle \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if intersects 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::runtime\+\_\+error} & if dimensions mismatch \\
+\hline
+\end{DoxyExceptions}
+\Hypertarget{structhilbert_1_1Rectangle_a1d0d347a533528c191babc5a503d14ad}\index{hilbert::Rectangle@{hilbert::Rectangle}!operator==@{operator==}}
+\index{operator==@{operator==}!hilbert::Rectangle@{hilbert::Rectangle}}
+\doxysubsubsection{\texorpdfstring{operator==()}{operator==()}}
+{\footnotesize\ttfamily \label{structhilbert_1_1Rectangle_a1d0d347a533528c191babc5a503d14ad} 
+bool hilbert\+::\+Rectangle\+::operator== (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structhilbert_1_1Rectangle_afa33a49a77f038ef8695a66c1a8ff903}{Rectangle}} \&}]{other}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\label{doc-variable-members}
+\Hypertarget{structhilbert_1_1Rectangle_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{structhilbert_1_1Rectangle_a582da7e94a86b9b52e168abc34a26cdd}\index{hilbert::Rectangle@{hilbert::Rectangle}!higher@{higher}}
+\index{higher@{higher}!hilbert::Rectangle@{hilbert::Rectangle}}
+\doxysubsubsection{\texorpdfstring{higher}{higher}}
+{\footnotesize\ttfamily \label{structhilbert_1_1Rectangle_a582da7e94a86b9b52e168abc34a26cdd} 
+\mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}} hilbert\+::\+Rectangle\+::higher}
+
+
+
+upper-\/right corner 
+
+\Hypertarget{structhilbert_1_1Rectangle_a313da04d276c39031d6ff54138e2537b}\index{hilbert::Rectangle@{hilbert::Rectangle}!lower@{lower}}
+\index{lower@{lower}!hilbert::Rectangle@{hilbert::Rectangle}}
+\doxysubsubsection{\texorpdfstring{lower}{lower}}
+{\footnotesize\ttfamily \label{structhilbert_1_1Rectangle_a313da04d276c39031d6ff54138e2537b} 
+\mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}} hilbert\+::\+Rectangle\+::lower}
+
+
+
+lower-\/left corner 
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/rtree\+\_\+hilbert/\mbox{\hyperlink{hilbert__rtree_8h}{hilbert\+\_\+rtree.\+h}}\end{DoxyCompactItemize}

@@ -1,0 +1,38 @@
+\doxysection{src/rtree\+\_\+hilbert/box.h File Reference}
+\hypertarget{box_8h}{}\label{box_8h}\index{src/rtree\_hilbert/box.h@{src/rtree\_hilbert/box.h}}
+{\ttfamily \#include $<$functional$>$}\newline
+{\ttfamily \#include $<$stdexcept$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+Include dependency graph for box.\+h\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classBox}{Box}}
+\begin{DoxyCompactList}\small\item\em Represents an axis-\/aligned hyper-\/rectangular box in N-\/dimensional space. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}} = long long
+\item 
+using \mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}} = std\+::vector$<$\mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}}$>$
+\end{DoxyCompactItemize}
+
+
+\label{doc-typedef-members}
+\Hypertarget{box_8h_doc-typedef-members}
+\doxysubsection{Typedef Documentation}
+\Hypertarget{box_8h_ad54dde638d1ae3e9bb08956f539b1883}\index{box.h@{box.h}!ll@{ll}}
+\index{ll@{ll}!box.h@{box.h}}
+\doxysubsubsection{\texorpdfstring{ll}{ll}}
+{\footnotesize\ttfamily \label{box_8h_ad54dde638d1ae3e9bb08956f539b1883} 
+using \mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}} = long long}
+
+\Hypertarget{box_8h_aa7a3b94320bd53499c2f7eba814d491d}\index{box.h@{box.h}!Point@{Point}}
+\index{Point@{Point}!box.h@{box.h}}
+\doxysubsubsection{\texorpdfstring{Point}{Point}}
+{\footnotesize\ttfamily \label{box_8h_aa7a3b94320bd53499c2f7eba814d491d} 
+using \mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}} = std\+::vector$<$\mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}}$>$}
+

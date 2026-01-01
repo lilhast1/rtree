@@ -1,0 +1,372 @@
+\doxysection{hilbert\+::Node\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Struct Template Reference}
+\hypertarget{structhilbert_1_1Node}{}\label{structhilbert_1_1Node}\index{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}}
+
+
+\doxylink{structhilbert_1_1Node}{Node} in the R-\/\+Tree (leaf or inner).  
+
+
+
+
+{\ttfamily \#include $<$hilbert\+\_\+rtree.\+h$>$}
+
+
+
+Collaboration diagram for hilbert\+::Node\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>}\+:
+% FIG 0
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structhilbert_1_1Node_ab9809f4b3f4e57f41b00c07d8e361fe8}{Node}} (int \mbox{\hyperlink{structhilbert_1_1Node_abfc0ca35007f5dbacf92839c6c6f5582}{min\+\_\+entries}}, int \mbox{\hyperlink{structhilbert_1_1Node_ab59d6cac56d97bea7964c73a0699b785}{max\+\_\+entries}}, \mbox{\hyperlink{classHilbertCurve}{Hilbert\+Curve}} \&\mbox{\hyperlink{structhilbert_1_1Node_af73e234887e0b0dc5dc82c2f35988015}{curve}})
+\item 
+\mbox{\hyperlink{structhilbert_1_1Node_a45c28c554c040f45cb278ea223b1ebbf}{\texorpdfstring{$\sim$}{\string~}\+Node}} ()
+\item 
+bool \mbox{\hyperlink{structhilbert_1_1Node_aefe8a02c02ef076427fdf5e31dcaed08}{overflow}} () const
+\item 
+bool \mbox{\hyperlink{structhilbert_1_1Node_a9d6f6cd53b481ef796fd8912ad3e5ac2}{underflow}} () const
+\item 
+\mbox{\hyperlink{structhilbert_1_1Node_ab9809f4b3f4e57f41b00c07d8e361fe8}{Node}}$<$ T $>$ \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{structhilbert_1_1Node_aabb0892497a8ccd8b42f1d1cac9b294b}{get\+\_\+prev\+\_\+siblings}} ()
+\item 
+\mbox{\hyperlink{structhilbert_1_1Node_ab9809f4b3f4e57f41b00c07d8e361fe8}{Node}}$<$ T $>$ \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{structhilbert_1_1Node_adc9f63b4badc6cb463646ef89bc3738b}{get\+\_\+next\+\_\+siblings}} ()
+\item 
+void \mbox{\hyperlink{structhilbert_1_1Node_ae1c317ce02fb5d3594257d9b1fe8973c}{set\+\_\+next\+\_\+siblings}} (\mbox{\hyperlink{structhilbert_1_1Node_ab9809f4b3f4e57f41b00c07d8e361fe8}{Node}}$<$ T $>$ \texorpdfstring{$\ast$}{*}next)
+\item 
+void \mbox{\hyperlink{structhilbert_1_1Node_a332e9d3d5161ce1551ad205750ae25f7}{set\+\_\+prev\+\_\+siblings}} (\mbox{\hyperlink{structhilbert_1_1Node_ab9809f4b3f4e57f41b00c07d8e361fe8}{Node}}$<$ T $>$ \texorpdfstring{$\ast$}{*}prev)
+\item 
+\mbox{\hyperlink{structhilbert_1_1Node_ab9809f4b3f4e57f41b00c07d8e361fe8}{Node}}$<$ T $>$ \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{structhilbert_1_1Node_a5155e51ce14fe66d300356d92d44ac35}{get\+\_\+parent}} ()
+\item 
+void \mbox{\hyperlink{structhilbert_1_1Node_a781fb77e147494436b082a14d9e6f5b6}{set\+\_\+parent}} (\mbox{\hyperlink{structhilbert_1_1Node_ab9809f4b3f4e57f41b00c07d8e361fe8}{Node}}$<$ T $>$ \texorpdfstring{$\ast$}{*}new\+\_\+par)
+\item 
+bool \mbox{\hyperlink{structhilbert_1_1Node_aa744bde8188df238deeed308146d8f36}{is\+\_\+leaf}} () const
+\item 
+void \mbox{\hyperlink{structhilbert_1_1Node_aa4796d234f3ec6fecf4a2914fd745fca}{set\+\_\+leaf}} (bool val)
+\item 
+\mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}} \mbox{\hyperlink{structhilbert_1_1Node_aca5145c9de884608d060160c9f341442}{get\+\_\+lhv}} ()
+\item 
+\mbox{\hyperlink{structhilbert_1_1Rectangle}{Rectangle}} \& \mbox{\hyperlink{structhilbert_1_1Node_af4ee143e6c90a5a79c54d6819139c0b9}{get\+\_\+mbr}} ()
+\item 
+void \mbox{\hyperlink{structhilbert_1_1Node_a642508639c5c836e067bdf534b640e5e}{insert\+\_\+leaf\+\_\+entry}} (\mbox{\hyperlink{structhilbert_1_1LeafEntry}{Leaf\+Entry}}$<$ T $>$ \texorpdfstring{$\ast$}{*}entry)
+\item 
+void \mbox{\hyperlink{structhilbert_1_1Node_a483128f27435f058af3e22e61d6f3b6e}{insert\+\_\+inner\+\_\+entry}} (\mbox{\hyperlink{structhilbert_1_1InnerNode}{Inner\+Node}}$<$ T $>$ \texorpdfstring{$\ast$}{*}entry)
+\item 
+void \mbox{\hyperlink{structhilbert_1_1Node_ad6192c272a78f86825ad2c786d4914bc}{remove\+\_\+leaf\+\_\+entry}} (const \mbox{\hyperlink{structhilbert_1_1Rectangle}{Rectangle}} \&rect)
+\item 
+void \mbox{\hyperlink{structhilbert_1_1Node_a5be8fa65024848a20bd7f4d766472923}{remove\+\_\+inner\+\_\+entry}} (\mbox{\hyperlink{structhilbert_1_1Node_ab9809f4b3f4e57f41b00c07d8e361fe8}{Node}}$<$ T $>$ \texorpdfstring{$\ast$}{*}child)
+\item 
+void \mbox{\hyperlink{structhilbert_1_1Node_a3b5058d09e75e4243bb0bb08204e9e6f}{adjust\+\_\+mbr}} ()
+\item 
+void \mbox{\hyperlink{structhilbert_1_1Node_aada87fc975cbee42259fb7dfca264d37}{adjust\+\_\+lhv}} ()
+\item 
+std\+::deque$<$ \mbox{\hyperlink{structhilbert_1_1Node_ab9809f4b3f4e57f41b00c07d8e361fe8}{Node}}$<$ T $>$ \texorpdfstring{$\ast$}{*} $>$ \mbox{\hyperlink{structhilbert_1_1Node_a50267ee418720aa9e4afe5681c0861fb}{get\+\_\+siblings}} (size\+\_\+t num)
+\item 
+\mbox{\hyperlink{namespacehilbert_aa7ad03b6a321800f9790ee3dbb97d814}{Entry\+Set}}$<$ T $>$ \& \mbox{\hyperlink{structhilbert_1_1Node_af49701eb9dd4a2e97ced0ba3e3486fdb}{get\+\_\+entries}} ()
+\item 
+void \mbox{\hyperlink{structhilbert_1_1Node_ab5663993c5bac906e9ed3a019781ac60}{reset\+\_\+entries}} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{structhilbert_1_1Node_a3e94e6612548e54c77b3052eb4c9ee9f}{leaf}}
+\begin{DoxyCompactList}\small\item\em is leaf node \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structhilbert_1_1Node_ab9809f4b3f4e57f41b00c07d8e361fe8}{Node}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{structhilbert_1_1Node_a40a35e391ef680515c3d38d003458cb4}{parent}}
+\item 
+\mbox{\hyperlink{structhilbert_1_1Node_ab9809f4b3f4e57f41b00c07d8e361fe8}{Node}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{structhilbert_1_1Node_ad71236e9fe8b5a67386c3249abf4b164}{prev\+\_\+sibling}}
+\item 
+\mbox{\hyperlink{structhilbert_1_1Node_ab9809f4b3f4e57f41b00c07d8e361fe8}{Node}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{structhilbert_1_1Node_ac6ead655ec08d219f2d30559c5b0b773}{next\+\_\+sibling}}
+\item 
+\mbox{\hyperlink{classHilbertCurve}{Hilbert\+Curve}} \& \mbox{\hyperlink{structhilbert_1_1Node_af73e234887e0b0dc5dc82c2f35988015}{curve}}
+\item 
+int \mbox{\hyperlink{structhilbert_1_1Node_abfc0ca35007f5dbacf92839c6c6f5582}{min\+\_\+entries}}
+\item 
+int \mbox{\hyperlink{structhilbert_1_1Node_ab59d6cac56d97bea7964c73a0699b785}{max\+\_\+entries}}
+\item 
+\mbox{\hyperlink{namespacehilbert_aa7ad03b6a321800f9790ee3dbb97d814}{Entry\+Set}}$<$ T $>$ \mbox{\hyperlink{structhilbert_1_1Node_a86e04ccf0236e4c1d5e2112424482b13}{entries}}
+\begin{DoxyCompactList}\small\item\em set of node entries \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structhilbert_1_1Rectangle}{Rectangle}} \mbox{\hyperlink{structhilbert_1_1Node_ad585d460370f0cdd7d63915b5f5272f7}{mbr}}
+\begin{DoxyCompactList}\small\item\em bounding rectangle of node \end{DoxyCompactList}\item 
+\mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}} \mbox{\hyperlink{structhilbert_1_1Node_afa5a9c446af2c240fc455afc9edaf84f}{lhv}}
+\begin{DoxyCompactList}\small\item\em largest Hilbert value \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{structhilbert_1_1Node_abf58ea8a0d03c210d4676950e95f267f}{dims}}
+\begin{DoxyCompactList}\small\item\em number of dimensions \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$\newline
+struct hilbert\+::\+Node$<$ T $>$}
+\doxylink{structhilbert_1_1Node}{Node} in the R-\/\+Tree (leaf or inner). 
+
+\label{doc-constructors}
+\Hypertarget{structhilbert_1_1Node_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{structhilbert_1_1Node_ab9809f4b3f4e57f41b00c07d8e361fe8}\index{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!Node@{Node}}
+\index{Node@{Node}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{Node()}{Node()}}
+{\footnotesize\ttfamily \label{structhilbert_1_1Node_ab9809f4b3f4e57f41b00c07d8e361fe8} 
+template$<$typename T$>$ \\
+\mbox{\hyperlink{structhilbert_1_1Node}{hilbert\+::\+Node}}$<$ T $>$\+::\+Node (\begin{DoxyParamCaption}\item[{int}]{min\+\_\+entries}{, }\item[{int}]{max\+\_\+entries}{, }\item[{\mbox{\hyperlink{classHilbertCurve}{Hilbert\+Curve}} \&}]{curve}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{structhilbert_1_1Node_a45c28c554c040f45cb278ea223b1ebbf}\index{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!````~Node@{\texorpdfstring{$\sim$}{\string~}Node}}
+\index{````~Node@{\texorpdfstring{$\sim$}{\string~}Node}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{\texorpdfstring{$\sim$}{\string~}Node()}{\string~Node()}}
+{\footnotesize\ttfamily \label{structhilbert_1_1Node_a45c28c554c040f45cb278ea223b1ebbf} 
+template$<$typename T$>$ \\
+\mbox{\hyperlink{structhilbert_1_1Node}{hilbert\+::\+Node}}$<$ T $>$\+::\texorpdfstring{$\sim$}{\string~}\mbox{\hyperlink{structhilbert_1_1Node_ab9809f4b3f4e57f41b00c07d8e361fe8}{Node}} (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\label{doc-func-members}
+\Hypertarget{structhilbert_1_1Node_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{structhilbert_1_1Node_aada87fc975cbee42259fb7dfca264d37}\index{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!adjust\_lhv@{adjust\_lhv}}
+\index{adjust\_lhv@{adjust\_lhv}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{adjust\_lhv()}{adjust\_lhv()}}
+{\footnotesize\ttfamily \label{structhilbert_1_1Node_aada87fc975cbee42259fb7dfca264d37} 
+template$<$typename T$>$ \\
+void \mbox{\hyperlink{structhilbert_1_1Node}{hilbert\+::\+Node}}$<$ T $>$\+::adjust\+\_\+lhv (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{structhilbert_1_1Node_a3b5058d09e75e4243bb0bb08204e9e6f}\index{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!adjust\_mbr@{adjust\_mbr}}
+\index{adjust\_mbr@{adjust\_mbr}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{adjust\_mbr()}{adjust\_mbr()}}
+{\footnotesize\ttfamily \label{structhilbert_1_1Node_a3b5058d09e75e4243bb0bb08204e9e6f} 
+template$<$typename T$>$ \\
+void \mbox{\hyperlink{structhilbert_1_1Node}{hilbert\+::\+Node}}$<$ T $>$\+::adjust\+\_\+mbr (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{structhilbert_1_1Node_af49701eb9dd4a2e97ced0ba3e3486fdb}\index{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!get\_entries@{get\_entries}}
+\index{get\_entries@{get\_entries}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{get\_entries()}{get\_entries()}}
+{\footnotesize\ttfamily \label{structhilbert_1_1Node_af49701eb9dd4a2e97ced0ba3e3486fdb} 
+template$<$typename T$>$ \\
+\mbox{\hyperlink{namespacehilbert_aa7ad03b6a321800f9790ee3dbb97d814}{Entry\+Set}}$<$ T $>$ \& \mbox{\hyperlink{structhilbert_1_1Node}{hilbert\+::\+Node}}$<$ T $>$\+::get\+\_\+entries (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{structhilbert_1_1Node_aca5145c9de884608d060160c9f341442}\index{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!get\_lhv@{get\_lhv}}
+\index{get\_lhv@{get\_lhv}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{get\_lhv()}{get\_lhv()}}
+{\footnotesize\ttfamily \label{structhilbert_1_1Node_aca5145c9de884608d060160c9f341442} 
+template$<$typename T$>$ \\
+\mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}} \mbox{\hyperlink{structhilbert_1_1Node}{hilbert\+::\+Node}}$<$ T $>$\+::get\+\_\+lhv (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{structhilbert_1_1Node_af4ee143e6c90a5a79c54d6819139c0b9}\index{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!get\_mbr@{get\_mbr}}
+\index{get\_mbr@{get\_mbr}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{get\_mbr()}{get\_mbr()}}
+{\footnotesize\ttfamily \label{structhilbert_1_1Node_af4ee143e6c90a5a79c54d6819139c0b9} 
+template$<$typename T$>$ \\
+\mbox{\hyperlink{structhilbert_1_1Rectangle}{Rectangle}} \& \mbox{\hyperlink{structhilbert_1_1Node}{hilbert\+::\+Node}}$<$ T $>$\+::get\+\_\+mbr (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{structhilbert_1_1Node_adc9f63b4badc6cb463646ef89bc3738b}\index{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!get\_next\_siblings@{get\_next\_siblings}}
+\index{get\_next\_siblings@{get\_next\_siblings}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{get\_next\_siblings()}{get\_next\_siblings()}}
+{\footnotesize\ttfamily \label{structhilbert_1_1Node_adc9f63b4badc6cb463646ef89bc3738b} 
+template$<$typename T$>$ \\
+\mbox{\hyperlink{structhilbert_1_1Node_ab9809f4b3f4e57f41b00c07d8e361fe8}{Node}}$<$ T $>$ \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{structhilbert_1_1Node}{hilbert\+::\+Node}}$<$ T $>$\+::get\+\_\+next\+\_\+siblings (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{structhilbert_1_1Node_a5155e51ce14fe66d300356d92d44ac35}\index{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!get\_parent@{get\_parent}}
+\index{get\_parent@{get\_parent}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{get\_parent()}{get\_parent()}}
+{\footnotesize\ttfamily \label{structhilbert_1_1Node_a5155e51ce14fe66d300356d92d44ac35} 
+template$<$typename T$>$ \\
+\mbox{\hyperlink{structhilbert_1_1Node_ab9809f4b3f4e57f41b00c07d8e361fe8}{Node}}$<$ T $>$ \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{structhilbert_1_1Node}{hilbert\+::\+Node}}$<$ T $>$\+::get\+\_\+parent (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{structhilbert_1_1Node_aabb0892497a8ccd8b42f1d1cac9b294b}\index{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!get\_prev\_siblings@{get\_prev\_siblings}}
+\index{get\_prev\_siblings@{get\_prev\_siblings}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{get\_prev\_siblings()}{get\_prev\_siblings()}}
+{\footnotesize\ttfamily \label{structhilbert_1_1Node_aabb0892497a8ccd8b42f1d1cac9b294b} 
+template$<$typename T$>$ \\
+\mbox{\hyperlink{structhilbert_1_1Node_ab9809f4b3f4e57f41b00c07d8e361fe8}{Node}}$<$ T $>$ \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{structhilbert_1_1Node}{hilbert\+::\+Node}}$<$ T $>$\+::get\+\_\+prev\+\_\+siblings (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{structhilbert_1_1Node_a50267ee418720aa9e4afe5681c0861fb}\index{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!get\_siblings@{get\_siblings}}
+\index{get\_siblings@{get\_siblings}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{get\_siblings()}{get\_siblings()}}
+{\footnotesize\ttfamily \label{structhilbert_1_1Node_a50267ee418720aa9e4afe5681c0861fb} 
+template$<$typename T$>$ \\
+std\+::deque$<$ \mbox{\hyperlink{structhilbert_1_1Node_ab9809f4b3f4e57f41b00c07d8e361fe8}{Node}}$<$ T $>$ \texorpdfstring{$\ast$}{*} $>$ \mbox{\hyperlink{structhilbert_1_1Node}{hilbert\+::\+Node}}$<$ T $>$\+::get\+\_\+siblings (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{num}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{structhilbert_1_1Node_a483128f27435f058af3e22e61d6f3b6e}\index{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!insert\_inner\_entry@{insert\_inner\_entry}}
+\index{insert\_inner\_entry@{insert\_inner\_entry}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{insert\_inner\_entry()}{insert\_inner\_entry()}}
+{\footnotesize\ttfamily \label{structhilbert_1_1Node_a483128f27435f058af3e22e61d6f3b6e} 
+template$<$typename T$>$ \\
+void \mbox{\hyperlink{structhilbert_1_1Node}{hilbert\+::\+Node}}$<$ T $>$\+::insert\+\_\+inner\+\_\+entry (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structhilbert_1_1InnerNode}{Inner\+Node}}$<$ T $>$ \texorpdfstring{$\ast$}{*}}]{entry}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{structhilbert_1_1Node_a642508639c5c836e067bdf534b640e5e}\index{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!insert\_leaf\_entry@{insert\_leaf\_entry}}
+\index{insert\_leaf\_entry@{insert\_leaf\_entry}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{insert\_leaf\_entry()}{insert\_leaf\_entry()}}
+{\footnotesize\ttfamily \label{structhilbert_1_1Node_a642508639c5c836e067bdf534b640e5e} 
+template$<$typename T$>$ \\
+void \mbox{\hyperlink{structhilbert_1_1Node}{hilbert\+::\+Node}}$<$ T $>$\+::insert\+\_\+leaf\+\_\+entry (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structhilbert_1_1LeafEntry}{Leaf\+Entry}}$<$ T $>$ \texorpdfstring{$\ast$}{*}}]{entry}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{structhilbert_1_1Node_aa744bde8188df238deeed308146d8f36}\index{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!is\_leaf@{is\_leaf}}
+\index{is\_leaf@{is\_leaf}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{is\_leaf()}{is\_leaf()}}
+{\footnotesize\ttfamily \label{structhilbert_1_1Node_aa744bde8188df238deeed308146d8f36} 
+template$<$typename T$>$ \\
+bool \mbox{\hyperlink{structhilbert_1_1Node}{hilbert\+::\+Node}}$<$ T $>$\+::is\+\_\+leaf (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{structhilbert_1_1Node_aefe8a02c02ef076427fdf5e31dcaed08}\index{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!overflow@{overflow}}
+\index{overflow@{overflow}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{overflow()}{overflow()}}
+{\footnotesize\ttfamily \label{structhilbert_1_1Node_aefe8a02c02ef076427fdf5e31dcaed08} 
+template$<$typename T$>$ \\
+bool \mbox{\hyperlink{structhilbert_1_1Node}{hilbert\+::\+Node}}$<$ T $>$\+::overflow (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{structhilbert_1_1Node_a5be8fa65024848a20bd7f4d766472923}\index{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!remove\_inner\_entry@{remove\_inner\_entry}}
+\index{remove\_inner\_entry@{remove\_inner\_entry}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{remove\_inner\_entry()}{remove\_inner\_entry()}}
+{\footnotesize\ttfamily \label{structhilbert_1_1Node_a5be8fa65024848a20bd7f4d766472923} 
+template$<$typename T$>$ \\
+void \mbox{\hyperlink{structhilbert_1_1Node}{hilbert\+::\+Node}}$<$ T $>$\+::remove\+\_\+inner\+\_\+entry (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structhilbert_1_1Node_ab9809f4b3f4e57f41b00c07d8e361fe8}{Node}}$<$ T $>$ \texorpdfstring{$\ast$}{*}}]{child}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{structhilbert_1_1Node_ad6192c272a78f86825ad2c786d4914bc}\index{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!remove\_leaf\_entry@{remove\_leaf\_entry}}
+\index{remove\_leaf\_entry@{remove\_leaf\_entry}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{remove\_leaf\_entry()}{remove\_leaf\_entry()}}
+{\footnotesize\ttfamily \label{structhilbert_1_1Node_ad6192c272a78f86825ad2c786d4914bc} 
+template$<$typename T$>$ \\
+void \mbox{\hyperlink{structhilbert_1_1Node}{hilbert\+::\+Node}}$<$ T $>$\+::remove\+\_\+leaf\+\_\+entry (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structhilbert_1_1Rectangle}{Rectangle}} \&}]{rect}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{structhilbert_1_1Node_ab5663993c5bac906e9ed3a019781ac60}\index{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!reset\_entries@{reset\_entries}}
+\index{reset\_entries@{reset\_entries}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{reset\_entries()}{reset\_entries()}}
+{\footnotesize\ttfamily \label{structhilbert_1_1Node_ab5663993c5bac906e9ed3a019781ac60} 
+template$<$typename T$>$ \\
+void \mbox{\hyperlink{structhilbert_1_1Node}{hilbert\+::\+Node}}$<$ T $>$\+::reset\+\_\+entries (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{structhilbert_1_1Node_aa4796d234f3ec6fecf4a2914fd745fca}\index{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!set\_leaf@{set\_leaf}}
+\index{set\_leaf@{set\_leaf}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{set\_leaf()}{set\_leaf()}}
+{\footnotesize\ttfamily \label{structhilbert_1_1Node_aa4796d234f3ec6fecf4a2914fd745fca} 
+template$<$typename T$>$ \\
+void \mbox{\hyperlink{structhilbert_1_1Node}{hilbert\+::\+Node}}$<$ T $>$\+::set\+\_\+leaf (\begin{DoxyParamCaption}\item[{bool}]{val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{structhilbert_1_1Node_ae1c317ce02fb5d3594257d9b1fe8973c}\index{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!set\_next\_siblings@{set\_next\_siblings}}
+\index{set\_next\_siblings@{set\_next\_siblings}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{set\_next\_siblings()}{set\_next\_siblings()}}
+{\footnotesize\ttfamily \label{structhilbert_1_1Node_ae1c317ce02fb5d3594257d9b1fe8973c} 
+template$<$typename T$>$ \\
+void \mbox{\hyperlink{structhilbert_1_1Node}{hilbert\+::\+Node}}$<$ T $>$\+::set\+\_\+next\+\_\+siblings (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structhilbert_1_1Node_ab9809f4b3f4e57f41b00c07d8e361fe8}{Node}}$<$ T $>$ \texorpdfstring{$\ast$}{*}}]{next}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{structhilbert_1_1Node_a781fb77e147494436b082a14d9e6f5b6}\index{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!set\_parent@{set\_parent}}
+\index{set\_parent@{set\_parent}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{set\_parent()}{set\_parent()}}
+{\footnotesize\ttfamily \label{structhilbert_1_1Node_a781fb77e147494436b082a14d9e6f5b6} 
+template$<$typename T$>$ \\
+void \mbox{\hyperlink{structhilbert_1_1Node}{hilbert\+::\+Node}}$<$ T $>$\+::set\+\_\+parent (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structhilbert_1_1Node_ab9809f4b3f4e57f41b00c07d8e361fe8}{Node}}$<$ T $>$ \texorpdfstring{$\ast$}{*}}]{new\+\_\+par}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{structhilbert_1_1Node_a332e9d3d5161ce1551ad205750ae25f7}\index{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!set\_prev\_siblings@{set\_prev\_siblings}}
+\index{set\_prev\_siblings@{set\_prev\_siblings}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{set\_prev\_siblings()}{set\_prev\_siblings()}}
+{\footnotesize\ttfamily \label{structhilbert_1_1Node_a332e9d3d5161ce1551ad205750ae25f7} 
+template$<$typename T$>$ \\
+void \mbox{\hyperlink{structhilbert_1_1Node}{hilbert\+::\+Node}}$<$ T $>$\+::set\+\_\+prev\+\_\+siblings (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structhilbert_1_1Node_ab9809f4b3f4e57f41b00c07d8e361fe8}{Node}}$<$ T $>$ \texorpdfstring{$\ast$}{*}}]{prev}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{structhilbert_1_1Node_a9d6f6cd53b481ef796fd8912ad3e5ac2}\index{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!underflow@{underflow}}
+\index{underflow@{underflow}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{underflow()}{underflow()}}
+{\footnotesize\ttfamily \label{structhilbert_1_1Node_a9d6f6cd53b481ef796fd8912ad3e5ac2} 
+template$<$typename T$>$ \\
+bool \mbox{\hyperlink{structhilbert_1_1Node}{hilbert\+::\+Node}}$<$ T $>$\+::underflow (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\label{doc-variable-members}
+\Hypertarget{structhilbert_1_1Node_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{structhilbert_1_1Node_af73e234887e0b0dc5dc82c2f35988015}\index{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!curve@{curve}}
+\index{curve@{curve}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{curve}{curve}}
+{\footnotesize\ttfamily \label{structhilbert_1_1Node_af73e234887e0b0dc5dc82c2f35988015} 
+template$<$typename T$>$ \\
+\mbox{\hyperlink{classHilbertCurve}{Hilbert\+Curve}}\& \mbox{\hyperlink{structhilbert_1_1Node}{hilbert\+::\+Node}}$<$ T $>$\+::curve}
+
+\Hypertarget{structhilbert_1_1Node_abf58ea8a0d03c210d4676950e95f267f}\index{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!dims@{dims}}
+\index{dims@{dims}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{dims}{dims}}
+{\footnotesize\ttfamily \label{structhilbert_1_1Node_abf58ea8a0d03c210d4676950e95f267f} 
+template$<$typename T$>$ \\
+int \mbox{\hyperlink{structhilbert_1_1Node}{hilbert\+::\+Node}}$<$ T $>$\+::dims}
+
+
+
+number of dimensions 
+
+\Hypertarget{structhilbert_1_1Node_a86e04ccf0236e4c1d5e2112424482b13}\index{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!entries@{entries}}
+\index{entries@{entries}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{entries}{entries}}
+{\footnotesize\ttfamily \label{structhilbert_1_1Node_a86e04ccf0236e4c1d5e2112424482b13} 
+template$<$typename T$>$ \\
+\mbox{\hyperlink{namespacehilbert_aa7ad03b6a321800f9790ee3dbb97d814}{Entry\+Set}}$<$T$>$ \mbox{\hyperlink{structhilbert_1_1Node}{hilbert\+::\+Node}}$<$ T $>$\+::entries}
+
+
+
+set of node entries 
+
+\Hypertarget{structhilbert_1_1Node_a3e94e6612548e54c77b3052eb4c9ee9f}\index{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!leaf@{leaf}}
+\index{leaf@{leaf}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{leaf}{leaf}}
+{\footnotesize\ttfamily \label{structhilbert_1_1Node_a3e94e6612548e54c77b3052eb4c9ee9f} 
+template$<$typename T$>$ \\
+bool \mbox{\hyperlink{structhilbert_1_1Node}{hilbert\+::\+Node}}$<$ T $>$\+::leaf}
+
+
+
+is leaf node 
+
+\Hypertarget{structhilbert_1_1Node_afa5a9c446af2c240fc455afc9edaf84f}\index{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!lhv@{lhv}}
+\index{lhv@{lhv}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{lhv}{lhv}}
+{\footnotesize\ttfamily \label{structhilbert_1_1Node_afa5a9c446af2c240fc455afc9edaf84f} 
+template$<$typename T$>$ \\
+\mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}} \mbox{\hyperlink{structhilbert_1_1Node}{hilbert\+::\+Node}}$<$ T $>$\+::lhv}
+
+
+
+largest Hilbert value 
+
+\Hypertarget{structhilbert_1_1Node_ab59d6cac56d97bea7964c73a0699b785}\index{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!max\_entries@{max\_entries}}
+\index{max\_entries@{max\_entries}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{max\_entries}{max\_entries}}
+{\footnotesize\ttfamily \label{structhilbert_1_1Node_ab59d6cac56d97bea7964c73a0699b785} 
+template$<$typename T$>$ \\
+int \mbox{\hyperlink{structhilbert_1_1Node}{hilbert\+::\+Node}}$<$ T $>$\+::max\+\_\+entries}
+
+\Hypertarget{structhilbert_1_1Node_ad585d460370f0cdd7d63915b5f5272f7}\index{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!mbr@{mbr}}
+\index{mbr@{mbr}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{mbr}{mbr}}
+{\footnotesize\ttfamily \label{structhilbert_1_1Node_ad585d460370f0cdd7d63915b5f5272f7} 
+template$<$typename T$>$ \\
+\mbox{\hyperlink{structhilbert_1_1Rectangle}{Rectangle}} \mbox{\hyperlink{structhilbert_1_1Node}{hilbert\+::\+Node}}$<$ T $>$\+::mbr}
+
+
+
+bounding rectangle of node 
+
+\Hypertarget{structhilbert_1_1Node_abfc0ca35007f5dbacf92839c6c6f5582}\index{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!min\_entries@{min\_entries}}
+\index{min\_entries@{min\_entries}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{min\_entries}{min\_entries}}
+{\footnotesize\ttfamily \label{structhilbert_1_1Node_abfc0ca35007f5dbacf92839c6c6f5582} 
+template$<$typename T$>$ \\
+int \mbox{\hyperlink{structhilbert_1_1Node}{hilbert\+::\+Node}}$<$ T $>$\+::min\+\_\+entries}
+
+\Hypertarget{structhilbert_1_1Node_ac6ead655ec08d219f2d30559c5b0b773}\index{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!next\_sibling@{next\_sibling}}
+\index{next\_sibling@{next\_sibling}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{next\_sibling}{next\_sibling}}
+{\footnotesize\ttfamily \label{structhilbert_1_1Node_ac6ead655ec08d219f2d30559c5b0b773} 
+template$<$typename T$>$ \\
+\mbox{\hyperlink{structhilbert_1_1Node_ab9809f4b3f4e57f41b00c07d8e361fe8}{Node}}\texorpdfstring{$\ast$}{*} \mbox{\hyperlink{structhilbert_1_1Node}{hilbert\+::\+Node}}$<$ T $>$\+::next\+\_\+sibling}
+
+\Hypertarget{structhilbert_1_1Node_a40a35e391ef680515c3d38d003458cb4}\index{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!parent@{parent}}
+\index{parent@{parent}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{parent}{parent}}
+{\footnotesize\ttfamily \label{structhilbert_1_1Node_a40a35e391ef680515c3d38d003458cb4} 
+template$<$typename T$>$ \\
+\mbox{\hyperlink{structhilbert_1_1Node_ab9809f4b3f4e57f41b00c07d8e361fe8}{Node}}\texorpdfstring{$\ast$}{*} \mbox{\hyperlink{structhilbert_1_1Node}{hilbert\+::\+Node}}$<$ T $>$\+::parent}
+
+\Hypertarget{structhilbert_1_1Node_ad71236e9fe8b5a67386c3249abf4b164}\index{hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}!prev\_sibling@{prev\_sibling}}
+\index{prev\_sibling@{prev\_sibling}!hilbert::Node$<$ T $>$@{hilbert::Node$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{prev\_sibling}{prev\_sibling}}
+{\footnotesize\ttfamily \label{structhilbert_1_1Node_ad71236e9fe8b5a67386c3249abf4b164} 
+template$<$typename T$>$ \\
+\mbox{\hyperlink{structhilbert_1_1Node_ab9809f4b3f4e57f41b00c07d8e361fe8}{Node}}\texorpdfstring{$\ast$}{*} \mbox{\hyperlink{structhilbert_1_1Node}{hilbert\+::\+Node}}$<$ T $>$\+::prev\+\_\+sibling}
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/rtree\+\_\+hilbert/\mbox{\hyperlink{hilbert__rtree_8h}{hilbert\+\_\+rtree.\+h}}\end{DoxyCompactItemize}

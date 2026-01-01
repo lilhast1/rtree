@@ -1,0 +1,97 @@
+\doxysection{Box Class Reference}
+\hypertarget{classBox}{}\label{classBox}\index{Box@{Box}}
+
+
+Represents an axis-\/aligned hyper-\/rectangular box in N-\/dimensional space.  
+
+
+
+
+{\ttfamily \#include $<$box.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classBox_ad7167a7f1070e03ef9ca0e55fd9b6ee3}{Box}} (const \mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}} \&a, const \mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}} \&b)
+\begin{DoxyCompactList}\small\item\em Construct a \doxylink{classBox}{Box} from two corners. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classBox_a681d0021ab9657cc74051df8a84153f5}{contains}} (const \mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}} \&p) const
+\begin{DoxyCompactList}\small\item\em Check if a point is contained within the box. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classBox_afab0744a388cc257fd654e816e20ecd3}{visit\+\_\+perimiter}} (std\+::function$<$ void(const \mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}} \&)$>$ func) const
+\begin{DoxyCompactList}\small\item\em Visit all points on the perimeter of the box. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Represents an axis-\/aligned hyper-\/rectangular box in N-\/dimensional space. 
+
+Provides functionality to check whether a point is inside the box and to iterate over all points on the perimeter. 
+
+\label{doc-constructors}
+\Hypertarget{classBox_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classBox_ad7167a7f1070e03ef9ca0e55fd9b6ee3}\index{Box@{Box}!Box@{Box}}
+\index{Box@{Box}!Box@{Box}}
+\doxysubsubsection{\texorpdfstring{Box()}{Box()}}
+{\footnotesize\ttfamily \label{classBox_ad7167a7f1070e03ef9ca0e55fd9b6ee3} 
+Box\+::\+Box (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}} \&}]{a}{, }\item[{const \mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}} \&}]{b}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Construct a \doxylink{classBox}{Box} from two corners. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & Lower corner coordinates \\
+\hline
+{\em b} & Upper corner coordinates \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::invalid\+\_\+argument} & if the dimensions of {\ttfamily a} and {\ttfamily b} mismatch \\
+\hline
+\end{DoxyExceptions}
+
+
+\label{doc-func-members}
+\Hypertarget{classBox_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classBox_a681d0021ab9657cc74051df8a84153f5}\index{Box@{Box}!contains@{contains}}
+\index{contains@{contains}!Box@{Box}}
+\doxysubsubsection{\texorpdfstring{contains()}{contains()}}
+{\footnotesize\ttfamily \label{classBox_a681d0021ab9657cc74051df8a84153f5} 
+bool Box\+::contains (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}} \&}]{p}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Check if a point is contained within the box. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & The point to check \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the point is inside the box (inclusive), false otherwise 
+\end{DoxyReturn}
+\Hypertarget{classBox_afab0744a388cc257fd654e816e20ecd3}\index{Box@{Box}!visit\_perimiter@{visit\_perimiter}}
+\index{visit\_perimiter@{visit\_perimiter}!Box@{Box}}
+\doxysubsubsection{\texorpdfstring{visit\_perimiter()}{visit\_perimiter()}}
+{\footnotesize\ttfamily \label{classBox_afab0744a388cc257fd654e816e20ecd3} 
+void Box\+::visit\+\_\+perimiter (\begin{DoxyParamCaption}\item[{std\+::function$<$ void(const \mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}} \&)$>$}]{func}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Visit all points on the perimeter of the box. 
+
+Calls the provided function for each point lying on the box\textquotesingle{}s perimeter. The perimeter includes any point where at least one coordinate is equal to the lower or higher bound of the box.
+
+
+\begin{DoxyParams}{Parameters}
+{\em func} & Function to call for each perimeter point \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/rtree\+\_\+hilbert/\mbox{\hyperlink{box_8h}{box.\+h}}\end{DoxyCompactItemize}

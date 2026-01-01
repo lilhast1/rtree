@@ -1,0 +1,43 @@
+\doxysection{hilbert\+\_\+curve.\+h}
+\hypertarget{hilbert__curve_8h_source}{}\label{hilbert__curve_8h_source}\index{src/rtree\_hilbert/hilbert\_curve.h@{src/rtree\_hilbert/hilbert\_curve.h}}
+\mbox{\hyperlink{hilbert__curve_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{ranges_8h}{ranges.h}}"{}}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{keyword}{using\ }\mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}}\ =\ \textcolor{keywordtype}{long}\ long;}
+\DoxyCodeLine{00007\ \textcolor{keyword}{using\ }\mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}}\ =\ std::vector<ll>;}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classHilbertCurve_a1b003fde360ac354c4e817a2b3d22bf6}{HilbertCurve}}\ \{}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keywordtype}{int}\ bits;\ \ }
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keywordtype}{int}\ dim;\ \ \ }
+\DoxyCodeLine{00020\ \ \ \ \ \mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}}\ len;\ \ \ \ }
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00029\ \ \ \ \ \mbox{\hyperlink{classHilbertCurve_a1b003fde360ac354c4e817a2b3d22bf6}{HilbertCurve}}(\textcolor{keywordtype}{int}\ bits,\ \textcolor{keywordtype}{int}\ dim)\ :\ dim(dim),\ bits(bits),\ len(bits\ *\ dim)\ \{}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (bits\ <\ 1\ ||\ dim\ <\ 1)}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::domain\_error(\textcolor{stringliteral}{"{}You\ can't\ have\ negative\ dimensions\ or\ bits"{}});}
+\DoxyCodeLine{00032\ \ \ \ \ \}}
+\DoxyCodeLine{00034\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}}\ \mbox{\hyperlink{classHilbertCurve_ad7eae6b200b68000008f64303305ce43}{get\_bits}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ bits;\ \}}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00037\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}}\ \mbox{\hyperlink{classHilbertCurve_a1ab65a79a648220ae7ac3b1b8ca890f5}{get\_dim}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ dim;\ \}}
+\DoxyCodeLine{00039\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}}\ \mbox{\hyperlink{classHilbertCurve_ac4ed20daf58ccf72a61e22c870a24557}{get\_length}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ len;\ \}}
+\DoxyCodeLine{00045\ \ \ \ \ \mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}}\ \mbox{\hyperlink{classHilbertCurve_a732ad631f522a007e65ae079a04c5d44}{index}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}}\&\ \mbox{\hyperlink{classHilbertCurve_a8cd77f30c2c17bf1b3fb357cbaa2fcf9}{point}})\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00051\ \ \ \ \ \mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}}\ \mbox{\hyperlink{classHilbertCurve_a8cd77f30c2c17bf1b3fb357cbaa2fcf9}{point}}(\mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}}\ \mbox{\hyperlink{classHilbertCurve_a732ad631f522a007e65ae079a04c5d44}{index}})\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classHilbertCurve_a8cd77f30c2c17bf1b3fb357cbaa2fcf9}{point}}(\mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}}\ \mbox{\hyperlink{classHilbertCurve_a732ad631f522a007e65ae079a04c5d44}{index}},\ \mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}}\&\ x)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classHilbertCurve_ab6744473c936bdae6586f00b15b40796}{transpose}}(\mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}}\ indes,\ \mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}}\&\ x)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00069\ \ \ \ \ \mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}}\ \mbox{\hyperlink{classHilbertCurve_ab6744473c936bdae6586f00b15b40796}{transpose}}(\mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}}\ \mbox{\hyperlink{classHilbertCurve_a732ad631f522a007e65ae079a04c5d44}{index}})\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}}\ \mbox{\hyperlink{classHilbertCurve_a3c6e910cd06648a1925827bc90855d67}{transposed\_index}}(\textcolor{keywordtype}{int}\ bits,\ \mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}}\&\ x);}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}}\ \mbox{\hyperlink{classHilbertCurve_aa62209fe4872063c977e0473c7f018fa}{transposed\_index\_to\_point}}(\textcolor{keywordtype}{int}\ bits,\ \mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}}\&\ x);}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00090\ \ \ \ \ \mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}}\ \mbox{\hyperlink{classHilbertCurve_a227c58b7b29c1f856549b7a60a86d2e7}{to\_index}}(\mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}}\&\ \mbox{\hyperlink{classHilbertCurve_a3c6e910cd06648a1925827bc90855d67}{transposed\_index}})\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00092\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}}\ \mbox{\hyperlink{classHilbertCurve_a127354d4b55d381eecdd9f3a3cb51f64}{max\_ordinate}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00094\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}}\ \mbox{\hyperlink{classHilbertCurve_ae86f9fb7ba86b3dfa80465076ff78051}{max\_index}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00104\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{classRanges}{Ranges}}\ \mbox{\hyperlink{classHilbertCurve_a36cd87a4654cb3cc023cc4602c6f99da}{query}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}}\&\ a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}}\&\ b,\ \textcolor{keywordtype}{int}\ max\_ranges,}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ buffer\_size\ =\ 1024)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00106\ \};}
+
+\end{DoxyCode}

@@ -1,0 +1,205 @@
+\doxysection{Gutman\+::Rectangle Struct Reference}
+\hypertarget{structGutman_1_1Rectangle}{}\label{structGutman_1_1Rectangle}\index{Gutman::Rectangle@{Gutman::Rectangle}}
+
+
+Axis-\/aligned rectangle/hyperrectangle in N-\/dimensional space.  
+
+
+
+
+{\ttfamily \#include $<$rtree.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structGutman_1_1Rectangle_a0cfa9a835bac4414bcf6feb7c392f564}{Rectangle}} (const std\+::vector$<$ double $>$ \&\mbox{\hyperlink{structGutman_1_1Rectangle_a7029de348a41067f52b09d85bb16c166}{min}}, const std\+::vector$<$ double $>$ \&\mbox{\hyperlink{structGutman_1_1Rectangle_a2af88a0ace8b012b16baf989b7b9fb67}{max}})
+\begin{DoxyCompactList}\small\item\em Construct a rectangle from min and max vectors. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{structGutman_1_1Rectangle_afb9415f3cd6bc2aba21fd4ba8eed4c6b}{area}} () const
+\begin{DoxyCompactList}\small\item\em Compute the area/volume of the rectangle. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{structGutman_1_1Rectangle_a7e04f840fb327374b8e3183c5d8230a7}{enlargement\+\_\+needed}} (const \mbox{\hyperlink{structGutman_1_1Rectangle_a0cfa9a835bac4414bcf6feb7c392f564}{Rectangle}} \&b) const
+\begin{DoxyCompactList}\small\item\em Compute how much the rectangle needs to enlarge to include another rectangle. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{structGutman_1_1Rectangle_a85c5e27db8fa1982b91a47e616e365dc}{contains}} (const \mbox{\hyperlink{structGutman_1_1Rectangle_a0cfa9a835bac4414bcf6feb7c392f564}{Rectangle}} \&a) const
+\begin{DoxyCompactList}\small\item\em Check if this rectangle completely contains another rectangle. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename Itr$>$ }\\static \mbox{\hyperlink{structGutman_1_1Rectangle_a0cfa9a835bac4414bcf6feb7c392f564}{Rectangle}} \mbox{\hyperlink{structGutman_1_1Rectangle_a2fe039acef8056d3bbc0da22e0926283}{calc\+\_\+mbr}} (Itr p, Itr q)
+\begin{DoxyCompactList}\small\item\em Compute the minimum bounding rectangle (MBR) of a range of nodes. \end{DoxyCompactList}\item 
+static \mbox{\hyperlink{structGutman_1_1Rectangle_a0cfa9a835bac4414bcf6feb7c392f564}{Rectangle}} \mbox{\hyperlink{structGutman_1_1Rectangle_a2fe92d244b5f38c86443b21c509c4123}{calc\+\_\+mbr}} (const \mbox{\hyperlink{structGutman_1_1Rectangle_a0cfa9a835bac4414bcf6feb7c392f564}{Rectangle}} \&a, const \mbox{\hyperlink{structGutman_1_1Rectangle_a0cfa9a835bac4414bcf6feb7c392f564}{Rectangle}} \&b)
+\begin{DoxyCompactList}\small\item\em Compute MBR of two rectangles. \end{DoxyCompactList}\item 
+static double \mbox{\hyperlink{structGutman_1_1Rectangle_a00ef3a701560728729c3f63be0b00544}{calc\+\_\+mbr\+\_\+area}} (const \mbox{\hyperlink{structGutman_1_1Rectangle_a0cfa9a835bac4414bcf6feb7c392f564}{Rectangle}} \&a, const \mbox{\hyperlink{structGutman_1_1Rectangle_a0cfa9a835bac4414bcf6feb7c392f564}{Rectangle}} \&b)
+\begin{DoxyCompactList}\small\item\em Compute the area of MBR containing two rectangles. \end{DoxyCompactList}\item 
+static bool \mbox{\hyperlink{structGutman_1_1Rectangle_a9dda200a5e0b25dd787cfdc15996f557}{vec\+\_\+equal}} (const std\+::vector$<$ double $>$ \&x, const std\+::vector$<$ double $>$ \&y)
+\begin{DoxyCompactList}\small\item\em Compare two vectors of doubles for approximate equality. \end{DoxyCompactList}\item 
+static bool \mbox{\hyperlink{structGutman_1_1Rectangle_a6c42eee9c1cc05ceef6e287563721bfe}{equal}} (const \mbox{\hyperlink{structGutman_1_1Rectangle_a0cfa9a835bac4414bcf6feb7c392f564}{Rectangle}} \&a, const \mbox{\hyperlink{structGutman_1_1Rectangle_a0cfa9a835bac4414bcf6feb7c392f564}{Rectangle}} \&b)
+\begin{DoxyCompactList}\small\item\em Check if two rectangles are equal. \end{DoxyCompactList}\item 
+static bool \mbox{\hyperlink{structGutman_1_1Rectangle_a9b5d7f0eb2863a069169cde7806d2b42}{overlap}} (const \mbox{\hyperlink{structGutman_1_1Rectangle_a0cfa9a835bac4414bcf6feb7c392f564}{Rectangle}} \&a, const \mbox{\hyperlink{structGutman_1_1Rectangle_a0cfa9a835bac4414bcf6feb7c392f564}{Rectangle}} \&b)
+\begin{DoxyCompactList}\small\item\em Check if two rectangles overlap. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::vector$<$ double $>$ \mbox{\hyperlink{structGutman_1_1Rectangle_a7029de348a41067f52b09d85bb16c166}{min}}
+\begin{DoxyCompactList}\small\item\em Lower bounds for each dimension. \end{DoxyCompactList}\item 
+std\+::vector$<$ double $>$ \mbox{\hyperlink{structGutman_1_1Rectangle_a2af88a0ace8b012b16baf989b7b9fb67}{max}}
+\begin{DoxyCompactList}\small\item\em Upper bounds for each dimension. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Axis-\/aligned rectangle/hyperrectangle in N-\/dimensional space. 
+
+Contains operations for area computation, MBR calculation, overlap checks, and containment tests. 
+
+\label{doc-constructors}
+\Hypertarget{structGutman_1_1Rectangle_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{structGutman_1_1Rectangle_a0cfa9a835bac4414bcf6feb7c392f564}\index{Gutman::Rectangle@{Gutman::Rectangle}!Rectangle@{Rectangle}}
+\index{Rectangle@{Rectangle}!Gutman::Rectangle@{Gutman::Rectangle}}
+\doxysubsubsection{\texorpdfstring{Rectangle()}{Rectangle()}}
+{\footnotesize\ttfamily \label{structGutman_1_1Rectangle_a0cfa9a835bac4414bcf6feb7c392f564} 
+Gutman\+::\+Rectangle\+::\+Rectangle (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ double $>$ \&}]{min}{, }\item[{const std\+::vector$<$ double $>$ \&}]{max}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Construct a rectangle from min and max vectors. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em min} & Lower bounds \\
+\hline
+{\em max} & Upper bounds \\
+\hline
+\end{DoxyParams}
+
+
+\label{doc-func-members}
+\Hypertarget{structGutman_1_1Rectangle_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{structGutman_1_1Rectangle_afb9415f3cd6bc2aba21fd4ba8eed4c6b}\index{Gutman::Rectangle@{Gutman::Rectangle}!area@{area}}
+\index{area@{area}!Gutman::Rectangle@{Gutman::Rectangle}}
+\doxysubsubsection{\texorpdfstring{area()}{area()}}
+{\footnotesize\ttfamily \label{structGutman_1_1Rectangle_afb9415f3cd6bc2aba21fd4ba8eed4c6b} 
+double Gutman\+::\+Rectangle\+::area (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Compute the area/volume of the rectangle. 
+
+\Hypertarget{structGutman_1_1Rectangle_a2fe92d244b5f38c86443b21c509c4123}\index{Gutman::Rectangle@{Gutman::Rectangle}!calc\_mbr@{calc\_mbr}}
+\index{calc\_mbr@{calc\_mbr}!Gutman::Rectangle@{Gutman::Rectangle}}
+\doxysubsubsection{\texorpdfstring{calc\_mbr()}{calc\_mbr()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{structGutman_1_1Rectangle_a2fe92d244b5f38c86443b21c509c4123} 
+\mbox{\hyperlink{structGutman_1_1Rectangle_a0cfa9a835bac4414bcf6feb7c392f564}{Rectangle}} Gutman\+::\+Rectangle\+::calc\+\_\+mbr (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structGutman_1_1Rectangle_a0cfa9a835bac4414bcf6feb7c392f564}{Rectangle}} \&}]{a}{, }\item[{const \mbox{\hyperlink{structGutman_1_1Rectangle_a0cfa9a835bac4414bcf6feb7c392f564}{Rectangle}} \&}]{b}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Compute MBR of two rectangles. 
+
+\Hypertarget{structGutman_1_1Rectangle_a2fe039acef8056d3bbc0da22e0926283}\index{Gutman::Rectangle@{Gutman::Rectangle}!calc\_mbr@{calc\_mbr}}
+\index{calc\_mbr@{calc\_mbr}!Gutman::Rectangle@{Gutman::Rectangle}}
+\doxysubsubsection{\texorpdfstring{calc\_mbr()}{calc\_mbr()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{structGutman_1_1Rectangle_a2fe039acef8056d3bbc0da22e0926283} 
+template$<$typename Itr$>$ \\
+\mbox{\hyperlink{structGutman_1_1Rectangle_a0cfa9a835bac4414bcf6feb7c392f564}{Rectangle}} Gutman\+::\+Rectangle\+::calc\+\_\+mbr (\begin{DoxyParamCaption}\item[{Itr}]{p}{, }\item[{Itr}]{q}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Compute the minimum bounding rectangle (MBR) of a range of nodes. 
+
+\Hypertarget{structGutman_1_1Rectangle_a00ef3a701560728729c3f63be0b00544}\index{Gutman::Rectangle@{Gutman::Rectangle}!calc\_mbr\_area@{calc\_mbr\_area}}
+\index{calc\_mbr\_area@{calc\_mbr\_area}!Gutman::Rectangle@{Gutman::Rectangle}}
+\doxysubsubsection{\texorpdfstring{calc\_mbr\_area()}{calc\_mbr\_area()}}
+{\footnotesize\ttfamily \label{structGutman_1_1Rectangle_a00ef3a701560728729c3f63be0b00544} 
+double Gutman\+::\+Rectangle\+::calc\+\_\+mbr\+\_\+area (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structGutman_1_1Rectangle_a0cfa9a835bac4414bcf6feb7c392f564}{Rectangle}} \&}]{a}{, }\item[{const \mbox{\hyperlink{structGutman_1_1Rectangle_a0cfa9a835bac4414bcf6feb7c392f564}{Rectangle}} \&}]{b}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Compute the area of MBR containing two rectangles. 
+
+\Hypertarget{structGutman_1_1Rectangle_a85c5e27db8fa1982b91a47e616e365dc}\index{Gutman::Rectangle@{Gutman::Rectangle}!contains@{contains}}
+\index{contains@{contains}!Gutman::Rectangle@{Gutman::Rectangle}}
+\doxysubsubsection{\texorpdfstring{contains()}{contains()}}
+{\footnotesize\ttfamily \label{structGutman_1_1Rectangle_a85c5e27db8fa1982b91a47e616e365dc} 
+bool Gutman\+::\+Rectangle\+::contains (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structGutman_1_1Rectangle_a0cfa9a835bac4414bcf6feb7c392f564}{Rectangle}} \&}]{a}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Check if this rectangle completely contains another rectangle. 
+
+\Hypertarget{structGutman_1_1Rectangle_a7e04f840fb327374b8e3183c5d8230a7}\index{Gutman::Rectangle@{Gutman::Rectangle}!enlargement\_needed@{enlargement\_needed}}
+\index{enlargement\_needed@{enlargement\_needed}!Gutman::Rectangle@{Gutman::Rectangle}}
+\doxysubsubsection{\texorpdfstring{enlargement\_needed()}{enlargement\_needed()}}
+{\footnotesize\ttfamily \label{structGutman_1_1Rectangle_a7e04f840fb327374b8e3183c5d8230a7} 
+double Gutman\+::\+Rectangle\+::enlargement\+\_\+needed (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structGutman_1_1Rectangle_a0cfa9a835bac4414bcf6feb7c392f564}{Rectangle}} \&}]{b}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Compute how much the rectangle needs to enlarge to include another rectangle. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em b} & \doxylink{structGutman_1_1Rectangle}{Rectangle} to include \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Enlargement area/volume needed 
+\end{DoxyReturn}
+\Hypertarget{structGutman_1_1Rectangle_a6c42eee9c1cc05ceef6e287563721bfe}\index{Gutman::Rectangle@{Gutman::Rectangle}!equal@{equal}}
+\index{equal@{equal}!Gutman::Rectangle@{Gutman::Rectangle}}
+\doxysubsubsection{\texorpdfstring{equal()}{equal()}}
+{\footnotesize\ttfamily \label{structGutman_1_1Rectangle_a6c42eee9c1cc05ceef6e287563721bfe} 
+bool Gutman\+::\+Rectangle\+::equal (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structGutman_1_1Rectangle_a0cfa9a835bac4414bcf6feb7c392f564}{Rectangle}} \&}]{a}{, }\item[{const \mbox{\hyperlink{structGutman_1_1Rectangle_a0cfa9a835bac4414bcf6feb7c392f564}{Rectangle}} \&}]{b}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Check if two rectangles are equal. 
+
+\Hypertarget{structGutman_1_1Rectangle_a9b5d7f0eb2863a069169cde7806d2b42}\index{Gutman::Rectangle@{Gutman::Rectangle}!overlap@{overlap}}
+\index{overlap@{overlap}!Gutman::Rectangle@{Gutman::Rectangle}}
+\doxysubsubsection{\texorpdfstring{overlap()}{overlap()}}
+{\footnotesize\ttfamily \label{structGutman_1_1Rectangle_a9b5d7f0eb2863a069169cde7806d2b42} 
+bool Gutman\+::\+Rectangle\+::overlap (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structGutman_1_1Rectangle_a0cfa9a835bac4414bcf6feb7c392f564}{Rectangle}} \&}]{a}{, }\item[{const \mbox{\hyperlink{structGutman_1_1Rectangle_a0cfa9a835bac4414bcf6feb7c392f564}{Rectangle}} \&}]{b}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Check if two rectangles overlap. 
+
+\Hypertarget{structGutman_1_1Rectangle_a9dda200a5e0b25dd787cfdc15996f557}\index{Gutman::Rectangle@{Gutman::Rectangle}!vec\_equal@{vec\_equal}}
+\index{vec\_equal@{vec\_equal}!Gutman::Rectangle@{Gutman::Rectangle}}
+\doxysubsubsection{\texorpdfstring{vec\_equal()}{vec\_equal()}}
+{\footnotesize\ttfamily \label{structGutman_1_1Rectangle_a9dda200a5e0b25dd787cfdc15996f557} 
+bool Gutman\+::\+Rectangle\+::vec\+\_\+equal (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ double $>$ \&}]{x}{, }\item[{const std\+::vector$<$ double $>$ \&}]{y}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Compare two vectors of doubles for approximate equality. 
+
+
+
+\label{doc-variable-members}
+\Hypertarget{structGutman_1_1Rectangle_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{structGutman_1_1Rectangle_a2af88a0ace8b012b16baf989b7b9fb67}\index{Gutman::Rectangle@{Gutman::Rectangle}!max@{max}}
+\index{max@{max}!Gutman::Rectangle@{Gutman::Rectangle}}
+\doxysubsubsection{\texorpdfstring{max}{max}}
+{\footnotesize\ttfamily \label{structGutman_1_1Rectangle_a2af88a0ace8b012b16baf989b7b9fb67} 
+std\+::vector$<$double$>$ Gutman\+::\+Rectangle\+::max}
+
+
+
+Upper bounds for each dimension. 
+
+\Hypertarget{structGutman_1_1Rectangle_a7029de348a41067f52b09d85bb16c166}\index{Gutman::Rectangle@{Gutman::Rectangle}!min@{min}}
+\index{min@{min}!Gutman::Rectangle@{Gutman::Rectangle}}
+\doxysubsubsection{\texorpdfstring{min}{min}}
+{\footnotesize\ttfamily \label{structGutman_1_1Rectangle_a7029de348a41067f52b09d85bb16c166} 
+std\+::vector$<$double$>$ Gutman\+::\+Rectangle\+::min}
+
+
+
+Lower bounds for each dimension. 
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/rtree/\mbox{\hyperlink{rtree_8h}{rtree.\+h}}\end{DoxyCompactItemize}

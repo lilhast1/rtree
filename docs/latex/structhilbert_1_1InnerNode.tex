@@ -1,0 +1,137 @@
+\doxysection{hilbert\+::Inner\+Node\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Struct Template Reference}
+\hypertarget{structhilbert_1_1InnerNode}{}\label{structhilbert_1_1InnerNode}\index{hilbert::InnerNode$<$ T $>$@{hilbert::InnerNode$<$ T $>$}}
+
+
+Inner node entry pointing to a child node.  
+
+
+
+
+{\ttfamily \#include $<$hilbert\+\_\+rtree.\+h$>$}
+
+
+
+Inheritance diagram for hilbert\+::Inner\+Node\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>}\+:
+% FIG 0
+
+
+Collaboration diagram for hilbert\+::Inner\+Node\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>}\+:
+% FIG 1
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structhilbert_1_1InnerNode_af4a8fb89420dfbfcd4aac87dfee3566f}{Inner\+Node}} (\mbox{\hyperlink{structhilbert_1_1Node}{Node}}$<$ T $>$ \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{structhilbert_1_1InnerNode_afbd81eba6eda2e058ed19379cc1b3746}{node}})
+\item 
+\mbox{\hyperlink{structhilbert_1_1Node}{Node}}$<$ T $>$ \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{structhilbert_1_1InnerNode_af3ac1917fa64cd95b2af7c9a9ef866c0}{get\+\_\+node}} ()
+\item 
+bool \mbox{\hyperlink{structhilbert_1_1InnerNode_a4ee892ce1cffe8f9fa32486f256342aa}{is\+\_\+leaf}} () const
+\begin{DoxyCompactList}\small\item\em Returns true if this is a leaf entry. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structhilbert_1_1Rectangle}{Rectangle}} \& \mbox{\hyperlink{structhilbert_1_1InnerNode_ac4a2c302cba85b8d310785ba226f18e4}{get\+\_\+mbr}} () const
+\begin{DoxyCompactList}\small\item\em Get Minimum Bounding \doxylink{structhilbert_1_1Rectangle}{Rectangle} (MBR). \end{DoxyCompactList}\item 
+\mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}} \mbox{\hyperlink{structhilbert_1_1InnerNode_ac3386d711145c3d51c929f38c4c013b4}{get\+\_\+lhv}} () const
+\begin{DoxyCompactList}\small\item\em Get Largest Hilbert Value (LHV). \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{structhilbert_1_1NodeEntry}{hilbert\+::\+Node\+Entry$<$ T $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual \mbox{\hyperlink{structhilbert_1_1NodeEntry_ad097a1731f15efa05f74acece44c6816}{\texorpdfstring{$\sim$}{\string~}\+Node\+Entry}} ()=default
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structhilbert_1_1Node}{Node}}$<$ T $>$ \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{structhilbert_1_1InnerNode_afbd81eba6eda2e058ed19379cc1b3746}{node}}
+\begin{DoxyCompactList}\small\item\em child node \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$\newline
+struct hilbert\+::\+Inner\+Node$<$ T $>$}
+Inner node entry pointing to a child node. 
+
+\label{doc-constructors}
+\Hypertarget{structhilbert_1_1InnerNode_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{structhilbert_1_1InnerNode_af4a8fb89420dfbfcd4aac87dfee3566f}\index{hilbert::InnerNode$<$ T $>$@{hilbert::InnerNode$<$ T $>$}!InnerNode@{InnerNode}}
+\index{InnerNode@{InnerNode}!hilbert::InnerNode$<$ T $>$@{hilbert::InnerNode$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{InnerNode()}{InnerNode()}}
+{\footnotesize\ttfamily \label{structhilbert_1_1InnerNode_af4a8fb89420dfbfcd4aac87dfee3566f} 
+template$<$typename T$>$ \\
+\mbox{\hyperlink{structhilbert_1_1InnerNode}{hilbert\+::\+Inner\+Node}}$<$ T $>$\+::\+Inner\+Node (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structhilbert_1_1Node}{Node}}$<$ T $>$ \texorpdfstring{$\ast$}{*}}]{node}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\label{doc-func-members}
+\Hypertarget{structhilbert_1_1InnerNode_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{structhilbert_1_1InnerNode_ac3386d711145c3d51c929f38c4c013b4}\index{hilbert::InnerNode$<$ T $>$@{hilbert::InnerNode$<$ T $>$}!get\_lhv@{get\_lhv}}
+\index{get\_lhv@{get\_lhv}!hilbert::InnerNode$<$ T $>$@{hilbert::InnerNode$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{get\_lhv()}{get\_lhv()}}
+{\footnotesize\ttfamily \label{structhilbert_1_1InnerNode_ac3386d711145c3d51c929f38c4c013b4} 
+template$<$typename T$>$ \\
+\mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}} \mbox{\hyperlink{structhilbert_1_1InnerNode}{hilbert\+::\+Inner\+Node}}$<$ T $>$\+::get\+\_\+lhv (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Get Largest Hilbert Value (LHV). 
+
+
+
+Implements \mbox{\hyperlink{structhilbert_1_1NodeEntry_a0282629f0cd5cd483e6fd9c4684baeb2}{hilbert\+::\+Node\+Entry$<$ T $>$}}.
+
+\Hypertarget{structhilbert_1_1InnerNode_ac4a2c302cba85b8d310785ba226f18e4}\index{hilbert::InnerNode$<$ T $>$@{hilbert::InnerNode$<$ T $>$}!get\_mbr@{get\_mbr}}
+\index{get\_mbr@{get\_mbr}!hilbert::InnerNode$<$ T $>$@{hilbert::InnerNode$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{get\_mbr()}{get\_mbr()}}
+{\footnotesize\ttfamily \label{structhilbert_1_1InnerNode_ac4a2c302cba85b8d310785ba226f18e4} 
+template$<$typename T$>$ \\
+\mbox{\hyperlink{structhilbert_1_1Rectangle}{Rectangle}} \& \mbox{\hyperlink{structhilbert_1_1InnerNode}{hilbert\+::\+Inner\+Node}}$<$ T $>$\+::get\+\_\+mbr (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Get Minimum Bounding \doxylink{structhilbert_1_1Rectangle}{Rectangle} (MBR). 
+
+
+
+Implements \mbox{\hyperlink{structhilbert_1_1NodeEntry_a4f117ac0b11dbed3009073da71a0fbaa}{hilbert\+::\+Node\+Entry$<$ T $>$}}.
+
+\Hypertarget{structhilbert_1_1InnerNode_af3ac1917fa64cd95b2af7c9a9ef866c0}\index{hilbert::InnerNode$<$ T $>$@{hilbert::InnerNode$<$ T $>$}!get\_node@{get\_node}}
+\index{get\_node@{get\_node}!hilbert::InnerNode$<$ T $>$@{hilbert::InnerNode$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{get\_node()}{get\_node()}}
+{\footnotesize\ttfamily \label{structhilbert_1_1InnerNode_af3ac1917fa64cd95b2af7c9a9ef866c0} 
+template$<$typename T$>$ \\
+\mbox{\hyperlink{structhilbert_1_1Node}{Node}}$<$ T $>$ \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{structhilbert_1_1InnerNode}{hilbert\+::\+Inner\+Node}}$<$ T $>$\+::get\+\_\+node (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{structhilbert_1_1InnerNode_a4ee892ce1cffe8f9fa32486f256342aa}\index{hilbert::InnerNode$<$ T $>$@{hilbert::InnerNode$<$ T $>$}!is\_leaf@{is\_leaf}}
+\index{is\_leaf@{is\_leaf}!hilbert::InnerNode$<$ T $>$@{hilbert::InnerNode$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{is\_leaf()}{is\_leaf()}}
+{\footnotesize\ttfamily \label{structhilbert_1_1InnerNode_a4ee892ce1cffe8f9fa32486f256342aa} 
+template$<$typename T$>$ \\
+bool \mbox{\hyperlink{structhilbert_1_1InnerNode}{hilbert\+::\+Inner\+Node}}$<$ T $>$\+::is\+\_\+leaf (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Returns true if this is a leaf entry. 
+
+
+
+Implements \mbox{\hyperlink{structhilbert_1_1NodeEntry_a3aa81943ccaec4fb85d844f5a61ae710}{hilbert\+::\+Node\+Entry$<$ T $>$}}.
+
+
+
+\label{doc-variable-members}
+\Hypertarget{structhilbert_1_1InnerNode_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{structhilbert_1_1InnerNode_afbd81eba6eda2e058ed19379cc1b3746}\index{hilbert::InnerNode$<$ T $>$@{hilbert::InnerNode$<$ T $>$}!node@{node}}
+\index{node@{node}!hilbert::InnerNode$<$ T $>$@{hilbert::InnerNode$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{node}{node}}
+{\footnotesize\ttfamily \label{structhilbert_1_1InnerNode_afbd81eba6eda2e058ed19379cc1b3746} 
+template$<$typename T$>$ \\
+\mbox{\hyperlink{structhilbert_1_1Node}{Node}}$<$T$>$\texorpdfstring{$\ast$}{*} \mbox{\hyperlink{structhilbert_1_1InnerNode}{hilbert\+::\+Inner\+Node}}$<$ T $>$\+::node}
+
+
+
+child node 
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/rtree\+\_\+hilbert/\mbox{\hyperlink{hilbert__rtree_8h}{hilbert\+\_\+rtree.\+h}}\end{DoxyCompactItemize}

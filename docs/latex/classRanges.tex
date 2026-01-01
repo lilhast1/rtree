@@ -1,0 +1,118 @@
+\doxysection{Ranges Class Reference}
+\hypertarget{classRanges}{}\label{classRanges}\index{Ranges@{Ranges}}
+
+
+Manages a collection of \doxylink{structRange}{Range} objects with an optional capacity limit.  
+
+
+
+
+{\ttfamily \#include $<$ranges.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classRanges_af00213ebe8f86025d1b02b3ef552bf63}{Ranges}} (int capacity)
+\begin{DoxyCompactList}\small\item\em Construct a \doxylink{classRanges}{Ranges} container with optional capacity. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classRanges_a450f5f66fd3e6472af091f97df6aff4b}{add}} (const \mbox{\hyperlink{structRange}{Range}} \&r)
+\begin{DoxyCompactList}\small\item\em Add a range to the container. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classRanges_adfe67dfb733511ed359af55279943dbd}{size}} () const
+\begin{DoxyCompactList}\small\item\em Get the number of ranges stored. \end{DoxyCompactList}\item 
+std\+::vector$<$ \mbox{\hyperlink{structRange}{Range}} $>$\+::const\+\_\+iterator \mbox{\hyperlink{classRanges_a69d07973ef0de2bf4f1be8f0d88fbdeb}{begin}} () const
+\begin{DoxyCompactList}\small\item\em Get iterator to the beginning of the ranges. \end{DoxyCompactList}\item 
+std\+::vector$<$ \mbox{\hyperlink{structRange}{Range}} $>$\+::const\+\_\+iterator \mbox{\hyperlink{classRanges_a18bcef15814aaa70566483ecd0b41237}{end}} () const
+\begin{DoxyCompactList}\small\item\em Get iterator to the end of the ranges. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Manages a collection of \doxylink{structRange}{Range} objects with an optional capacity limit. 
+
+Provides functionality to add ranges, iterate over them, and query the number of ranges stored. 
+
+\label{doc-constructors}
+\Hypertarget{classRanges_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classRanges_af00213ebe8f86025d1b02b3ef552bf63}\index{Ranges@{Ranges}!Ranges@{Ranges}}
+\index{Ranges@{Ranges}!Ranges@{Ranges}}
+\doxysubsubsection{\texorpdfstring{Ranges()}{Ranges()}}
+{\footnotesize\ttfamily \label{classRanges_af00213ebe8f86025d1b02b3ef552bf63} 
+Ranges\+::\+Ranges (\begin{DoxyParamCaption}\item[{int}]{capacity}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Construct a \doxylink{classRanges}{Ranges} container with optional capacity. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em capacity} & Maximum number of ranges to store (0 for unlimited) \\
+\hline
+\end{DoxyParams}
+
+
+\label{doc-func-members}
+\Hypertarget{classRanges_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classRanges_a450f5f66fd3e6472af091f97df6aff4b}\index{Ranges@{Ranges}!add@{add}}
+\index{add@{add}!Ranges@{Ranges}}
+\doxysubsubsection{\texorpdfstring{add()}{add()}}
+{\footnotesize\ttfamily \label{classRanges_a450f5f66fd3e6472af091f97df6aff4b} 
+void Ranges\+::add (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structRange}{Range}} \&}]{r}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Add a range to the container. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em r} & \doxylink{structRange}{Range} to add \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::runtime\+\_\+error} & if adding exceeds capacity \\
+\hline
+\end{DoxyExceptions}
+\Hypertarget{classRanges_a69d07973ef0de2bf4f1be8f0d88fbdeb}\index{Ranges@{Ranges}!begin@{begin}}
+\index{begin@{begin}!Ranges@{Ranges}}
+\doxysubsubsection{\texorpdfstring{begin()}{begin()}}
+{\footnotesize\ttfamily \label{classRanges_a69d07973ef0de2bf4f1be8f0d88fbdeb} 
+std\+::vector$<$ \mbox{\hyperlink{structRange}{Range}} $>$\+::const\+\_\+iterator Ranges\+::begin (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Get iterator to the beginning of the ranges. 
+
+\begin{DoxyReturn}{Returns}
+const iterator to first range 
+\end{DoxyReturn}
+\Hypertarget{classRanges_a18bcef15814aaa70566483ecd0b41237}\index{Ranges@{Ranges}!end@{end}}
+\index{end@{end}!Ranges@{Ranges}}
+\doxysubsubsection{\texorpdfstring{end()}{end()}}
+{\footnotesize\ttfamily \label{classRanges_a18bcef15814aaa70566483ecd0b41237} 
+std\+::vector$<$ \mbox{\hyperlink{structRange}{Range}} $>$\+::const\+\_\+iterator Ranges\+::end (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Get iterator to the end of the ranges. 
+
+\begin{DoxyReturn}{Returns}
+const iterator past the last range 
+\end{DoxyReturn}
+\Hypertarget{classRanges_adfe67dfb733511ed359af55279943dbd}\index{Ranges@{Ranges}!size@{size}}
+\index{size@{size}!Ranges@{Ranges}}
+\doxysubsubsection{\texorpdfstring{size()}{size()}}
+{\footnotesize\ttfamily \label{classRanges_adfe67dfb733511ed359af55279943dbd} 
+int Ranges\+::size (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Get the number of ranges stored. 
+
+\begin{DoxyReturn}{Returns}
+number of ranges 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/rtree\+\_\+hilbert/\mbox{\hyperlink{ranges_8h}{ranges.\+h}}\end{DoxyCompactItemize}

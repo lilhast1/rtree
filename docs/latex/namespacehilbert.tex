@@ -1,0 +1,56 @@
+\doxysection{hilbert Namespace Reference}
+\hypertarget{namespacehilbert}{}\label{namespacehilbert}\index{hilbert@{hilbert}}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structhilbert_1_1Rectangle}{Rectangle}}
+\begin{DoxyCompactList}\small\item\em Represents an axis-\/aligned rectangle in d-\/dimensional space. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structhilbert_1_1Node}{Node}}
+\begin{DoxyCompactList}\small\item\em \doxylink{structhilbert_1_1Node}{Node} in the R-\/\+Tree (leaf or inner). \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structhilbert_1_1NodeEntry}{Node\+Entry}}
+\begin{DoxyCompactList}\small\item\em Base interface for node entries (leaf or inner node). \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structhilbert_1_1LeafEntry}{Leaf\+Entry}}
+\begin{DoxyCompactList}\small\item\em Leaf entry containing a single element. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structhilbert_1_1InnerNode}{Inner\+Node}}
+\begin{DoxyCompactList}\small\item\em Inner node entry pointing to a child node. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structhilbert_1_1nodeEntryComparison}{node\+Entry\+Comparison}}
+\begin{DoxyCompactList}\small\item\em Comparison for node entries by LHV. Ensures uniqueness by comparing pointer if LHV is equal. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classhilbert_1_1RTree}{RTree}}
+\begin{DoxyCompactList}\small\item\em R-\/\+Tree class with Hilbert curve ordering. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename T$>$ }\\using \mbox{\hyperlink{namespacehilbert_aa7ad03b6a321800f9790ee3dbb97d814}{Entry\+Set}} = std\+::set$<$\mbox{\hyperlink{structhilbert_1_1NodeEntry}{Node\+Entry}}$<$T$>$\texorpdfstring{$\ast$}{*}, \mbox{\hyperlink{structhilbert_1_1nodeEntryComparison}{node\+Entry\+Comparison}}$<$T$>$$>$
+\begin{DoxyCompactList}\small\item\em Set of node entries with custom comparator. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const auto \mbox{\hyperlink{namespacehilbert_a0e4f58e6e92e468cca58f72578fa6df1}{not\+\_\+implemented}} = std\+::logic\+\_\+error("{}Not implemented"{}s)
+\end{DoxyCompactItemize}
+
+
+\label{doc-typedef-members}
+\Hypertarget{namespacehilbert_doc-typedef-members}
+\doxysubsection{Typedef Documentation}
+\Hypertarget{namespacehilbert_aa7ad03b6a321800f9790ee3dbb97d814}\index{hilbert@{hilbert}!EntrySet@{EntrySet}}
+\index{EntrySet@{EntrySet}!hilbert@{hilbert}}
+\doxysubsubsection{\texorpdfstring{EntrySet}{EntrySet}}
+{\footnotesize\ttfamily \label{namespacehilbert_aa7ad03b6a321800f9790ee3dbb97d814} 
+template$<$typename T$>$ \\
+using \mbox{\hyperlink{namespacehilbert_aa7ad03b6a321800f9790ee3dbb97d814}{hilbert\+::\+Entry\+Set}} = std\+::set$<$\mbox{\hyperlink{structhilbert_1_1NodeEntry}{Node\+Entry}}$<$T$>$\texorpdfstring{$\ast$}{*}, \mbox{\hyperlink{structhilbert_1_1nodeEntryComparison}{node\+Entry\+Comparison}}$<$T$>$$>$}
+
+
+
+Set of node entries with custom comparator. 
+
+
+
+\label{doc-var-members}
+\Hypertarget{namespacehilbert_doc-var-members}
+\doxysubsection{Variable Documentation}
+\Hypertarget{namespacehilbert_a0e4f58e6e92e468cca58f72578fa6df1}\index{hilbert@{hilbert}!not\_implemented@{not\_implemented}}
+\index{not\_implemented@{not\_implemented}!hilbert@{hilbert}}
+\doxysubsubsection{\texorpdfstring{not\_implemented}{not\_implemented}}
+{\footnotesize\ttfamily \label{namespacehilbert_a0e4f58e6e92e468cca58f72578fa6df1} 
+const auto hilbert\+::not\+\_\+implemented = std\+::logic\+\_\+error("{}Not implemented"{}s)}
+

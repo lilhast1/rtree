@@ -1,0 +1,170 @@
+\doxysection{Gutman\+::Node\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Struct Template Reference}
+\hypertarget{structGutman_1_1Node}{}\label{structGutman_1_1Node}\index{Gutman::Node$<$ T $>$@{Gutman::Node$<$ T $>$}}
+
+
+\doxylink{structGutman_1_1Node}{Node} in an R-\/\+Tree, can be a leaf or internal.  
+
+
+
+
+{\ttfamily \#include $<$rtree.\+h$>$}
+
+
+
+Collaboration diagram for Gutman\+::Node\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>}\+:
+% FIG 0
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{structGutman_1_1Node_a1c957969394c35d58e06fefeaf64950e}{count}} () const
+\begin{DoxyCompactList}\small\item\em Number of elements or children in the node. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structGutman_1_1Node_a2109d6c2538c9a325417a77eece88b5e}{Node}} (bool \mbox{\hyperlink{structGutman_1_1Node_a9b907462a22739ac50bd56440a39c248}{is\+\_\+leaf}}, \mbox{\hyperlink{structGutman_1_1Rectangle}{Rectangle}} \mbox{\hyperlink{structGutman_1_1Node_a967eb7d16e9741558900c32449d44487}{mbr}})
+\begin{DoxyCompactList}\small\item\em Construct a node. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structGutman_1_1Node_a6e12bb4f939b298808629d4ee64f8a41}{\texorpdfstring{$\sim$}{\string~}\+Node}} ()
+\begin{DoxyCompactList}\small\item\em Destructor frees children. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{structGutman_1_1Node_a52983c2197388938a533640252db2a20}{update\+\_\+mbr}} ()
+\begin{DoxyCompactList}\small\item\em Recalculate MBR of this node based on elements or children. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{structGutman_1_1Node_a9b907462a22739ac50bd56440a39c248}{is\+\_\+leaf}}
+\begin{DoxyCompactList}\small\item\em True if node is leaf. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structGutman_1_1Node_a2109d6c2538c9a325417a77eece88b5e}{Node}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{structGutman_1_1Node_ab46ecf01da0a3a9e632a3a166859dd22}{parent}}
+\begin{DoxyCompactList}\small\item\em Parent node. \end{DoxyCompactList}\item 
+std\+::vector$<$ \mbox{\hyperlink{structGutman_1_1Node_a2109d6c2538c9a325417a77eece88b5e}{Node}} \texorpdfstring{$\ast$}{*} $>$ \mbox{\hyperlink{structGutman_1_1Node_a970461ca2c3bc6d11ca1147126aca9d4}{children}}
+\begin{DoxyCompactList}\small\item\em Children nodes (for internal nodes). \end{DoxyCompactList}\item 
+std\+::vector$<$ std\+::pair$<$ T \texorpdfstring{$\ast$}{*}, \mbox{\hyperlink{structGutman_1_1Rectangle}{Rectangle}} $>$ $>$ \mbox{\hyperlink{structGutman_1_1Node_aec1d3d95da55292f0923ce99dafcd1ed}{elems}}
+\begin{DoxyCompactList}\small\item\em Elements stored (for leaf nodes). \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structGutman_1_1Rectangle}{Rectangle}} \mbox{\hyperlink{structGutman_1_1Node_a967eb7d16e9741558900c32449d44487}{mbr}}
+\begin{DoxyCompactList}\small\item\em Minimum bounding rectangle of this node. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$\newline
+struct Gutman\+::\+Node$<$ T $>$}
+\doxylink{structGutman_1_1Node}{Node} in an R-\/\+Tree, can be a leaf or internal. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & Type of data stored in leaves \\
+\hline
+\end{DoxyTemplParams}
+
+
+\label{doc-constructors}
+\Hypertarget{structGutman_1_1Node_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{structGutman_1_1Node_a2109d6c2538c9a325417a77eece88b5e}\index{Gutman::Node$<$ T $>$@{Gutman::Node$<$ T $>$}!Node@{Node}}
+\index{Node@{Node}!Gutman::Node$<$ T $>$@{Gutman::Node$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{Node()}{Node()}}
+{\footnotesize\ttfamily \label{structGutman_1_1Node_a2109d6c2538c9a325417a77eece88b5e} 
+template$<$typename T$>$ \\
+\mbox{\hyperlink{structGutman_1_1Node}{Gutman\+::\+Node}}$<$ T $>$\+::\+Node (\begin{DoxyParamCaption}\item[{bool}]{is\+\_\+leaf}{, }\item[{\mbox{\hyperlink{structGutman_1_1Rectangle}{Rectangle}}}]{mbr}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Construct a node. 
+
+\Hypertarget{structGutman_1_1Node_a6e12bb4f939b298808629d4ee64f8a41}\index{Gutman::Node$<$ T $>$@{Gutman::Node$<$ T $>$}!````~Node@{\texorpdfstring{$\sim$}{\string~}Node}}
+\index{````~Node@{\texorpdfstring{$\sim$}{\string~}Node}!Gutman::Node$<$ T $>$@{Gutman::Node$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{\texorpdfstring{$\sim$}{\string~}Node()}{\string~Node()}}
+{\footnotesize\ttfamily \label{structGutman_1_1Node_a6e12bb4f939b298808629d4ee64f8a41} 
+template$<$typename T$>$ \\
+\mbox{\hyperlink{structGutman_1_1Node}{Gutman\+::\+Node}}$<$ T $>$\+::\texorpdfstring{$\sim$}{\string~}\mbox{\hyperlink{structGutman_1_1Node_a2109d6c2538c9a325417a77eece88b5e}{Node}} (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Destructor frees children. 
+
+
+
+\label{doc-func-members}
+\Hypertarget{structGutman_1_1Node_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{structGutman_1_1Node_a1c957969394c35d58e06fefeaf64950e}\index{Gutman::Node$<$ T $>$@{Gutman::Node$<$ T $>$}!count@{count}}
+\index{count@{count}!Gutman::Node$<$ T $>$@{Gutman::Node$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{count()}{count()}}
+{\footnotesize\ttfamily \label{structGutman_1_1Node_a1c957969394c35d58e06fefeaf64950e} 
+template$<$typename T$>$ \\
+int \mbox{\hyperlink{structGutman_1_1Node}{Gutman\+::\+Node}}$<$ T $>$\+::count (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Number of elements or children in the node. 
+
+\Hypertarget{structGutman_1_1Node_a52983c2197388938a533640252db2a20}\index{Gutman::Node$<$ T $>$@{Gutman::Node$<$ T $>$}!update\_mbr@{update\_mbr}}
+\index{update\_mbr@{update\_mbr}!Gutman::Node$<$ T $>$@{Gutman::Node$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{update\_mbr()}{update\_mbr()}}
+{\footnotesize\ttfamily \label{structGutman_1_1Node_a52983c2197388938a533640252db2a20} 
+template$<$typename T$>$ \\
+void \mbox{\hyperlink{structGutman_1_1Node}{Gutman\+::\+Node}}$<$ T $>$\+::update\+\_\+mbr (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Recalculate MBR of this node based on elements or children. 
+
+
+
+\label{doc-variable-members}
+\Hypertarget{structGutman_1_1Node_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{structGutman_1_1Node_a970461ca2c3bc6d11ca1147126aca9d4}\index{Gutman::Node$<$ T $>$@{Gutman::Node$<$ T $>$}!children@{children}}
+\index{children@{children}!Gutman::Node$<$ T $>$@{Gutman::Node$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{children}{children}}
+{\footnotesize\ttfamily \label{structGutman_1_1Node_a970461ca2c3bc6d11ca1147126aca9d4} 
+template$<$typename T$>$ \\
+std\+::vector$<$\mbox{\hyperlink{structGutman_1_1Node_a2109d6c2538c9a325417a77eece88b5e}{Node}}\texorpdfstring{$\ast$}{*}$>$ \mbox{\hyperlink{structGutman_1_1Node}{Gutman\+::\+Node}}$<$ T $>$\+::children}
+
+
+
+Children nodes (for internal nodes). 
+
+\Hypertarget{structGutman_1_1Node_aec1d3d95da55292f0923ce99dafcd1ed}\index{Gutman::Node$<$ T $>$@{Gutman::Node$<$ T $>$}!elems@{elems}}
+\index{elems@{elems}!Gutman::Node$<$ T $>$@{Gutman::Node$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{elems}{elems}}
+{\footnotesize\ttfamily \label{structGutman_1_1Node_aec1d3d95da55292f0923ce99dafcd1ed} 
+template$<$typename T$>$ \\
+std\+::vector$<$std\+::pair$<$T\texorpdfstring{$\ast$}{*}, \mbox{\hyperlink{structGutman_1_1Rectangle}{Rectangle}}$>$ $>$ \mbox{\hyperlink{structGutman_1_1Node}{Gutman\+::\+Node}}$<$ T $>$\+::elems}
+
+
+
+Elements stored (for leaf nodes). 
+
+\Hypertarget{structGutman_1_1Node_a9b907462a22739ac50bd56440a39c248}\index{Gutman::Node$<$ T $>$@{Gutman::Node$<$ T $>$}!is\_leaf@{is\_leaf}}
+\index{is\_leaf@{is\_leaf}!Gutman::Node$<$ T $>$@{Gutman::Node$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{is\_leaf}{is\_leaf}}
+{\footnotesize\ttfamily \label{structGutman_1_1Node_a9b907462a22739ac50bd56440a39c248} 
+template$<$typename T$>$ \\
+bool \mbox{\hyperlink{structGutman_1_1Node}{Gutman\+::\+Node}}$<$ T $>$\+::is\+\_\+leaf}
+
+
+
+True if node is leaf. 
+
+\Hypertarget{structGutman_1_1Node_a967eb7d16e9741558900c32449d44487}\index{Gutman::Node$<$ T $>$@{Gutman::Node$<$ T $>$}!mbr@{mbr}}
+\index{mbr@{mbr}!Gutman::Node$<$ T $>$@{Gutman::Node$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{mbr}{mbr}}
+{\footnotesize\ttfamily \label{structGutman_1_1Node_a967eb7d16e9741558900c32449d44487} 
+template$<$typename T$>$ \\
+\mbox{\hyperlink{structGutman_1_1Rectangle}{Rectangle}} \mbox{\hyperlink{structGutman_1_1Node}{Gutman\+::\+Node}}$<$ T $>$\+::mbr}
+
+
+
+Minimum bounding rectangle of this node. 
+
+\Hypertarget{structGutman_1_1Node_ab46ecf01da0a3a9e632a3a166859dd22}\index{Gutman::Node$<$ T $>$@{Gutman::Node$<$ T $>$}!parent@{parent}}
+\index{parent@{parent}!Gutman::Node$<$ T $>$@{Gutman::Node$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{parent}{parent}}
+{\footnotesize\ttfamily \label{structGutman_1_1Node_ab46ecf01da0a3a9e632a3a166859dd22} 
+template$<$typename T$>$ \\
+\mbox{\hyperlink{structGutman_1_1Node_a2109d6c2538c9a325417a77eece88b5e}{Node}}\texorpdfstring{$\ast$}{*} \mbox{\hyperlink{structGutman_1_1Node}{Gutman\+::\+Node}}$<$ T $>$\+::parent}
+
+
+
+Parent node. 
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/rtree/\mbox{\hyperlink{rtree_8h}{rtree.\+h}}\end{DoxyCompactItemize}

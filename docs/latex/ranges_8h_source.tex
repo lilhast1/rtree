@@ -1,0 +1,39 @@
+\doxysection{ranges.\+h}
+\hypertarget{ranges_8h_source}{}\label{ranges_8h_source}\index{src/rtree\_hilbert/ranges.h@{src/rtree\_hilbert/ranges.h}}
+\mbox{\hyperlink{ranges_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#include\ <stdexcept>}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{keyword}{using\ }\mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}}\ =\ \textcolor{keywordtype}{long}\ long;}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structRange_a2dcf721003d3ce10f6cb1d4ab2586061}{Range}}\ \{}
+\DoxyCodeLine{00014\ \ \ \ \ \mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}}\ \mbox{\hyperlink{structRange_a62e2e156c0365a0717a666debdeb9c7c}{start}};\ \ }
+\DoxyCodeLine{00015\ \ \ \ \ \mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}}\ \mbox{\hyperlink{structRange_a6a0ca851730ce7ca0e63bee307478335}{end}};\ \ \ \ }
+\DoxyCodeLine{00022\ \ \ \ \ \mbox{\hyperlink{structRange_a2dcf721003d3ce10f6cb1d4ab2586061}{Range}}(\mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}}\ \mbox{\hyperlink{structRange_a62e2e156c0365a0717a666debdeb9c7c}{start}},\ \mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}}\ \mbox{\hyperlink{structRange_a6a0ca851730ce7ca0e63bee307478335}{end}})\ :\ \mbox{\hyperlink{structRange_a62e2e156c0365a0717a666debdeb9c7c}{start}}(\mbox{\hyperlink{structRange_a62e2e156c0365a0717a666debdeb9c7c}{start}}),\ \mbox{\hyperlink{structRange_a6a0ca851730ce7ca0e63bee307478335}{end}}(\mbox{\hyperlink{structRange_a6a0ca851730ce7ca0e63bee307478335}{end}})\ \{}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{structRange_a62e2e156c0365a0717a666debdeb9c7c}{start}}\ >\ \mbox{\hyperlink{structRange_a6a0ca851730ce7ca0e63bee307478335}{end}})}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::invalid\_argument(\textcolor{stringliteral}{"{}Range\ end\ can't\ be\ less\ than\ range\ start"{}});}
+\DoxyCodeLine{00025\ \ \ \ \ \}}
+\DoxyCodeLine{00026\ \};}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00035\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classRanges_af00213ebe8f86025d1b02b3ef552bf63}{Ranges}}\ \{}
+\DoxyCodeLine{00036\ \ \ \ \ std::vector<Range>\ data;\ \ }
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordtype}{int}\ capacity\ =\ 0;\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00044\ \ \ \ \ \mbox{\hyperlink{classRanges_af00213ebe8f86025d1b02b3ef552bf63}{Ranges}}(\textcolor{keywordtype}{int}\ capacity)\ :\ capacity(capacity)\ \{}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (capacity\ >\ 0)}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \ \ \ \ data.reserve(capacity);}
+\DoxyCodeLine{00047\ \ \ \ \ \}}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classRanges_a450f5f66fd3e6472af091f97df6aff4b}{add}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structRange}{Range}}\&\ r)\ \{}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (capacity\ \&\&\ data.size()\ >=\ capacity)}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(\textcolor{stringliteral}{"{}Range\ capacity\ exceeded"{}});}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ data.push\_back(r);}
+\DoxyCodeLine{00057\ \ \ \ \ \}}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classRanges_adfe67dfb733511ed359af55279943dbd}{size}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ data.size();\ \}}
+\DoxyCodeLine{00067\ \ \ \ \ std::vector<Range>::const\_iterator\ \mbox{\hyperlink{classRanges_a69d07973ef0de2bf4f1be8f0d88fbdeb}{begin}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ data.begin();\ \}}
+\DoxyCodeLine{00072\ \ \ \ \ std::vector<Range>::const\_iterator\ \mbox{\hyperlink{classRanges_a18bcef15814aaa70566483ecd0b41237}{end}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ data.end();\ \}}
+\DoxyCodeLine{00073\ \};}
+
+\end{DoxyCode}

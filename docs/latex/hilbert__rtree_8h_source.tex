@@ -1,0 +1,1067 @@
+\doxysection{hilbert\+\_\+rtree.\+h}
+\hypertarget{hilbert__rtree_8h_source}{}\label{hilbert__rtree_8h_source}\index{src/rtree\_hilbert/hilbert\_rtree.h@{src/rtree\_hilbert/hilbert\_rtree.h}}
+\mbox{\hyperlink{hilbert__rtree_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <climits>}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <cstddef>}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <cstdint>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <deque>}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <exception>}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ <set>}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ <stdexcept>}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ <utility>}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{rtree_8h}{rtree/rtree.h}}"{}}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{hilbert__curve_8h}{rtree\_hilbert/hilbert\_curve.h}}"{}}}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \textcolor{keyword}{using\ }\mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}}\ =\ \textcolor{keywordtype}{long}\ long;}
+\DoxyCodeLine{00026\ \textcolor{keyword}{using\ }\mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}}\ =\ std::vector<ll>;}
+\DoxyCodeLine{00027\ \textcolor{keyword}{using\ namespace\ }std::literals::string\_literals;}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacehilbert}{hilbert}}\ \{}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{namespacehilbert_a0e4f58e6e92e468cca58f72578fa6df1}{not\_implemented}}\ =\ std::logic\_error(\textcolor{stringliteral}{"{}Not\ implemented"{}}s);}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00036\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structhilbert_1_1Rectangle_afa33a49a77f038ef8695a66c1a8ff903}{Rectangle}}\ \{}
+\DoxyCodeLine{00037\ \ \ \ \ \mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}}\ \mbox{\hyperlink{structhilbert_1_1Rectangle_a313da04d276c39031d6ff54138e2537b}{lower}};\ \ \ }
+\DoxyCodeLine{00038\ \ \ \ \ \mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}}\ \mbox{\hyperlink{structhilbert_1_1Rectangle_a582da7e94a86b9b52e168abc34a26cdd}{higher}};\ \ }
+\DoxyCodeLine{00045\ \ \ \ \ \mbox{\hyperlink{structhilbert_1_1Rectangle_afa33a49a77f038ef8695a66c1a8ff903}{Rectangle}}(\mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}}\ lo,\ \mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}}\ hi)\ :\ \mbox{\hyperlink{structhilbert_1_1Rectangle_a313da04d276c39031d6ff54138e2537b}{lower}}(std::move(lo)),\ \mbox{\hyperlink{structhilbert_1_1Rectangle_a582da7e94a86b9b52e168abc34a26cdd}{higher}}(std::move(hi))\ \{}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (lo.size()\ !=\ hi.size())\ \{}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \ \ \ \ throw\ std::domain\_error(\textcolor{stringliteral}{"{}Rectangle\ dimensions\ mismatch"{}});}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00049\ \ \ \ \ \}}
+\DoxyCodeLine{00051\ \ \ \ \ \mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}}\ \mbox{\hyperlink{structhilbert_1_1Rectangle_af37316679d8a65d330bd145e28ed3e76}{get\_center}}()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ center(\mbox{\hyperlink{structhilbert_1_1Rectangle_a313da04d276c39031d6ff54138e2537b}{lower}});}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ \mbox{\hyperlink{structhilbert_1_1Rectangle_a313da04d276c39031d6ff54138e2537b}{lower}}.size();\ i++)\ \{}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \ \ \ \ center[i]\ =\ (\mbox{\hyperlink{structhilbert_1_1Rectangle_a313da04d276c39031d6ff54138e2537b}{lower}}[i]\ +\ \mbox{\hyperlink{structhilbert_1_1Rectangle_a582da7e94a86b9b52e168abc34a26cdd}{higher}}[i])\ /\ 2;}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ center;}
+\DoxyCodeLine{00057\ \ \ \ \ \}}
+\DoxyCodeLine{00059\ \ \ \ \ \mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}}\ \mbox{\hyperlink{structhilbert_1_1Rectangle_ac4f7f1ba57897e93a61c7cba4df10526}{get\_lower}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structhilbert_1_1Rectangle_a313da04d276c39031d6ff54138e2537b}{lower}};\ \}}
+\DoxyCodeLine{00061\ \ \ \ \ \mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}}\ \mbox{\hyperlink{structhilbert_1_1Rectangle_ae473c071f7f98f792c48ae1af19a6b8a}{get\_upper}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structhilbert_1_1Rectangle_a582da7e94a86b9b52e168abc34a26cdd}{higher}};\ \}}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structhilbert_1_1Rectangle_acd498e108ca13f52624b8babcc62aa59}{intersects}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structhilbert_1_1Rectangle_afa33a49a77f038ef8695a66c1a8ff903}{Rectangle}}\&\ rect)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (this-\/>lower.size()\ !=\ rect.\mbox{\hyperlink{structhilbert_1_1Rectangle_a313da04d276c39031d6ff54138e2537b}{lower}}.size())\ \{}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(\textcolor{stringliteral}{"{}The\ two\ rectangles\ do\ not\ have\ the\ same\ dimension."{}});}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ this-\/>lower.size();\ ++i)\ \{}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (this-\/>lower[i]\ >\ rect.\mbox{\hyperlink{structhilbert_1_1Rectangle_a582da7e94a86b9b52e168abc34a26cdd}{higher}}[i]\ ||\ this-\/>higher[i]\ <\ rect.\mbox{\hyperlink{structhilbert_1_1Rectangle_a313da04d276c39031d6ff54138e2537b}{lower}}[i])\ \{}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00079\ \ \ \ \ \}}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structhilbert_1_1Rectangle_a8a7eec1a34ecc6628dae91ab8ac60046}{contains}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structhilbert_1_1Rectangle_afa33a49a77f038ef8695a66c1a8ff903}{Rectangle}}\&\ rect)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (this-\/>lower.size()\ !=\ rect.\mbox{\hyperlink{structhilbert_1_1Rectangle_a313da04d276c39031d6ff54138e2537b}{lower}}.size())\ \{}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(\textcolor{stringliteral}{"{}The\ two\ rectangles\ do\ not\ have\ the\ same\ dimension."{}});}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ this-\/>lower.size();\ ++i)\ \{}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (this-\/>lower[i]\ >\ rect.\mbox{\hyperlink{structhilbert_1_1Rectangle_a313da04d276c39031d6ff54138e2537b}{lower}}[i]\ ||\ rect.\mbox{\hyperlink{structhilbert_1_1Rectangle_a582da7e94a86b9b52e168abc34a26cdd}{higher}}[i]\ >\ this-\/>higher[i])\ \{}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00097\ \ \ \ \ \}}
+\DoxyCodeLine{00098\ }
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structhilbert_1_1Rectangle_a1d0d347a533528c191babc5a503d14ad}{operator==}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structhilbert_1_1Rectangle_afa33a49a77f038ef8695a66c1a8ff903}{Rectangle}}\&\ other)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (this-\/>lower.size()\ !=\ other.\mbox{\hyperlink{structhilbert_1_1Rectangle_a313da04d276c39031d6ff54138e2537b}{lower}}.size())\ \{}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(\textcolor{stringliteral}{"{}The\ two\ rectangles\ do\ not\ have\ the\ same\ dimension."{}});}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ this-\/>lower.size();\ ++i)\ \{}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (this-\/>lower[i]\ !=\ other.\mbox{\hyperlink{structhilbert_1_1Rectangle_a313da04d276c39031d6ff54138e2537b}{lower}}[i]\ ||\ this-\/>higher[i]\ !=\ other.\mbox{\hyperlink{structhilbert_1_1Rectangle_a582da7e94a86b9b52e168abc34a26cdd}{higher}}[i])\ \{}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00110\ \ \ \ \ \}}
+\DoxyCodeLine{00111\ \};}
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00113\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00114\ \textcolor{keyword}{struct\ }Node;}
+\DoxyCodeLine{00115\ }
+\DoxyCodeLine{00119\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00120\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structhilbert_1_1NodeEntry}{NodeEntry}}\ \{}
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}}\ \mbox{\hyperlink{structhilbert_1_1NodeEntry_a0282629f0cd5cd483e6fd9c4684baeb2}{get\_lhv}}()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00124\ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{structhilbert_1_1Rectangle}{Rectangle}}\&\ \mbox{\hyperlink{structhilbert_1_1NodeEntry_a4f117ac0b11dbed3009073da71a0fbaa}{get\_mbr}}()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structhilbert_1_1NodeEntry_a3aa81943ccaec4fb85d844f5a61ae710}{is\_leaf}}()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00127\ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{structhilbert_1_1NodeEntry_ad097a1731f15efa05f74acece44c6816}{\string~NodeEntry}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00128\ \};}
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00133\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00134\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structhilbert_1_1LeafEntry_a04477aea31889559848416eb7fdf0f0e}{LeafEntry}}\ :\ \mbox{\hyperlink{structhilbert_1_1NodeEntry}{NodeEntry}}<T>\ \{}
+\DoxyCodeLine{00135\ \ \ \ \ \textcolor{keyword}{mutable}\ \mbox{\hyperlink{structhilbert_1_1Rectangle}{Rectangle}}\ \mbox{\hyperlink{structhilbert_1_1LeafEntry_a3902517049d4ce7222d30fb6ae8b78a7}{mbr}};\ \ }
+\DoxyCodeLine{00136\ \ \ \ \ T*\ \mbox{\hyperlink{structhilbert_1_1LeafEntry_aef51bca7cf8dbe2a1d18c1ab1eb6ec17}{elem}};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00137\ \ \ \ \ \mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}}\ \mbox{\hyperlink{structhilbert_1_1LeafEntry_a98a689ab997bb9b08b5271c7bb0993e5}{lhv}};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00138\ \ \ \ \ \mbox{\hyperlink{structhilbert_1_1LeafEntry_a04477aea31889559848416eb7fdf0f0e}{LeafEntry}}(\mbox{\hyperlink{structhilbert_1_1Rectangle}{Rectangle}}\ \mbox{\hyperlink{structhilbert_1_1LeafEntry_a3902517049d4ce7222d30fb6ae8b78a7}{mbr}},\ \mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}}\ \mbox{\hyperlink{structhilbert_1_1LeafEntry_a98a689ab997bb9b08b5271c7bb0993e5}{lhv}},\ T*\ \mbox{\hyperlink{structhilbert_1_1LeafEntry_aef51bca7cf8dbe2a1d18c1ab1eb6ec17}{elem}})\ :\ \mbox{\hyperlink{structhilbert_1_1LeafEntry_a98a689ab997bb9b08b5271c7bb0993e5}{lhv}}(\mbox{\hyperlink{structhilbert_1_1LeafEntry_a98a689ab997bb9b08b5271c7bb0993e5}{lhv}}),\ \mbox{\hyperlink{structhilbert_1_1LeafEntry_a3902517049d4ce7222d30fb6ae8b78a7}{mbr}}(std::move(\mbox{\hyperlink{structhilbert_1_1LeafEntry_a3902517049d4ce7222d30fb6ae8b78a7}{mbr}})),\ \mbox{\hyperlink{structhilbert_1_1LeafEntry_aef51bca7cf8dbe2a1d18c1ab1eb6ec17}{elem}}(\mbox{\hyperlink{structhilbert_1_1LeafEntry_aef51bca7cf8dbe2a1d18c1ab1eb6ec17}{elem}})\ \{\}}
+\DoxyCodeLine{00139\ \ \ \ \ \mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}}\ \mbox{\hyperlink{structhilbert_1_1LeafEntry_ae14f0ed6cfc8928e4f84402fd87298ad}{get\_lhv}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structhilbert_1_1LeafEntry_a98a689ab997bb9b08b5271c7bb0993e5}{lhv}};\ \}}
+\DoxyCodeLine{00140\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structhilbert_1_1LeafEntry_aa3c0210877b9839e15a6734fb7e97b4b}{is\_leaf}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};\ \}}
+\DoxyCodeLine{00141\ \ \ \ \ \mbox{\hyperlink{structhilbert_1_1Rectangle}{Rectangle}}\&\ \mbox{\hyperlink{structhilbert_1_1LeafEntry_af988cac09f3b05f384b05de049acf262}{get\_mbr}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structhilbert_1_1LeafEntry_a3902517049d4ce7222d30fb6ae8b78a7}{mbr}};\ \}}
+\DoxyCodeLine{00142\ \};}
+\DoxyCodeLine{00143\ }
+\DoxyCodeLine{00147\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00148\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structhilbert_1_1InnerNode_af4a8fb89420dfbfcd4aac87dfee3566f}{InnerNode}}\ :\ \mbox{\hyperlink{structhilbert_1_1NodeEntry}{NodeEntry}}<T>\ \{}
+\DoxyCodeLine{00149\ \ \ \ \ \mbox{\hyperlink{structhilbert_1_1Node}{Node<T>}}*\ \mbox{\hyperlink{structhilbert_1_1InnerNode_afbd81eba6eda2e058ed19379cc1b3746}{node}};\ \ }
+\DoxyCodeLine{00150\ \ \ \ \ \mbox{\hyperlink{structhilbert_1_1InnerNode_af4a8fb89420dfbfcd4aac87dfee3566f}{InnerNode}}(\mbox{\hyperlink{structhilbert_1_1Node}{Node<T>}}*\ \mbox{\hyperlink{structhilbert_1_1InnerNode_afbd81eba6eda2e058ed19379cc1b3746}{node}})\ :\ \mbox{\hyperlink{structhilbert_1_1InnerNode_afbd81eba6eda2e058ed19379cc1b3746}{node}}(\mbox{\hyperlink{structhilbert_1_1InnerNode_afbd81eba6eda2e058ed19379cc1b3746}{node}})\ \{\}}
+\DoxyCodeLine{00151\ \ \ \ \ \mbox{\hyperlink{structhilbert_1_1Node}{Node<T>}}*\ \mbox{\hyperlink{structhilbert_1_1InnerNode_af3ac1917fa64cd95b2af7c9a9ef866c0}{get\_node}}()\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structhilbert_1_1InnerNode_afbd81eba6eda2e058ed19379cc1b3746}{node}};\ \}}
+\DoxyCodeLine{00152\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structhilbert_1_1InnerNode_a4ee892ce1cffe8f9fa32486f256342aa}{is\_leaf}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00153\ \ \ \ \ \mbox{\hyperlink{structhilbert_1_1Rectangle}{Rectangle}}\&\ \mbox{\hyperlink{structhilbert_1_1InnerNode_ac4a2c302cba85b8d310785ba226f18e4}{get\_mbr}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structhilbert_1_1InnerNode_afbd81eba6eda2e058ed19379cc1b3746}{node}}-\/>get\_mbr();\ \}}
+\DoxyCodeLine{00154\ \ \ \ \ \mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}}\ \mbox{\hyperlink{structhilbert_1_1InnerNode_ac3386d711145c3d51c929f38c4c013b4}{get\_lhv}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structhilbert_1_1InnerNode_afbd81eba6eda2e058ed19379cc1b3746}{node}}-\/>get\_lhv();\ \}}
+\DoxyCodeLine{00155\ \};}
+\DoxyCodeLine{00156\ }
+\DoxyCodeLine{00161\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00162\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structhilbert_1_1nodeEntryComparison}{nodeEntryComparison}}\ \{}
+\DoxyCodeLine{00163\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structhilbert_1_1nodeEntryComparison_a5f91892efeb20599aa6580a8f86c21e1}{operator()}}(\mbox{\hyperlink{structhilbert_1_1NodeEntry}{NodeEntry<T>}}*\ first,\ \mbox{\hyperlink{structhilbert_1_1NodeEntry}{NodeEntry<T>}}*\ second)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ l\ =\ first-\/>\mbox{\hyperlink{structhilbert_1_1NodeEntry_a0282629f0cd5cd483e6fd9c4684baeb2}{get\_lhv}}();}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ r\ =\ second-\/>\mbox{\hyperlink{structhilbert_1_1NodeEntry_a0282629f0cd5cd483e6fd9c4684baeb2}{get\_lhv}}();}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (l\ !=\ r)}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ l\ <\ r;}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ When\ LHV\ is\ equal,\ compare\ pointers\ to\ ensure\ uniqueness}}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ first\ <\ second;}
+\DoxyCodeLine{00170\ \ \ \ \ \}}
+\DoxyCodeLine{00171\ \};}
+\DoxyCodeLine{00172\ }
+\DoxyCodeLine{00174\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00175\ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespacehilbert_aa7ad03b6a321800f9790ee3dbb97d814}{EntrySet}}\ =\ std::set<NodeEntry<T>*,\ \mbox{\hyperlink{structhilbert_1_1nodeEntryComparison}{nodeEntryComparison<T>}}>;}
+\DoxyCodeLine{00176\ }
+\DoxyCodeLine{00180\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00181\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structhilbert_1_1Node_ab9809f4b3f4e57f41b00c07d8e361fe8}{Node}}\ \{}
+\DoxyCodeLine{00182\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structhilbert_1_1Node_a3e94e6612548e54c77b3052eb4c9ee9f}{leaf}};\ \ }
+\DoxyCodeLine{00183\ \ \ \ \ \mbox{\hyperlink{structhilbert_1_1Node_ab9809f4b3f4e57f41b00c07d8e361fe8}{Node}}*\ \mbox{\hyperlink{structhilbert_1_1Node_a40a35e391ef680515c3d38d003458cb4}{parent}};}
+\DoxyCodeLine{00184\ \ \ \ \ \mbox{\hyperlink{structhilbert_1_1Node_ab9809f4b3f4e57f41b00c07d8e361fe8}{Node}}*\ \mbox{\hyperlink{structhilbert_1_1Node_ad71236e9fe8b5a67386c3249abf4b164}{prev\_sibling}};}
+\DoxyCodeLine{00185\ \ \ \ \ \mbox{\hyperlink{structhilbert_1_1Node_ab9809f4b3f4e57f41b00c07d8e361fe8}{Node}}*\ \mbox{\hyperlink{structhilbert_1_1Node_ac6ead655ec08d219f2d30559c5b0b773}{next\_sibling}};}
+\DoxyCodeLine{00186\ \ \ \ \ \mbox{\hyperlink{classHilbertCurve}{HilbertCurve}}\&\ \mbox{\hyperlink{structhilbert_1_1Node_af73e234887e0b0dc5dc82c2f35988015}{curve}};}
+\DoxyCodeLine{00187\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structhilbert_1_1Node_abfc0ca35007f5dbacf92839c6c6f5582}{min\_entries}},\ \mbox{\hyperlink{structhilbert_1_1Node_ab59d6cac56d97bea7964c73a0699b785}{max\_entries}};}
+\DoxyCodeLine{00188\ \ \ \ \ \mbox{\hyperlink{namespacehilbert_aa7ad03b6a321800f9790ee3dbb97d814}{EntrySet<T>}}\ \mbox{\hyperlink{structhilbert_1_1Node_a86e04ccf0236e4c1d5e2112424482b13}{entries}};\ \ }
+\DoxyCodeLine{00189\ \ \ \ \ \mbox{\hyperlink{structhilbert_1_1Rectangle}{Rectangle}}\ \mbox{\hyperlink{structhilbert_1_1Node_ad585d460370f0cdd7d63915b5f5272f7}{mbr}};\ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00190\ \ \ \ \ \mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}}\ \mbox{\hyperlink{structhilbert_1_1Node_afa5a9c446af2c240fc455afc9edaf84f}{lhv}};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00191\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structhilbert_1_1Node_abf58ea8a0d03c210d4676950e95f267f}{dims}};\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00192\ }
+\DoxyCodeLine{00193\ \ \ \ \ \mbox{\hyperlink{structhilbert_1_1Node_ab9809f4b3f4e57f41b00c07d8e361fe8}{Node}}(\textcolor{keywordtype}{int}\ \mbox{\hyperlink{structhilbert_1_1Node_abfc0ca35007f5dbacf92839c6c6f5582}{min\_entries}},\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structhilbert_1_1Node_ab59d6cac56d97bea7964c73a0699b785}{max\_entries}},\ \mbox{\hyperlink{classHilbertCurve}{HilbertCurve}}\&\ \mbox{\hyperlink{structhilbert_1_1Node_af73e234887e0b0dc5dc82c2f35988015}{curve}})}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ :\ \mbox{\hyperlink{structhilbert_1_1Node_a3e94e6612548e54c77b3052eb4c9ee9f}{leaf}}(false),}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structhilbert_1_1Node_a40a35e391ef680515c3d38d003458cb4}{parent}}(nullptr),}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structhilbert_1_1Node_ad71236e9fe8b5a67386c3249abf4b164}{prev\_sibling}}(nullptr),}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structhilbert_1_1Node_ac6ead655ec08d219f2d30559c5b0b773}{next\_sibling}}(nullptr),}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structhilbert_1_1Node_af73e234887e0b0dc5dc82c2f35988015}{curve}}(\mbox{\hyperlink{structhilbert_1_1Node_af73e234887e0b0dc5dc82c2f35988015}{curve}}),}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structhilbert_1_1Node_abfc0ca35007f5dbacf92839c6c6f5582}{min\_entries}}(\mbox{\hyperlink{structhilbert_1_1Node_abfc0ca35007f5dbacf92839c6c6f5582}{min\_entries}}),}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structhilbert_1_1Node_ab59d6cac56d97bea7964c73a0699b785}{max\_entries}}(\mbox{\hyperlink{structhilbert_1_1Node_ab59d6cac56d97bea7964c73a0699b785}{max\_entries}}),}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structhilbert_1_1Node_abf58ea8a0d03c210d4676950e95f267f}{dims}}(\mbox{\hyperlink{structhilbert_1_1Node_af73e234887e0b0dc5dc82c2f35988015}{curve}}.get\_dim()),}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structhilbert_1_1Node_ad585d460370f0cdd7d63915b5f5272f7}{mbr}}(\mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}}(\mbox{\hyperlink{structhilbert_1_1Node_af73e234887e0b0dc5dc82c2f35988015}{curve}}.get\_dim()),\ \mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}}(\mbox{\hyperlink{structhilbert_1_1Node_af73e234887e0b0dc5dc82c2f35988015}{curve}}.get\_dim())),}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structhilbert_1_1Node_afa5a9c446af2c240fc455afc9edaf84f}{lhv}}(0)\ \{\}}
+\DoxyCodeLine{00204\ }
+\DoxyCodeLine{00205\ \ \ \ \ \mbox{\hyperlink{structhilbert_1_1Node_a45c28c554c040f45cb278ea223b1ebbf}{\string~Node}}()\ \{}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ entry\ :\ \mbox{\hyperlink{structhilbert_1_1Node_a86e04ccf0236e4c1d5e2112424482b13}{entries}})\ \{}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (entry-\/>is\_leaf())\ \{}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ \textcolor{keyword}{static\_cast<}\mbox{\hyperlink{structhilbert_1_1LeafEntry}{LeafEntry<T>}}*\textcolor{keyword}{>}(entry);}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ inner\ =\ \textcolor{keyword}{static\_cast<}\mbox{\hyperlink{structhilbert_1_1InnerNode}{InnerNode<T>}}*\textcolor{keyword}{>}(entry);}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ FIX:\ Don't\ recursively\ delete\ child\ nodes\ here\ -\/\ they're\ managed\ separately}}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Only\ delete\ the\ InnerNode\ wrapper}}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ inner;}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00216\ \ \ \ \ \}}
+\DoxyCodeLine{00217\ }
+\DoxyCodeLine{00218\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structhilbert_1_1Node_aefe8a02c02ef076427fdf5e31dcaed08}{overflow}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structhilbert_1_1Node_a86e04ccf0236e4c1d5e2112424482b13}{entries}}.size()\ >\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(\mbox{\hyperlink{structhilbert_1_1Node_ab59d6cac56d97bea7964c73a0699b785}{max\_entries}});\ \}}
+\DoxyCodeLine{00219\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structhilbert_1_1Node_a9d6f6cd53b481ef796fd8912ad3e5ac2}{underflow}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structhilbert_1_1Node_a86e04ccf0236e4c1d5e2112424482b13}{entries}}.size()\ <\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(\mbox{\hyperlink{structhilbert_1_1Node_abfc0ca35007f5dbacf92839c6c6f5582}{min\_entries}});\ \}}
+\DoxyCodeLine{00220\ \ \ \ \ \mbox{\hyperlink{structhilbert_1_1Node_ab9809f4b3f4e57f41b00c07d8e361fe8}{Node<T>}}*\ \mbox{\hyperlink{structhilbert_1_1Node_aabb0892497a8ccd8b42f1d1cac9b294b}{get\_prev\_siblings}}()\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structhilbert_1_1Node_ad71236e9fe8b5a67386c3249abf4b164}{prev\_sibling}};\ \}}
+\DoxyCodeLine{00221\ \ \ \ \ \mbox{\hyperlink{structhilbert_1_1Node_ab9809f4b3f4e57f41b00c07d8e361fe8}{Node<T>}}*\ \mbox{\hyperlink{structhilbert_1_1Node_adc9f63b4badc6cb463646ef89bc3738b}{get\_next\_siblings}}()\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structhilbert_1_1Node_ac6ead655ec08d219f2d30559c5b0b773}{next\_sibling}};\ \}}
+\DoxyCodeLine{00222\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{structhilbert_1_1Node_ae1c317ce02fb5d3594257d9b1fe8973c}{set\_next\_siblings}}(\mbox{\hyperlink{structhilbert_1_1Node_ab9809f4b3f4e57f41b00c07d8e361fe8}{Node<T>}}*\ next)\ \{\ \mbox{\hyperlink{structhilbert_1_1Node_ac6ead655ec08d219f2d30559c5b0b773}{next\_sibling}}\ =\ next;\ \}}
+\DoxyCodeLine{00223\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{structhilbert_1_1Node_a332e9d3d5161ce1551ad205750ae25f7}{set\_prev\_siblings}}(\mbox{\hyperlink{structhilbert_1_1Node_ab9809f4b3f4e57f41b00c07d8e361fe8}{Node<T>}}*\ prev)\ \{\ \mbox{\hyperlink{structhilbert_1_1Node_ad71236e9fe8b5a67386c3249abf4b164}{prev\_sibling}}\ =\ prev;\ \}}
+\DoxyCodeLine{00224\ \ \ \ \ \mbox{\hyperlink{structhilbert_1_1Node_ab9809f4b3f4e57f41b00c07d8e361fe8}{Node<T>}}*\ \mbox{\hyperlink{structhilbert_1_1Node_a5155e51ce14fe66d300356d92d44ac35}{get\_parent}}()\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structhilbert_1_1Node_a40a35e391ef680515c3d38d003458cb4}{parent}};\ \}}
+\DoxyCodeLine{00225\ }
+\DoxyCodeLine{00226\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{structhilbert_1_1Node_a781fb77e147494436b082a14d9e6f5b6}{set\_parent}}(\mbox{\hyperlink{structhilbert_1_1Node_ab9809f4b3f4e57f41b00c07d8e361fe8}{Node<T>}}*\ new\_par)\ \{}
+\DoxyCodeLine{00227\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (new\_par\ ==\ \textcolor{keyword}{this})\ \{}
+\DoxyCodeLine{00228\ \ \ \ \ \ \ \ \ \ \ \ \ std::cerr\ <<\ \textcolor{stringliteral}{"{}ERROR:\ Attempting\ to\ set\ node\ as\ its\ own\ parent!\(\backslash\)n"{}};}
+\DoxyCodeLine{00229\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(\textcolor{stringliteral}{"{}Self-\/parent\ detected"{}});}
+\DoxyCodeLine{00230\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00231\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structhilbert_1_1Node_a40a35e391ef680515c3d38d003458cb4}{parent}}\ =\ new\_par;}
+\DoxyCodeLine{00232\ \ \ \ \ \}}
+\DoxyCodeLine{00233\ }
+\DoxyCodeLine{00234\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structhilbert_1_1Node_aa744bde8188df238deeed308146d8f36}{is\_leaf}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structhilbert_1_1Node_a3e94e6612548e54c77b3052eb4c9ee9f}{leaf}};\ \}}
+\DoxyCodeLine{00235\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{structhilbert_1_1Node_aa4796d234f3ec6fecf4a2914fd745fca}{set\_leaf}}(\textcolor{keywordtype}{bool}\ val)\ \{\ \mbox{\hyperlink{structhilbert_1_1Node_a3e94e6612548e54c77b3052eb4c9ee9f}{leaf}}\ =\ val;\ \}}
+\DoxyCodeLine{00236\ \ \ \ \ \mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}}\ \mbox{\hyperlink{structhilbert_1_1Node_aca5145c9de884608d060160c9f341442}{get\_lhv}}()\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structhilbert_1_1Node_afa5a9c446af2c240fc455afc9edaf84f}{lhv}};\ \}}
+\DoxyCodeLine{00237\ \ \ \ \ \mbox{\hyperlink{structhilbert_1_1Rectangle}{Rectangle}}\&\ \mbox{\hyperlink{structhilbert_1_1Node_af4ee143e6c90a5a79c54d6819139c0b9}{get\_mbr}}()\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structhilbert_1_1Node_ad585d460370f0cdd7d63915b5f5272f7}{mbr}};\ \}}
+\DoxyCodeLine{00238\ }
+\DoxyCodeLine{00239\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{structhilbert_1_1Node_a642508639c5c836e067bdf534b640e5e}{insert\_leaf\_entry}}(\mbox{\hyperlink{structhilbert_1_1LeafEntry}{LeafEntry<T>}}*\ entry)\ \{}
+\DoxyCodeLine{00240\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!this-\/>leaf)\ \{}
+\DoxyCodeLine{00241\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(\textcolor{stringliteral}{"{}The\ current\ node\ is\ not\ a\ leaf\ node."{}});}
+\DoxyCodeLine{00242\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00243\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{structhilbert_1_1Node_aefe8a02c02ef076427fdf5e31dcaed08}{overflow}}())\ \{}
+\DoxyCodeLine{00244\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(\textcolor{stringliteral}{"{}The\ node\ is\ overflowing."{}});}
+\DoxyCodeLine{00245\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00246\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structhilbert_1_1Node_a86e04ccf0236e4c1d5e2112424482b13}{entries}}.insert(entry);\ \ \textcolor{comment}{//\ set::insert\ will\ not\ add\ duplicates}}
+\DoxyCodeLine{00247\ \ \ \ \ \}}
+\DoxyCodeLine{00248\ }
+\DoxyCodeLine{00249\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{structhilbert_1_1Node_a483128f27435f058af3e22e61d6f3b6e}{insert\_inner\_entry}}(\mbox{\hyperlink{structhilbert_1_1InnerNode}{InnerNode<T>}}*\ entry)\ \{}
+\DoxyCodeLine{00250\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (this-\/>leaf)\ \{}
+\DoxyCodeLine{00251\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(\textcolor{stringliteral}{"{}The\ current\ node\ is\ a\ leaf\ node."{}});}
+\DoxyCodeLine{00252\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00253\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (this-\/>\mbox{\hyperlink{structhilbert_1_1Node_aefe8a02c02ef076427fdf5e31dcaed08}{overflow}}())\ \{}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(\textcolor{stringliteral}{"{}The\ node\ is\ overflowing."{}});}
+\DoxyCodeLine{00255\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00256\ }
+\DoxyCodeLine{00257\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ result\ =\ this-\/>entries.insert(entry);}
+\DoxyCodeLine{00258\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!result.second)\ \{}
+\DoxyCodeLine{00259\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Entry\ was\ already\ present}}
+\DoxyCodeLine{00260\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00261\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00262\ }
+\DoxyCodeLine{00263\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ it\ =\ result.first;}
+\DoxyCodeLine{00264\ \ \ \ \ \ \ \ \ entry-\/>\mbox{\hyperlink{structhilbert_1_1InnerNode_af3ac1917fa64cd95b2af7c9a9ef866c0}{get\_node}}()-\/>set\_parent(\textcolor{keyword}{this});}
+\DoxyCodeLine{00265\ }
+\DoxyCodeLine{00266\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structhilbert_1_1Node_ab9809f4b3f4e57f41b00c07d8e361fe8}{Node<T>}}*\ nextSib\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00267\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structhilbert_1_1Node_ab9809f4b3f4e57f41b00c07d8e361fe8}{Node<T>}}*\ prevSib\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00268\ }
+\DoxyCodeLine{00269\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (it\ !=\ this-\/>entries.begin())\ \{}
+\DoxyCodeLine{00270\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ prevIt\ =\ it;}
+\DoxyCodeLine{00271\ \ \ \ \ \ \ \ \ \ \ \ \ -\/-\/prevIt;}
+\DoxyCodeLine{00272\ \ \ \ \ \ \ \ \ \ \ \ \ prevSib\ =\ \textcolor{keyword}{dynamic\_cast<}\mbox{\hyperlink{structhilbert_1_1InnerNode}{InnerNode<T>}}*\textcolor{keyword}{>}(*prevIt)-\/>\mbox{\hyperlink{structhilbert_1_1InnerNode_af3ac1917fa64cd95b2af7c9a9ef866c0}{get\_node}}();}
+\DoxyCodeLine{00273\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00274\ }
+\DoxyCodeLine{00275\ \ \ \ \ \ \ \ \ entry-\/>\mbox{\hyperlink{structhilbert_1_1InnerNode_af3ac1917fa64cd95b2af7c9a9ef866c0}{get\_node}}()-\/>set\_prev\_siblings(prevSib);}
+\DoxyCodeLine{00276\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (prevSib\ !=\ \textcolor{keyword}{nullptr})\ \{}
+\DoxyCodeLine{00277\ \ \ \ \ \ \ \ \ \ \ \ \ prevSib-\/>\mbox{\hyperlink{structhilbert_1_1Node_ae1c317ce02fb5d3594257d9b1fe8973c}{set\_next\_siblings}}(entry-\/>\mbox{\hyperlink{structhilbert_1_1InnerNode_af3ac1917fa64cd95b2af7c9a9ef866c0}{get\_node}}());}
+\DoxyCodeLine{00278\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00279\ }
+\DoxyCodeLine{00280\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ lastIt\ =\ this-\/>entries.end();}
+\DoxyCodeLine{00281\ \ \ \ \ \ \ \ \ -\/-\/lastIt;}
+\DoxyCodeLine{00282\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (it\ !=\ lastIt)\ \{}
+\DoxyCodeLine{00283\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ nextIt\ =\ it;}
+\DoxyCodeLine{00284\ \ \ \ \ \ \ \ \ \ \ \ \ ++nextIt;}
+\DoxyCodeLine{00285\ \ \ \ \ \ \ \ \ \ \ \ \ nextSib\ =\ \textcolor{keyword}{dynamic\_cast<}\mbox{\hyperlink{structhilbert_1_1InnerNode}{InnerNode<T>}}*\textcolor{keyword}{>}(*nextIt)-\/>\mbox{\hyperlink{structhilbert_1_1InnerNode_af3ac1917fa64cd95b2af7c9a9ef866c0}{get\_node}}();}
+\DoxyCodeLine{00286\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00287\ }
+\DoxyCodeLine{00288\ \ \ \ \ \ \ \ \ entry-\/>\mbox{\hyperlink{structhilbert_1_1InnerNode_af3ac1917fa64cd95b2af7c9a9ef866c0}{get\_node}}()-\/>set\_next\_siblings(nextSib);}
+\DoxyCodeLine{00289\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (nextSib\ !=\ \textcolor{keyword}{nullptr})\ \{}
+\DoxyCodeLine{00290\ \ \ \ \ \ \ \ \ \ \ \ \ nextSib-\/>\mbox{\hyperlink{structhilbert_1_1Node_a332e9d3d5161ce1551ad205750ae25f7}{set\_prev\_siblings}}(entry-\/>\mbox{\hyperlink{structhilbert_1_1InnerNode_af3ac1917fa64cd95b2af7c9a9ef866c0}{get\_node}}());}
+\DoxyCodeLine{00291\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00292\ \ \ \ \ \}}
+\DoxyCodeLine{00293\ }
+\DoxyCodeLine{00294\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{structhilbert_1_1Node_ad6192c272a78f86825ad2c786d4914bc}{remove\_leaf\_entry}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structhilbert_1_1Rectangle}{Rectangle}}\&\ rect)\ \{}
+\DoxyCodeLine{00295\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{structhilbert_1_1Node_a3e94e6612548e54c77b3052eb4c9ee9f}{leaf}})}
+\DoxyCodeLine{00296\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(\textcolor{stringliteral}{"{}Can't\ remove\ inner\ node\ as\ child\ node"{}});}
+\DoxyCodeLine{00297\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ it\ =\ \mbox{\hyperlink{structhilbert_1_1Node_a86e04ccf0236e4c1d5e2112424482b13}{entries}}.begin();\ it\ !=\ \mbox{\hyperlink{structhilbert_1_1Node_a86e04ccf0236e4c1d5e2112424482b13}{entries}}.end();\ ++it)\ \{}
+\DoxyCodeLine{00298\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ entry\ =\ *it;}
+\DoxyCodeLine{00299\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\textcolor{keyword}{dynamic\_cast<}\mbox{\hyperlink{structhilbert_1_1LeafEntry}{LeafEntry<T>}}*\textcolor{keyword}{>}(entry)-\/>\mbox{\hyperlink{structhilbert_1_1Node_af4ee143e6c90a5a79c54d6819139c0b9}{get\_mbr}}()\ ==\ rect)\ \{}
+\DoxyCodeLine{00300\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structhilbert_1_1Node_a86e04ccf0236e4c1d5e2112424482b13}{entries}}.erase(it);}
+\DoxyCodeLine{00301\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ entry;}
+\DoxyCodeLine{00302\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00303\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00304\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00305\ \ \ \ \ \}}
+\DoxyCodeLine{00306\ }
+\DoxyCodeLine{00307\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{structhilbert_1_1Node_a5be8fa65024848a20bd7f4d766472923}{remove\_inner\_entry}}(\mbox{\hyperlink{structhilbert_1_1Node_ab9809f4b3f4e57f41b00c07d8e361fe8}{Node<T>}}*\ child)\ \{}
+\DoxyCodeLine{00308\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{structhilbert_1_1Node_a3e94e6612548e54c77b3052eb4c9ee9f}{leaf}})}
+\DoxyCodeLine{00309\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(\textcolor{stringliteral}{"{}Can't\ remove\ child\ node\ as\ inner\ node"{}});}
+\DoxyCodeLine{00310\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ it\ =\ \mbox{\hyperlink{structhilbert_1_1Node_a86e04ccf0236e4c1d5e2112424482b13}{entries}}.begin();\ it\ !=\ \mbox{\hyperlink{structhilbert_1_1Node_a86e04ccf0236e4c1d5e2112424482b13}{entries}}.end();\ ++it)\ \{}
+\DoxyCodeLine{00311\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ entry\ =\ *it;}
+\DoxyCodeLine{00312\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ inner\ =\ \textcolor{keyword}{dynamic\_cast<}\mbox{\hyperlink{structhilbert_1_1InnerNode}{InnerNode<T>}}*\textcolor{keyword}{>}(entry);}
+\DoxyCodeLine{00313\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (inner\ \&\&\ inner-\/>get\_node()\ ==\ child)\ \{}
+\DoxyCodeLine{00314\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structhilbert_1_1Node_a86e04ccf0236e4c1d5e2112424482b13}{entries}}.erase(it);}
+\DoxyCodeLine{00315\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ entry;\ \ \textcolor{comment}{//\ Only\ delete\ the\ wrapper}}
+\DoxyCodeLine{00316\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00317\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00318\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00319\ \ \ \ \ \}}
+\DoxyCodeLine{00320\ }
+\DoxyCodeLine{00321\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{structhilbert_1_1Node_a3b5058d09e75e4243bb0bb08204e9e6f}{adjust\_mbr}}()\ \{}
+\DoxyCodeLine{00322\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{structhilbert_1_1Node_a86e04ccf0236e4c1d5e2112424482b13}{entries}}.empty())\ \{}
+\DoxyCodeLine{00323\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structhilbert_1_1Node_ad585d460370f0cdd7d63915b5f5272f7}{mbr}}\ =\ \mbox{\hyperlink{main_8cpp_a6375978ecb2c815628f632b6bd986afb}{Rectangle}}(\mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}}(\mbox{\hyperlink{structhilbert_1_1Node_abf58ea8a0d03c210d4676950e95f267f}{dims}},\ 0),\ \mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}}(\mbox{\hyperlink{structhilbert_1_1Node_abf58ea8a0d03c210d4676950e95f267f}{dims}},\ 0));}
+\DoxyCodeLine{00324\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00325\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00326\ }
+\DoxyCodeLine{00327\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}}\ lo(\mbox{\hyperlink{structhilbert_1_1Node_abf58ea8a0d03c210d4676950e95f267f}{dims}},\ INT64\_MAX);}
+\DoxyCodeLine{00328\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{box_8h_aa7a3b94320bd53499c2f7eba814d491d}{Point}}\ hi(\mbox{\hyperlink{structhilbert_1_1Node_abf58ea8a0d03c210d4676950e95f267f}{dims}},\ INT64\_MIN);}
+\DoxyCodeLine{00329\ }
+\DoxyCodeLine{00330\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ entry\ :\ \mbox{\hyperlink{structhilbert_1_1Node_a86e04ccf0236e4c1d5e2112424482b13}{entries}})\ \{}
+\DoxyCodeLine{00331\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\&\ rect\ =\ entry-\/>get\_mbr();}
+\DoxyCodeLine{00332\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ \mbox{\hyperlink{structhilbert_1_1Node_abf58ea8a0d03c210d4676950e95f267f}{dims}};\ i++)\ \{}
+\DoxyCodeLine{00333\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (rect.lower[i]\ <\ lo[i])}
+\DoxyCodeLine{00334\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ lo[i]\ =\ rect.lower[i];}
+\DoxyCodeLine{00335\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (rect.higher[i]\ >\ hi[i])}
+\DoxyCodeLine{00336\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ hi[i]\ =\ rect.higher[i];}
+\DoxyCodeLine{00337\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00338\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00339\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structhilbert_1_1Node_ad585d460370f0cdd7d63915b5f5272f7}{mbr}}\ =\ \mbox{\hyperlink{main_8cpp_a6375978ecb2c815628f632b6bd986afb}{Rectangle}}(lo,\ hi);}
+\DoxyCodeLine{00340\ \ \ \ \ \}}
+\DoxyCodeLine{00341\ }
+\DoxyCodeLine{00342\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{structhilbert_1_1Node_aada87fc975cbee42259fb7dfca264d37}{adjust\_lhv}}()\ \{}
+\DoxyCodeLine{00343\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structhilbert_1_1Node_afa5a9c446af2c240fc455afc9edaf84f}{lhv}}\ =\ INT64\_MIN;}
+\DoxyCodeLine{00344\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ entry\ :\ \mbox{\hyperlink{structhilbert_1_1Node_a86e04ccf0236e4c1d5e2112424482b13}{entries}})\ \{}
+\DoxyCodeLine{00345\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (entry-\/>get\_lhv()\ >\ \mbox{\hyperlink{structhilbert_1_1Node_afa5a9c446af2c240fc455afc9edaf84f}{lhv}})}
+\DoxyCodeLine{00346\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structhilbert_1_1Node_afa5a9c446af2c240fc455afc9edaf84f}{lhv}}\ =\ entry-\/>get\_lhv();}
+\DoxyCodeLine{00347\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00348\ \ \ \ \ \}}
+\DoxyCodeLine{00349\ }
+\DoxyCodeLine{00350\ \ \ \ \ std::deque<Node<T>*>\ \mbox{\hyperlink{structhilbert_1_1Node_a50267ee418720aa9e4afe5681c0861fb}{get\_siblings}}(\textcolor{keywordtype}{size\_t}\ num)\ \{}
+\DoxyCodeLine{00351\ \ \ \ \ \ \ \ \ std::deque<Node<T>*>\ result;}
+\DoxyCodeLine{00352\ \ \ \ \ \ \ \ \ std::set<Node<T>*>\ visited;}
+\DoxyCodeLine{00353\ }
+\DoxyCodeLine{00354\ \ \ \ \ \ \ \ \ result.push\_back(\textcolor{keyword}{this});}
+\DoxyCodeLine{00355\ \ \ \ \ \ \ \ \ visited.insert(\textcolor{keyword}{this});}
+\DoxyCodeLine{00356\ }
+\DoxyCodeLine{00357\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ right\ =\ \mbox{\hyperlink{structhilbert_1_1Node_ac6ead655ec08d219f2d30559c5b0b773}{next\_sibling}};}
+\DoxyCodeLine{00358\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ iterations\ =\ 0;}
+\DoxyCodeLine{00359\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ MAX\_ITERATIONS\ =\ 10000;}
+\DoxyCodeLine{00360\ }
+\DoxyCodeLine{00361\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (result.size()\ <\ num\ \&\&\ right\ !=\ \textcolor{keyword}{nullptr}\ \&\&\ iterations\ <\ MAX\_ITERATIONS)\ \{}
+\DoxyCodeLine{00362\ \ \ \ \ \ \ \ \ \ \ \ \ iterations++;}
+\DoxyCodeLine{00363\ }
+\DoxyCodeLine{00364\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Check\ for\ obvious\ corruption}}
+\DoxyCodeLine{00365\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (right\ ==\ \textcolor{keyword}{this})\ \{}
+\DoxyCodeLine{00366\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};\ \ \textcolor{comment}{//\ Self-\/loop}}
+\DoxyCodeLine{00367\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00368\ }
+\DoxyCodeLine{00369\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (visited.find(right)\ !=\ visited.end())\ \{}
+\DoxyCodeLine{00370\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};\ \ \textcolor{comment}{//\ Cycle\ detected}}
+\DoxyCodeLine{00371\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00372\ }
+\DoxyCodeLine{00373\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Verify\ parent\ relationship\ -\/\ siblings\ should\ have\ same\ parent}}
+\DoxyCodeLine{00374\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (right-\/>get\_parent()\ !=\ this-\/>get\_parent())\ \{}
+\DoxyCodeLine{00375\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};\ \ \textcolor{comment}{//\ Different\ parent\ -\/\ stop\ here}}
+\DoxyCodeLine{00376\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00377\ }
+\DoxyCodeLine{00378\ \ \ \ \ \ \ \ \ \ \ \ \ result.push\_back(right);}
+\DoxyCodeLine{00379\ \ \ \ \ \ \ \ \ \ \ \ \ visited.insert(right);}
+\DoxyCodeLine{00380\ \ \ \ \ \ \ \ \ \ \ \ \ right\ =\ right-\/>next\_sibling;}
+\DoxyCodeLine{00381\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00382\ }
+\DoxyCodeLine{00383\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00384\ \ \ \ \ \}}
+\DoxyCodeLine{00385\ }
+\DoxyCodeLine{00386\ \ \ \ \ \mbox{\hyperlink{namespacehilbert_aa7ad03b6a321800f9790ee3dbb97d814}{EntrySet<T>}}\&\ \mbox{\hyperlink{structhilbert_1_1Node_af49701eb9dd4a2e97ced0ba3e3486fdb}{get\_entries}}()\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structhilbert_1_1Node_a86e04ccf0236e4c1d5e2112424482b13}{entries}};\ \}}
+\DoxyCodeLine{00387\ }
+\DoxyCodeLine{00388\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{structhilbert_1_1Node_ab5663993c5bac906e9ed3a019781ac60}{reset\_entries}}()\ \{}
+\DoxyCodeLine{00389\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{structhilbert_1_1Node_a3e94e6612548e54c77b3052eb4c9ee9f}{leaf}})\ \{}
+\DoxyCodeLine{00390\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ entry\ :\ \mbox{\hyperlink{structhilbert_1_1Node_a86e04ccf0236e4c1d5e2112424482b13}{entries}})\ \{}
+\DoxyCodeLine{00391\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ inner\ =\ \textcolor{keyword}{dynamic\_cast<}\mbox{\hyperlink{structhilbert_1_1InnerNode}{InnerNode<T>}}*\textcolor{keyword}{>}(entry);}
+\DoxyCodeLine{00392\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (inner\ \&\&\ inner-\/>get\_node())\ \{}
+\DoxyCodeLine{00393\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ inner-\/>get\_node()-\/>set\_prev\_siblings(\textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00394\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ inner-\/>get\_node()-\/>set\_next\_siblings(\textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00395\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00396\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00397\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00398\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structhilbert_1_1Node_a86e04ccf0236e4c1d5e2112424482b13}{entries}}.clear();}
+\DoxyCodeLine{00399\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structhilbert_1_1Node_afa5a9c446af2c240fc455afc9edaf84f}{lhv}}\ =\ 0;}
+\DoxyCodeLine{00400\ \ \ \ \ \}}
+\DoxyCodeLine{00401\ \};}
+\DoxyCodeLine{00402\ }
+\DoxyCodeLine{00406\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00407\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classhilbert_1_1RTree_a0a53ac0bcdc67c50ec3400adb304b653}{RTree}}\ \{}
+\DoxyCodeLine{00408\ \ \ \ \ \mbox{\hyperlink{structhilbert_1_1Node}{Node<T>}}*\ root;}
+\DoxyCodeLine{00409\ \ \ \ \ \textcolor{keywordtype}{int}\ min\_entries;}
+\DoxyCodeLine{00410\ \ \ \ \ \textcolor{keywordtype}{int}\ max\_entries;}
+\DoxyCodeLine{00411\ \ \ \ \ \mbox{\hyperlink{classHilbertCurve}{HilbertCurve}}\ curve;}
+\DoxyCodeLine{00412\ \ \ \ \ std::set<Node<T>*>\ all\_nodes;\ \ \textcolor{comment}{//\ Track\ all\ nodes\ for\ proper\ cleanup}}
+\DoxyCodeLine{00413\ }
+\DoxyCodeLine{00414\ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00415\ \ \ \ \ \mbox{\hyperlink{classhilbert_1_1RTree_a0a53ac0bcdc67c50ec3400adb304b653}{RTree}}(\textcolor{keywordtype}{int}\ min,\ \textcolor{keywordtype}{int}\ max,\ \textcolor{keywordtype}{int}\ dims,\ \textcolor{keywordtype}{int}\ bits)}
+\DoxyCodeLine{00416\ \ \ \ \ \ \ \ \ :\ min\_entries(min),\ max\_entries(max),\ curve(bits,\ dims),\ root(nullptr)\ \{\}}
+\DoxyCodeLine{00417\ }
+\DoxyCodeLine{00418\ \ \ \ \ \mbox{\hyperlink{classhilbert_1_1RTree_a58d7b3459f53f6b802b4e4ec8c0f0c16}{\string~RTree}}()\ \{}
+\DoxyCodeLine{00419\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Delete\ all\ nodes}}
+\DoxyCodeLine{00420\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ node\ :\ all\_nodes)\ \{}
+\DoxyCodeLine{00421\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ node;}
+\DoxyCodeLine{00422\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00423\ \ \ \ \ \}}
+\DoxyCodeLine{00429\ \ \ \ \ std::deque<T*>\ \mbox{\hyperlink{classhilbert_1_1RTree_a0831f91bae312fc0fe880da2eab904de}{search}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structhilbert_1_1Rectangle}{Rectangle}}\&\ search\_rect)\ \{}
+\DoxyCodeLine{00430\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!root)}
+\DoxyCodeLine{00431\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::deque<T*>();}
+\DoxyCodeLine{00432\ }
+\DoxyCodeLine{00433\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ rez\ =\ \_search(root,\ search\_rect);}
+\DoxyCodeLine{00434\ \ \ \ \ \ \ \ \ std::deque<T*>\ result;}
+\DoxyCodeLine{00435\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ entry\ :\ rez)\ \{}
+\DoxyCodeLine{00436\ \ \ \ \ \ \ \ \ \ \ \ \ result.push\_back(entry-\/>elem);}
+\DoxyCodeLine{00437\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00438\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00439\ \ \ \ \ \}}
+\DoxyCodeLine{00445\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classhilbert_1_1RTree_a5ca6ca87f82d03c23121aae0372df4fa}{insert}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structhilbert_1_1Rectangle}{Rectangle}}\&\ rect,\ T*\ elem)\ \{}
+\DoxyCodeLine{00446\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}}\ h\ =\ curve.index(rect.\mbox{\hyperlink{structhilbert_1_1Rectangle_af37316679d8a65d330bd145e28ed3e76}{get\_center}}());}
+\DoxyCodeLine{00447\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (this-\/>root\ ==\ \textcolor{keyword}{nullptr})\ \{}
+\DoxyCodeLine{00448\ \ \ \ \ \ \ \ \ \ \ \ \ this-\/>root\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{structhilbert_1_1Node}{Node<T>}}(min\_entries,\ max\_entries,\ curve);}
+\DoxyCodeLine{00449\ \ \ \ \ \ \ \ \ \ \ \ \ all\_nodes.insert(root);}
+\DoxyCodeLine{00450\ \ \ \ \ \ \ \ \ \ \ \ \ this-\/>root-\/>\mbox{\hyperlink{structhilbert_1_1Node_aa4796d234f3ec6fecf4a2914fd745fca}{set\_leaf}}(\textcolor{keyword}{true});}
+\DoxyCodeLine{00451\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00452\ }
+\DoxyCodeLine{00453\ \ \ \ \ \ \ \ \ std::deque<Node<T>*>\ out\_siblings;}
+\DoxyCodeLine{00454\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}*\ newEntry\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{structhilbert_1_1LeafEntry}{LeafEntry<T>}}(rect,\ h,\ elem);}
+\DoxyCodeLine{00455\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structhilbert_1_1Node}{Node<T>}}*\ NN\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00456\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structhilbert_1_1Node}{Node<T>}}*\ L\ =\ choose\_leaf(this-\/>root,\ h);}
+\DoxyCodeLine{00457\ }
+\DoxyCodeLine{00458\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (L-\/>\mbox{\hyperlink{structhilbert_1_1Node_a86e04ccf0236e4c1d5e2112424482b13}{entries}}.size()\ <\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(max\_entries))\ \{}
+\DoxyCodeLine{00459\ \ \ \ \ \ \ \ \ \ \ \ \ L-\/>\mbox{\hyperlink{structhilbert_1_1Node_a642508639c5c836e067bdf534b640e5e}{insert\_leaf\_entry}}(newEntry);}
+\DoxyCodeLine{00460\ \ \ \ \ \ \ \ \ \ \ \ \ L-\/>\mbox{\hyperlink{structhilbert_1_1Node_aada87fc975cbee42259fb7dfca264d37}{adjust\_lhv}}();}
+\DoxyCodeLine{00461\ \ \ \ \ \ \ \ \ \ \ \ \ L-\/>\mbox{\hyperlink{structhilbert_1_1Node_a3b5058d09e75e4243bb0bb08204e9e6f}{adjust\_mbr}}();}
+\DoxyCodeLine{00462\ \ \ \ \ \ \ \ \ \ \ \ \ out\_siblings.push\_back(L);}
+\DoxyCodeLine{00463\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00464\ \ \ \ \ \ \ \ \ \ \ \ \ NN\ =\ handle\_overflow(L,\ newEntry,\ out\_siblings);}
+\DoxyCodeLine{00465\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00466\ }
+\DoxyCodeLine{00467\ \ \ \ \ \ \ \ \ this-\/>root\ =\ adjust\_tree(this-\/>root,\ L,\ NN,\ out\_siblings);}
+\DoxyCodeLine{00468\ \ \ \ \ \}}
+\DoxyCodeLine{00473\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classhilbert_1_1RTree_a9de86485e180860c0adc655a1fb65d43}{remove}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structhilbert_1_1Rectangle}{Rectangle}}\&\ rect)\ \{}
+\DoxyCodeLine{00474\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!root)}
+\DoxyCodeLine{00475\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00476\ }
+\DoxyCodeLine{00477\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structhilbert_1_1Node}{Node<T>}}*\ DL\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00478\ \ \ \ \ \ \ \ \ std::deque<Node<T>*>\ out\_siblings;}
+\DoxyCodeLine{00479\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ L\ =\ exactSearch(this-\/>root,\ rect);}
+\DoxyCodeLine{00480\ }
+\DoxyCodeLine{00481\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (L\ !=\ \textcolor{keyword}{nullptr})\ \{}
+\DoxyCodeLine{00482\ \ \ \ \ \ \ \ \ \ \ \ \ L-\/>remove\_leaf\_entry(rect);}
+\DoxyCodeLine{00483\ }
+\DoxyCodeLine{00484\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (L-\/>underflow()\ \&\&\ L-\/>get\_parent()\ !=\ \textcolor{keyword}{nullptr})\ \{}
+\DoxyCodeLine{00485\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ DL\ =\ handle\_underflow(L,\ out\_siblings);}
+\DoxyCodeLine{00486\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00487\ }
+\DoxyCodeLine{00488\ \ \ \ \ \ \ \ \ \ \ \ \ condense\_tree(L,\ DL,\ out\_siblings);}
+\DoxyCodeLine{00489\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00490\ \ \ \ \ \}}
+\DoxyCodeLine{00491\ }
+\DoxyCodeLine{00492\ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00493\ \ \ \ \ \mbox{\hyperlink{structhilbert_1_1Node}{Node<T>}}*\ choose\_leaf(\mbox{\hyperlink{structhilbert_1_1Node}{Node<T>}}*\ node,\ \mbox{\hyperlink{box_8h_ad54dde638d1ae3e9bb08956f539b1883}{ll}}\ hilbert\_value)\ \{}
+\DoxyCodeLine{00494\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (node-\/>\mbox{\hyperlink{structhilbert_1_1Node_aa744bde8188df238deeed308146d8f36}{is\_leaf}}())\ \{}
+\DoxyCodeLine{00495\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ node;}
+\DoxyCodeLine{00496\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00497\ }
+\DoxyCodeLine{00498\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ it\ =\ node-\/>\mbox{\hyperlink{structhilbert_1_1Node_af49701eb9dd4a2e97ced0ba3e3486fdb}{get\_entries}}().begin();\ it\ !=\ node-\/>\mbox{\hyperlink{structhilbert_1_1Node_af49701eb9dd4a2e97ced0ba3e3486fdb}{get\_entries}}().end();\ ++it)\ \{}
+\DoxyCodeLine{00499\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((*it)-\/>get\_lhv()\ >=\ hilbert\_value)\ \{}
+\DoxyCodeLine{00500\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ choose\_leaf(\textcolor{keyword}{dynamic\_cast<}InnerNode<T>*\textcolor{keyword}{>}(*it)-\/>get\_node(),\ hilbert\_value);}
+\DoxyCodeLine{00501\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00502\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00503\ }
+\DoxyCodeLine{00504\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ it\ =\ node-\/>\mbox{\hyperlink{structhilbert_1_1Node_af49701eb9dd4a2e97ced0ba3e3486fdb}{get\_entries}}().end();}
+\DoxyCodeLine{00505\ \ \ \ \ \ \ \ \ -\/-\/it;}
+\DoxyCodeLine{00506\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ choose\_leaf(\textcolor{keyword}{dynamic\_cast<}InnerNode<T>*\textcolor{keyword}{>}(*it)-\/>get\_node(),\ hilbert\_value);}
+\DoxyCodeLine{00507\ \ \ \ \ \}}
+\DoxyCodeLine{00508\ }
+\DoxyCodeLine{00509\ \ \ \ \ \textcolor{keywordtype}{void}\ fix\_cross\_parent\_sibling\_links(std::deque<Node<T>*>\&\ siblings)\ \{}
+\DoxyCodeLine{00510\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (siblings.empty()\ ||\ siblings[0]-\/>is\_leaf())}
+\DoxyCodeLine{00511\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00512\ }
+\DoxyCodeLine{00513\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ siblings.size()\ -\/\ 1;\ i++)\ \{}
+\DoxyCodeLine{00514\ \ \ \ \ \ \ \ \ \ \ \ \ Node<T>*\ current\_parent\ =\ siblings[i];}
+\DoxyCodeLine{00515\ \ \ \ \ \ \ \ \ \ \ \ \ Node<T>*\ next\_parent\ =\ siblings[i\ +\ 1];}
+\DoxyCodeLine{00516\ }
+\DoxyCodeLine{00517\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (current\_parent-\/>get\_entries().empty()\ ||\ next\_parent-\/>get\_entries().empty())}
+\DoxyCodeLine{00518\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00519\ }
+\DoxyCodeLine{00520\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ last\_entry\_it\ =\ current\_parent-\/>get\_entries().end();}
+\DoxyCodeLine{00521\ \ \ \ \ \ \ \ \ \ \ \ \ -\/-\/last\_entry\_it;}
+\DoxyCodeLine{00522\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ last\_inner\ =\ \textcolor{keyword}{dynamic\_cast<}InnerNode<T>*\textcolor{keyword}{>}(*last\_entry\_it);}
+\DoxyCodeLine{00523\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!last\_inner)}
+\DoxyCodeLine{00524\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00525\ \ \ \ \ \ \ \ \ \ \ \ \ Node<T>*\ last\_child\ =\ last\_inner-\/>get\_node();}
+\DoxyCodeLine{00526\ }
+\DoxyCodeLine{00527\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ first\_entry\_it\ =\ next\_parent-\/>get\_entries().begin();}
+\DoxyCodeLine{00528\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ first\_inner\ =\ \textcolor{keyword}{dynamic\_cast<}InnerNode<T>*\textcolor{keyword}{>}(*first\_entry\_it);}
+\DoxyCodeLine{00529\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!first\_inner)}
+\DoxyCodeLine{00530\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00531\ \ \ \ \ \ \ \ \ \ \ \ \ Node<T>*\ first\_child\ =\ first\_inner-\/>get\_node();}
+\DoxyCodeLine{00532\ }
+\DoxyCodeLine{00533\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ CRITICAL:\ Prevent\ cycles}}
+\DoxyCodeLine{00534\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (last\_child\ ==\ first\_child\ ||\ last\_child\ ==\ current\_parent}
+\DoxyCodeLine{00535\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ||\ first\_child\ ==\ next\_parent\ ||\ last\_child-\/>get\_parent()\ ==\ first\_child}
+\DoxyCodeLine{00536\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ||\ first\_child-\/>get\_parent()\ ==\ last\_child)\ \{}
+\DoxyCodeLine{00537\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00538\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00539\ }
+\DoxyCodeLine{00540\ \ \ \ \ \ \ \ \ \ \ \ \ last\_child-\/>set\_next\_siblings(first\_child);}
+\DoxyCodeLine{00541\ \ \ \ \ \ \ \ \ \ \ \ \ first\_child-\/>set\_prev\_siblings(last\_child);}
+\DoxyCodeLine{00542\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00543\ \ \ \ \ \}}
+\DoxyCodeLine{00544\ }
+\DoxyCodeLine{00545\ \ \ \ \ \textcolor{keywordtype}{void}\ redistribute\_entries(\mbox{\hyperlink{namespacehilbert_aa7ad03b6a321800f9790ee3dbb97d814}{EntrySet<T>}}\&\ entries,\ std::deque<Node<T>*>\&\ siblings)\ \{}
+\DoxyCodeLine{00546\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (siblings.empty()\ ||\ entries.empty())\ \{}
+\DoxyCodeLine{00547\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00548\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00549\ }
+\DoxyCodeLine{00550\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ batch\_size\ =\ (entries.size()\ +\ siblings.size()\ -\/\ 1)\ /\ siblings.size();}
+\DoxyCodeLine{00551\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ siblings\_it\ =\ siblings.begin();}
+\DoxyCodeLine{00552\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ current\_batch\ =\ 0;}
+\DoxyCodeLine{00553\ }
+\DoxyCodeLine{00554\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Create\ vector\ for\ iteration,\ clear\ set\ to\ prevent\ reuse}}
+\DoxyCodeLine{00555\ \ \ \ \ \ \ \ \ std::vector<NodeEntry<T>*>\ entries\_vec(entries.begin(),\ entries.end());}
+\DoxyCodeLine{00556\ \ \ \ \ \ \ \ \ entries.clear();}
+\DoxyCodeLine{00557\ }
+\DoxyCodeLine{00558\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ entry\ :\ entries\_vec)\ \{}
+\DoxyCodeLine{00559\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (entry-\/>is\_leaf())\ \{}
+\DoxyCodeLine{00560\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (*siblings\_it)-\/>insert\_leaf\_entry(\textcolor{keyword}{dynamic\_cast<}LeafEntry<T>*\textcolor{keyword}{>}(entry));}
+\DoxyCodeLine{00561\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00562\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ inner\ =\ \textcolor{keyword}{dynamic\_cast<}InnerNode<T>*\textcolor{keyword}{>}(entry);}
+\DoxyCodeLine{00563\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Direct\ insert\ without\ going\ through\ insert\_inner\_entry\ to\ avoid\ sibling\ link}}
+\DoxyCodeLine{00564\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ updates}}
+\DoxyCodeLine{00565\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (*siblings\_it)-\/>entries.insert(inner);}
+\DoxyCodeLine{00566\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ inner-\/>get\_node()-\/>set\_parent(*siblings\_it);}
+\DoxyCodeLine{00567\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00568\ }
+\DoxyCodeLine{00569\ \ \ \ \ \ \ \ \ \ \ \ \ current\_batch++;}
+\DoxyCodeLine{00570\ }
+\DoxyCodeLine{00571\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (current\_batch\ >=\ batch\_size\ \&\&\ siblings\_it\ !=\ siblings.end())\ \{}
+\DoxyCodeLine{00572\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (*siblings\_it)-\/>adjust\_lhv();}
+\DoxyCodeLine{00573\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (*siblings\_it)-\/>adjust\_mbr();}
+\DoxyCodeLine{00574\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ++siblings\_it;}
+\DoxyCodeLine{00575\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ current\_batch\ =\ 0;}
+\DoxyCodeLine{00576\ }
+\DoxyCodeLine{00577\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (siblings\_it\ ==\ siblings.end())\ \{}
+\DoxyCodeLine{00578\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ -\/-\/siblings\_it;}
+\DoxyCodeLine{00579\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00580\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00581\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00582\ }
+\DoxyCodeLine{00583\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Adjust\ last\ batch}}
+\DoxyCodeLine{00584\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (siblings\_it\ !=\ siblings.end())\ \{}
+\DoxyCodeLine{00585\ \ \ \ \ \ \ \ \ \ \ \ \ (*siblings\_it)-\/>adjust\_lhv();}
+\DoxyCodeLine{00586\ \ \ \ \ \ \ \ \ \ \ \ \ (*siblings\_it)-\/>adjust\_mbr();}
+\DoxyCodeLine{00587\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00588\ }
+\DoxyCodeLine{00589\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Fix\ child\ sibling\ links\ within\ each\ parent}}
+\DoxyCodeLine{00590\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ node\ :\ siblings)\ \{}
+\DoxyCodeLine{00591\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!node-\/>\mbox{\hyperlink{structhilbert_1_1Node_aa744bde8188df238deeed308146d8f36}{is\_leaf}}()\ \&\&\ !node-\/>\mbox{\hyperlink{structhilbert_1_1Node_af49701eb9dd4a2e97ced0ba3e3486fdb}{get\_entries}}().empty())\ \{}
+\DoxyCodeLine{00592\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ fix\_child\_sibling\_links(node);}
+\DoxyCodeLine{00593\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00594\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00595\ }
+\DoxyCodeLine{00596\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Fix\ cross-\/parent\ links}}
+\DoxyCodeLine{00597\ \ \ \ \ \ \ \ \ fix\_cross\_parent\_sibling\_links(siblings);}
+\DoxyCodeLine{00598\ \ \ \ \ \}}
+\DoxyCodeLine{00599\ }
+\DoxyCodeLine{00600\ \ \ \ \ \textcolor{keywordtype}{void}\ validate\_and\_fix\_child\_chain(Node<T>*\ parent)\ \{}
+\DoxyCodeLine{00601\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (parent\ ==\ \textcolor{keyword}{nullptr}\ ||\ parent-\/>is\_leaf()\ ||\ parent-\/>get\_entries().empty())\ \{}
+\DoxyCodeLine{00602\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00603\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00604\ }
+\DoxyCodeLine{00605\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Collect\ all\ child\ nodes\ in\ order}}
+\DoxyCodeLine{00606\ \ \ \ \ \ \ \ \ std::vector<Node<T>*>\ children;}
+\DoxyCodeLine{00607\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ entry\ :\ parent-\/>get\_entries())\ \{}
+\DoxyCodeLine{00608\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ inner\ =\ \textcolor{keyword}{dynamic\_cast<}InnerNode<T>*\textcolor{keyword}{>}(entry);}
+\DoxyCodeLine{00609\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (inner)\ \{}
+\DoxyCodeLine{00610\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ children.push\_back(inner-\/>get\_node());}
+\DoxyCodeLine{00611\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00612\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00613\ }
+\DoxyCodeLine{00614\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (children.empty())\ \{}
+\DoxyCodeLine{00615\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00616\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00617\ }
+\DoxyCodeLine{00618\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Clear\ all\ child\ sibling\ pointers}}
+\DoxyCodeLine{00619\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ child\ :\ children)\ \{}
+\DoxyCodeLine{00620\ \ \ \ \ \ \ \ \ \ \ \ \ child-\/>set\_prev\_siblings(\textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00621\ \ \ \ \ \ \ \ \ \ \ \ \ child-\/>set\_next\_siblings(\textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00622\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00623\ }
+\DoxyCodeLine{00624\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Rebuild\ chain\ in\ order}}
+\DoxyCodeLine{00625\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ children.size();\ ++i)\ \{}
+\DoxyCodeLine{00626\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ >\ 0)\ \{}
+\DoxyCodeLine{00627\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ children[i]-\/>set\_prev\_siblings(children[i\ -\/\ 1]);}
+\DoxyCodeLine{00628\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ children[i\ -\/\ 1]-\/>set\_next\_siblings(children[i]);}
+\DoxyCodeLine{00629\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00630\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00631\ \ \ \ \ \}}
+\DoxyCodeLine{00632\ }
+\DoxyCodeLine{00633\ \ \ \ \ \textcolor{keywordtype}{void}\ fix\_child\_sibling\_links(Node<T>*\ parent)\ \{\ validate\_and\_fix\_child\_chain(parent);\ \}}
+\DoxyCodeLine{00634\ }
+\DoxyCodeLine{00635\ \ \ \ \ Node<T>*\ handle\_overflow(Node<T>*\ target,\ NodeEntry<T>*\ entry,}
+\DoxyCodeLine{00636\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::deque<Node<T>*>\&\ out\_siblings)\ \{}
+\DoxyCodeLine{00637\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacehilbert_aa7ad03b6a321800f9790ee3dbb97d814}{EntrySet<T>}}\ entries;}
+\DoxyCodeLine{00638\ \ \ \ \ \ \ \ \ Node<T>*\ newNode\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00639\ }
+\DoxyCodeLine{00640\ \ \ \ \ \ \ \ \ out\_siblings\ =\ target-\/>get\_siblings(2);}
+\DoxyCodeLine{00641\ }
+\DoxyCodeLine{00642\ \ \ \ \ \ \ \ \ Node<T>*\ leftmost\_external\_prev\ =\ out\_siblings.front()-\/>get\_prev\_siblings();}
+\DoxyCodeLine{00643\ \ \ \ \ \ \ \ \ Node<T>*\ rightmost\_external\_next\ =\ out\_siblings.back()-\/>get\_next\_siblings();}
+\DoxyCodeLine{00644\ \ \ \ \ \ \ \ \ Node<T>*\ original\_parent\ =\ target-\/>get\_parent();}
+\DoxyCodeLine{00645\ }
+\DoxyCodeLine{00646\ \ \ \ \ \ \ \ \ entries.insert(entry);}
+\DoxyCodeLine{00647\ }
+\DoxyCodeLine{00648\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ node\ :\ out\_siblings)\ \{}
+\DoxyCodeLine{00649\ \ \ \ \ \ \ \ \ \ \ \ \ entries.insert(node-\/>\mbox{\hyperlink{structhilbert_1_1Node_af49701eb9dd4a2e97ced0ba3e3486fdb}{get\_entries}}().begin(),\ node-\/>\mbox{\hyperlink{structhilbert_1_1Node_af49701eb9dd4a2e97ced0ba3e3486fdb}{get\_entries}}().end());}
+\DoxyCodeLine{00650\ \ \ \ \ \ \ \ \ \ \ \ \ node-\/>\mbox{\hyperlink{structhilbert_1_1Node_ab5663993c5bac906e9ed3a019781ac60}{reset\_entries}}();}
+\DoxyCodeLine{00651\ \ \ \ \ \ \ \ \ \ \ \ \ node-\/>\mbox{\hyperlink{structhilbert_1_1Node_a332e9d3d5161ce1551ad205750ae25f7}{set\_prev\_siblings}}(\textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00652\ \ \ \ \ \ \ \ \ \ \ \ \ node-\/>\mbox{\hyperlink{structhilbert_1_1Node_ae1c317ce02fb5d3594257d9b1fe8973c}{set\_next\_siblings}}(\textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00653\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00654\ }
+\DoxyCodeLine{00655\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (entries.size()\ >\ out\_siblings.size()\ *\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(max\_entries))\ \{}
+\DoxyCodeLine{00656\ \ \ \ \ \ \ \ \ \ \ \ \ newNode\ =\ \textcolor{keyword}{new}\ Node<T>(min\_entries,\ max\_entries,\ curve);}
+\DoxyCodeLine{00657\ \ \ \ \ \ \ \ \ \ \ \ \ all\_nodes.insert(newNode);}
+\DoxyCodeLine{00658\ \ \ \ \ \ \ \ \ \ \ \ \ newNode-\/>set\_leaf(entry-\/>is\_leaf());}
+\DoxyCodeLine{00659\ \ \ \ \ \ \ \ \ \ \ \ \ newNode-\/>set\_parent(original\_parent);}
+\DoxyCodeLine{00660\ \ \ \ \ \ \ \ \ \ \ \ \ out\_siblings.push\_back(newNode);}
+\DoxyCodeLine{00661\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00662\ }
+\DoxyCodeLine{00663\ \ \ \ \ \ \ \ \ redistribute\_entries(entries,\ out\_siblings);}
+\DoxyCodeLine{00664\ }
+\DoxyCodeLine{00665\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ node\ :\ out\_siblings)\ \{}
+\DoxyCodeLine{00666\ \ \ \ \ \ \ \ \ \ \ \ \ node-\/>\mbox{\hyperlink{structhilbert_1_1Node_a781fb77e147494436b082a14d9e6f5b6}{set\_parent}}(original\_parent);}
+\DoxyCodeLine{00667\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00668\ }
+\DoxyCodeLine{00669\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Set\ up\ sibling\ chain\ for\ redistributed\ nodes}}
+\DoxyCodeLine{00670\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ out\_siblings.size();\ ++i)\ \{}
+\DoxyCodeLine{00671\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ >\ 0)\ \{}
+\DoxyCodeLine{00672\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ out\_siblings[i]-\/>set\_prev\_siblings(out\_siblings[i\ -\/\ 1]);}
+\DoxyCodeLine{00673\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00674\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ out\_siblings[i]-\/>set\_prev\_siblings(leftmost\_external\_prev);}
+\DoxyCodeLine{00675\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00676\ }
+\DoxyCodeLine{00677\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ <\ out\_siblings.size()\ -\/\ 1)\ \{}
+\DoxyCodeLine{00678\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ out\_siblings[i]-\/>set\_next\_siblings(out\_siblings[i\ +\ 1]);}
+\DoxyCodeLine{00679\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00680\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ out\_siblings[i]-\/>set\_next\_siblings(rightmost\_external\_next);}
+\DoxyCodeLine{00681\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00682\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00683\ }
+\DoxyCodeLine{00684\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Update\ external\ neighbors\ to\ point\ to\ the\ new\ chain}}
+\DoxyCodeLine{00685\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (leftmost\_external\_prev\ !=\ \textcolor{keyword}{nullptr})\ \{}
+\DoxyCodeLine{00686\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Make\ sure\ we're\ not\ creating\ a\ cycle}}
+\DoxyCodeLine{00687\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (leftmost\_external\_prev\ !=\ out\_siblings.front())\ \{}
+\DoxyCodeLine{00688\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ leftmost\_external\_prev-\/>set\_next\_siblings(out\_siblings.front());}
+\DoxyCodeLine{00689\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00690\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00691\ }
+\DoxyCodeLine{00692\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (rightmost\_external\_next\ !=\ \textcolor{keyword}{nullptr})\ \{}
+\DoxyCodeLine{00693\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Make\ sure\ we're\ not\ creating\ a\ cycle}}
+\DoxyCodeLine{00694\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (rightmost\_external\_next\ !=\ out\_siblings.back())\ \{}
+\DoxyCodeLine{00695\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ rightmost\_external\_next-\/>set\_prev\_siblings(out\_siblings.back());}
+\DoxyCodeLine{00696\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00697\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00698\ }
+\DoxyCodeLine{00699\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ newNode;}
+\DoxyCodeLine{00700\ \ \ \ \ \}}
+\DoxyCodeLine{00701\ }
+\DoxyCodeLine{00702\ \ \ \ \ Node<T>*\ handle\_underflow(Node<T>*\ target,\ std::deque<Node<T>*>\&\ out\_siblings)\ \{}
+\DoxyCodeLine{00703\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (target\ ==\ \textcolor{keyword}{nullptr})\ \{}
+\DoxyCodeLine{00704\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00705\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00706\ }
+\DoxyCodeLine{00707\ \ \ \ \ \ \ \ \ out\_siblings\ =\ target-\/>get\_siblings(3);}
+\DoxyCodeLine{00708\ }
+\DoxyCodeLine{00709\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (out\_siblings.empty())\ \{}
+\DoxyCodeLine{00710\ \ \ \ \ \ \ \ \ \ \ \ \ out\_siblings.push\_back(target);}
+\DoxyCodeLine{00711\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00712\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00713\ }
+\DoxyCodeLine{00714\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ If\ we\ got\ fewer\ siblings\ than\ requested\ due\ to\ a\ cycle,}}
+\DoxyCodeLine{00715\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ we\ can't\ safely\ redistribute\ -\/\ just\ return\ target\ as-\/is}}
+\DoxyCodeLine{00716\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (out\_siblings.size()\ <\ 2)\ \{}
+\DoxyCodeLine{00717\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00718\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00719\ }
+\DoxyCodeLine{00720\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ STEP\ 1:\ Save\ external\ neighbors\ BEFORE\ touching\ anything}}
+\DoxyCodeLine{00721\ \ \ \ \ \ \ \ \ Node<T>*\ leftmost\_external\_prev\ =\ out\_siblings.front()-\/>get\_prev\_siblings();}
+\DoxyCodeLine{00722\ \ \ \ \ \ \ \ \ Node<T>*\ rightmost\_external\_next\ =\ out\_siblings.back()-\/>get\_next\_siblings();}
+\DoxyCodeLine{00723\ }
+\DoxyCodeLine{00724\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Verify\ these\ are\ actually\ external\ (not\ in\ our\ sibling\ group)}}
+\DoxyCodeLine{00725\ \ \ \ \ \ \ \ \ std::set<Node<T>*>\ sibling\_set(out\_siblings.begin(),\ out\_siblings.end());}
+\DoxyCodeLine{00726\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (leftmost\_external\_prev\ !=\ \textcolor{keyword}{nullptr}}
+\DoxyCodeLine{00727\ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ sibling\_set.find(leftmost\_external\_prev)\ !=\ sibling\_set.end())\ \{}
+\DoxyCodeLine{00728\ \ \ \ \ \ \ \ \ \ \ \ \ leftmost\_external\_prev\ =\ \textcolor{keyword}{nullptr};\ \ \textcolor{comment}{//\ Not\ external,\ it's\ in\ our\ group}}
+\DoxyCodeLine{00729\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00730\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (rightmost\_external\_next\ !=\ \textcolor{keyword}{nullptr}}
+\DoxyCodeLine{00731\ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ sibling\_set.find(rightmost\_external\_next)\ !=\ sibling\_set.end())\ \{}
+\DoxyCodeLine{00732\ \ \ \ \ \ \ \ \ \ \ \ \ rightmost\_external\_next\ =\ \textcolor{keyword}{nullptr};\ \ \textcolor{comment}{//\ Not\ external,\ it's\ in\ our\ group}}
+\DoxyCodeLine{00733\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00734\ }
+\DoxyCodeLine{00735\ \ \ \ \ \ \ \ \ Node<T>*\ original\_parent\ =\ target-\/>get\_parent();}
+\DoxyCodeLine{00736\ }
+\DoxyCodeLine{00737\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ STEP\ 2:\ Collect\ ALL\ entries\ before\ making\ any\ changes}}
+\DoxyCodeLine{00738\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacehilbert_aa7ad03b6a321800f9790ee3dbb97d814}{EntrySet<T>}}\ entries;}
+\DoxyCodeLine{00739\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ node\ :\ out\_siblings)\ \{}
+\DoxyCodeLine{00740\ \ \ \ \ \ \ \ \ \ \ \ \ entries.insert(node-\/>\mbox{\hyperlink{structhilbert_1_1Node_af49701eb9dd4a2e97ced0ba3e3486fdb}{get\_entries}}().begin(),\ node-\/>\mbox{\hyperlink{structhilbert_1_1Node_af49701eb9dd4a2e97ced0ba3e3486fdb}{get\_entries}}().end());}
+\DoxyCodeLine{00741\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00742\ }
+\DoxyCodeLine{00743\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ CRITICAL:\ If\ no\ entries\ collected,\ something\ is\ wrong\ -\/\ abort}}
+\DoxyCodeLine{00744\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (entries.empty())\ \{}
+\DoxyCodeLine{00745\ \ \ \ \ \ \ \ \ \ \ \ \ std::cerr\ <<\ \textcolor{stringliteral}{"{}ERROR:\ No\ entries\ collected\ from\ siblings\ in\ underflow\(\backslash\)n"{}};}
+\DoxyCodeLine{00746\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00747\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00748\ }
+\DoxyCodeLine{00749\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ STEP\ 3:\ Decide\ if\ we\ should\ remove\ a\ node}}
+\DoxyCodeLine{00750\ \ \ \ \ \ \ \ \ Node<T>*\ removed\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00751\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ should\_remove\ =}
+\DoxyCodeLine{00752\ \ \ \ \ \ \ \ \ \ \ \ \ (out\_siblings.size()\ >\ 1)\ \&\&\ original\_parent\ !=\ \textcolor{keyword}{nullptr}}
+\DoxyCodeLine{00753\ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ entries.size()\ <\ out\_siblings.size()\ *\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(min\_entries);}
+\DoxyCodeLine{00754\ }
+\DoxyCodeLine{00755\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (should\_remove)\ \{}
+\DoxyCodeLine{00756\ \ \ \ \ \ \ \ \ \ \ \ \ removed\ =\ out\_siblings.front();}
+\DoxyCodeLine{00757\ \ \ \ \ \ \ \ \ \ \ \ \ out\_siblings.pop\_front();}
+\DoxyCodeLine{00758\ }
+\DoxyCodeLine{00759\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Update\ left\ external\ if\ the\ removed\ node\ was\ connected\ to\ it}}
+\DoxyCodeLine{00760\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (removed-\/>get\_prev\_siblings()\ ==\ leftmost\_external\_prev)\ \{}
+\DoxyCodeLine{00761\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ leftmost\_external\_prev\ =\ removed-\/>get\_prev\_siblings();}
+\DoxyCodeLine{00762\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00763\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00764\ }
+\DoxyCodeLine{00765\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ STEP\ 3b:\ After\ removal,\ check\ if\ we\ still\ have\ enough\ nodes}}
+\DoxyCodeLine{00766\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (out\_siblings.empty())\ \{}
+\DoxyCodeLine{00767\ \ \ \ \ \ \ \ \ \ \ \ \ std::cerr\ <<\ \textcolor{stringliteral}{"{}ERROR:\ All\ siblings\ removed\ in\ underflow\(\backslash\)n"{}};}
+\DoxyCodeLine{00768\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (removed\ !=\ \textcolor{keyword}{nullptr})\ \{}
+\DoxyCodeLine{00769\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ out\_siblings.push\_back(removed);}
+\DoxyCodeLine{00770\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ removed\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00771\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00772\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00773\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00774\ }
+\DoxyCodeLine{00775\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ STEP\ 4:\ Completely\ disconnect\ all\ nodes\ in\ the\ group}}
+\DoxyCodeLine{00776\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ node\ :\ out\_siblings)\ \{}
+\DoxyCodeLine{00777\ \ \ \ \ \ \ \ \ \ \ \ \ node-\/>\mbox{\hyperlink{structhilbert_1_1Node_ab5663993c5bac906e9ed3a019781ac60}{reset\_entries}}();}
+\DoxyCodeLine{00778\ \ \ \ \ \ \ \ \ \ \ \ \ node-\/>\mbox{\hyperlink{structhilbert_1_1Node_a332e9d3d5161ce1551ad205750ae25f7}{set\_prev\_siblings}}(\textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00779\ \ \ \ \ \ \ \ \ \ \ \ \ node-\/>\mbox{\hyperlink{structhilbert_1_1Node_ae1c317ce02fb5d3594257d9b1fe8973c}{set\_next\_siblings}}(\textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00780\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00781\ }
+\DoxyCodeLine{00782\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (removed\ !=\ \textcolor{keyword}{nullptr})\ \{}
+\DoxyCodeLine{00783\ \ \ \ \ \ \ \ \ \ \ \ \ removed-\/>reset\_entries();}
+\DoxyCodeLine{00784\ \ \ \ \ \ \ \ \ \ \ \ \ removed-\/>set\_prev\_siblings(\textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00785\ \ \ \ \ \ \ \ \ \ \ \ \ removed-\/>set\_next\_siblings(\textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00786\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00787\ }
+\DoxyCodeLine{00788\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Also\ disconnect\ external\ neighbors\ from\ us}}
+\DoxyCodeLine{00789\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (leftmost\_external\_prev\ !=\ \textcolor{keyword}{nullptr})\ \{}
+\DoxyCodeLine{00790\ \ \ \ \ \ \ \ \ \ \ \ \ leftmost\_external\_prev-\/>set\_next\_siblings(\textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00791\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00792\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (rightmost\_external\_next\ !=\ \textcolor{keyword}{nullptr})\ \{}
+\DoxyCodeLine{00793\ \ \ \ \ \ \ \ \ \ \ \ \ rightmost\_external\_next-\/>set\_prev\_siblings(\textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00794\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00795\ }
+\DoxyCodeLine{00796\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ STEP\ 5:\ Redistribute\ entries}}
+\DoxyCodeLine{00797\ \ \ \ \ \ \ \ \ redistribute\_entries(entries,\ out\_siblings);}
+\DoxyCodeLine{00798\ }
+\DoxyCodeLine{00799\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ STEP\ 6:\ Set\ parent}}
+\DoxyCodeLine{00800\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ node\ :\ out\_siblings)\ \{}
+\DoxyCodeLine{00801\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (node\ !=\ \textcolor{keyword}{nullptr})\ \{}
+\DoxyCodeLine{00802\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ node-\/>\mbox{\hyperlink{structhilbert_1_1Node_a781fb77e147494436b082a14d9e6f5b6}{set\_parent}}(original\_parent);}
+\DoxyCodeLine{00803\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00804\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00805\ }
+\DoxyCodeLine{00806\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ STEP\ 7:\ Build\ clean\ internal\ chain}}
+\DoxyCodeLine{00807\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ out\_siblings.size();\ ++i)\ \{}
+\DoxyCodeLine{00808\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ >\ 0)\ \{}
+\DoxyCodeLine{00809\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ out\_siblings[i]-\/>set\_prev\_siblings(out\_siblings[i\ -\/\ 1]);}
+\DoxyCodeLine{00810\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00811\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ out\_siblings[i]-\/>set\_prev\_siblings(\textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00812\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00813\ }
+\DoxyCodeLine{00814\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ <\ out\_siblings.size()\ -\/\ 1)\ \{}
+\DoxyCodeLine{00815\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ out\_siblings[i]-\/>set\_next\_siblings(out\_siblings[i\ +\ 1]);}
+\DoxyCodeLine{00816\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00817\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ out\_siblings[i]-\/>set\_next\_siblings(\textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00818\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00819\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00820\ }
+\DoxyCodeLine{00821\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ STEP\ 8:\ Reconnect\ to\ external\ neighbors}}
+\DoxyCodeLine{00822\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!out\_siblings.empty())\ \{}
+\DoxyCodeLine{00823\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (leftmost\_external\_prev\ !=\ \textcolor{keyword}{nullptr})\ \{}
+\DoxyCodeLine{00824\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ out\_siblings.front()-\/>set\_prev\_siblings(leftmost\_external\_prev);}
+\DoxyCodeLine{00825\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ leftmost\_external\_prev-\/>set\_next\_siblings(out\_siblings.front());}
+\DoxyCodeLine{00826\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00827\ }
+\DoxyCodeLine{00828\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (rightmost\_external\_next\ !=\ \textcolor{keyword}{nullptr})\ \{}
+\DoxyCodeLine{00829\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ out\_siblings.back()-\/>set\_next\_siblings(rightmost\_external\_next);}
+\DoxyCodeLine{00830\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ rightmost\_external\_next-\/>set\_prev\_siblings(out\_siblings.back());}
+\DoxyCodeLine{00831\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00832\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00833\ }
+\DoxyCodeLine{00834\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ removed;}
+\DoxyCodeLine{00835\ \ \ \ \ \}}
+\DoxyCodeLine{00836\ }
+\DoxyCodeLine{00837\ \ \ \ \ Node<T>*\ adjust\_tree(Node<T>*\ root,\ Node<T>*\ N,\ Node<T>*\ NN,\ std::deque<Node<T>*>\&\ siblings)\ \{}
+\DoxyCodeLine{00838\ \ \ \ \ \ \ \ \ Node<T>*\ PP\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00839\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ newRoot\ =\ root;}
+\DoxyCodeLine{00840\ \ \ \ \ \ \ \ \ std::deque<Node<T>*>\ newSiblings;}
+\DoxyCodeLine{00841\ \ \ \ \ \ \ \ \ std::set<Node<T>*>\ P;}
+\DoxyCodeLine{00842\ \ \ \ \ \ \ \ \ std::set<Node<T>*>\ S;}
+\DoxyCodeLine{00843\ \ \ \ \ \ \ \ \ S.insert(siblings.begin(),\ siblings.end());}
+\DoxyCodeLine{00844\ }
+\DoxyCodeLine{00845\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ iteration\ =\ 0;}
+\DoxyCodeLine{00846\ }
+\DoxyCodeLine{00847\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (\textcolor{keyword}{true})\ \{}
+\DoxyCodeLine{00848\ \ \ \ \ \ \ \ \ \ \ \ \ iteration++;}
+\DoxyCodeLine{00849\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (iteration\ >\ 1000)\ \{}
+\DoxyCodeLine{00850\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cerr\ <<\ \textcolor{stringliteral}{"{}ERROR:\ adjust\_tree\ infinite\ loop\ detected!\(\backslash\)n"{}};}
+\DoxyCodeLine{00851\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(\textcolor{stringliteral}{"{}Infinite\ loop\ in\ adjust\_tree"{}});}
+\DoxyCodeLine{00852\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00853\ }
+\DoxyCodeLine{00854\ \ \ \ \ \ \ \ \ \ \ \ \ Node<T>*\ Np\ =\ N-\/>get\_parent();}
+\DoxyCodeLine{00855\ }
+\DoxyCodeLine{00856\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Np\ ==\ \textcolor{keyword}{nullptr})\ \{}
+\DoxyCodeLine{00857\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (NN\ !=\ \textcolor{keyword}{nullptr})\ \{}
+\DoxyCodeLine{00858\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ n\ =\ \textcolor{keyword}{new}\ InnerNode<T>(N);}
+\DoxyCodeLine{00859\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ nn\ =\ \textcolor{keyword}{new}\ InnerNode<T>(NN);}
+\DoxyCodeLine{00860\ }
+\DoxyCodeLine{00861\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ newRoot\ =\ \textcolor{keyword}{new}\ Node<T>(min\_entries,\ max\_entries,\ curve);}
+\DoxyCodeLine{00862\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ all\_nodes.insert(newRoot);}
+\DoxyCodeLine{00863\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ newRoot-\/>insert\_inner\_entry(n);}
+\DoxyCodeLine{00864\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ newRoot-\/>insert\_inner\_entry(nn);}
+\DoxyCodeLine{00865\ }
+\DoxyCodeLine{00866\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ CRITICAL:\ Fix\ the\ new\ root's\ child\ chain}}
+\DoxyCodeLine{00867\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ validate\_and\_fix\_child\_chain(newRoot);}
+\DoxyCodeLine{00868\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00869\ }
+\DoxyCodeLine{00870\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ newRoot-\/>adjust\_lhv();}
+\DoxyCodeLine{00871\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ newRoot-\/>adjust\_mbr();}
+\DoxyCodeLine{00872\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00873\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00874\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (NN\ !=\ \textcolor{keyword}{nullptr})\ \{}
+\DoxyCodeLine{00875\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ nn\ =\ \textcolor{keyword}{new}\ InnerNode<T>(NN);}
+\DoxyCodeLine{00876\ }
+\DoxyCodeLine{00877\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Np-\/>entries.size()\ <\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(max\_entries))\ \{}
+\DoxyCodeLine{00878\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Np-\/>insert\_inner\_entry(nn);}
+\DoxyCodeLine{00879\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ CRITICAL:\ Fix\ parent's\ child\ chain\ after\ insertion}}
+\DoxyCodeLine{00880\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ validate\_and\_fix\_child\_chain(Np);}
+\DoxyCodeLine{00881\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Np-\/>adjust\_lhv();}
+\DoxyCodeLine{00882\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Np-\/>adjust\_mbr();}
+\DoxyCodeLine{00883\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ newSiblings.push\_back(Np);}
+\DoxyCodeLine{00884\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00885\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ PP\ =\ handle\_overflow(Np,\ nn,\ newSiblings);}
+\DoxyCodeLine{00886\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ After\ overflow,\ validate\ all\ affected\ parents}}
+\DoxyCodeLine{00887\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ sibling\ :\ newSiblings)\ \{}
+\DoxyCodeLine{00888\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (sibling\ \&\&\ !sibling-\/>is\_leaf())\ \{}
+\DoxyCodeLine{00889\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ validate\_and\_fix\_child\_chain(sibling);}
+\DoxyCodeLine{00890\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00891\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00892\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00893\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00894\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ newSiblings.push\_back(Np);}
+\DoxyCodeLine{00895\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00896\ }
+\DoxyCodeLine{00897\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ node\ :\ S)\ \{}
+\DoxyCodeLine{00898\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (node\ !=\ \textcolor{keyword}{nullptr}\ \&\&\ node-\/>\mbox{\hyperlink{structhilbert_1_1Node_a5155e51ce14fe66d300356d92d44ac35}{get\_parent}}()\ !=\ \textcolor{keyword}{nullptr})\ \{}
+\DoxyCodeLine{00899\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ P.insert(node-\/>\mbox{\hyperlink{structhilbert_1_1Node_a5155e51ce14fe66d300356d92d44ac35}{get\_parent}}());}
+\DoxyCodeLine{00900\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00901\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00902\ }
+\DoxyCodeLine{00903\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ node\ :\ P)\ \{}
+\DoxyCodeLine{00904\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (node\ !=\ \textcolor{keyword}{nullptr})\ \{}
+\DoxyCodeLine{00905\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ node-\/>\mbox{\hyperlink{structhilbert_1_1Node_aada87fc975cbee42259fb7dfca264d37}{adjust\_lhv}}();}
+\DoxyCodeLine{00906\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ node-\/>\mbox{\hyperlink{structhilbert_1_1Node_a3b5058d09e75e4243bb0bb08204e9e6f}{adjust\_mbr}}();}
+\DoxyCodeLine{00907\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ CRITICAL:\ Validate\ child\ chains\ after\ adjustments}}
+\DoxyCodeLine{00908\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!node-\/>\mbox{\hyperlink{structhilbert_1_1Node_aa744bde8188df238deeed308146d8f36}{is\_leaf}}())\ \{}
+\DoxyCodeLine{00909\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ validate\_and\_fix\_child\_chain(node);}
+\DoxyCodeLine{00910\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00911\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00912\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00913\ }
+\DoxyCodeLine{00914\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ N\ =\ Np;}
+\DoxyCodeLine{00915\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ NN\ =\ PP;}
+\DoxyCodeLine{00916\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ PP\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00917\ }
+\DoxyCodeLine{00918\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ S.clear();}
+\DoxyCodeLine{00919\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ P.clear();}
+\DoxyCodeLine{00920\ }
+\DoxyCodeLine{00921\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ S.insert(newSiblings.begin(),\ newSiblings.end());}
+\DoxyCodeLine{00922\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ newSiblings.clear();}
+\DoxyCodeLine{00923\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00924\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00925\ }
+\DoxyCodeLine{00926\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ newRoot;}
+\DoxyCodeLine{00927\ \ \ \ \ \}}
+\DoxyCodeLine{00928\ }
+\DoxyCodeLine{00929\ \ \ \ \ \textcolor{keywordtype}{void}\ condense\_tree(Node<T>*\ node,\ Node<T>*\ del\_node,\ std::deque<Node<T>*>\&\ siblings)\ \{}
+\DoxyCodeLine{00930\ \ \ \ \ \ \ \ \ std::deque<Node<T>*>\ new\_siblings;}
+\DoxyCodeLine{00931\ \ \ \ \ \ \ \ \ std::set<Node<T>*>\ s,\ p;}
+\DoxyCodeLine{00932\ \ \ \ \ \ \ \ \ s.insert(siblings.begin(),\ siblings.end());}
+\DoxyCodeLine{00933\ }
+\DoxyCodeLine{00934\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ safety\_counter\ =\ 0;}
+\DoxyCodeLine{00935\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ MAX\_ITERATIONS\ =\ INT\_MAX;}
+\DoxyCodeLine{00936\ }
+\DoxyCodeLine{00937\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (\textcolor{keyword}{true})\ \{}
+\DoxyCodeLine{00938\ \ \ \ \ \ \ \ \ \ \ \ \ safety\_counter++;}
+\DoxyCodeLine{00939\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (safety\_counter\ >\ MAX\_ITERATIONS)\ \{}
+\DoxyCodeLine{00940\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cerr\ <<\ \textcolor{stringliteral}{"{}ERROR:\ Too\ many\ iterations\ in\ condense\_tree\(\backslash\)n"{}};}
+\DoxyCodeLine{00941\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00942\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00943\ }
+\DoxyCodeLine{00944\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ np\ =\ node-\/>get\_parent();}
+\DoxyCodeLine{00945\ \ \ \ \ \ \ \ \ \ \ \ \ Node<T>*\ dpparent\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00946\ }
+\DoxyCodeLine{00947\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (np\ ==\ \textcolor{keyword}{nullptr})\ \{}
+\DoxyCodeLine{00948\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Root\ condensation}}
+\DoxyCodeLine{00949\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!node-\/>is\_leaf()\ \&\&\ node-\/>get\_entries().size()\ ==\ 1)\ \{}
+\DoxyCodeLine{00950\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ main\_entry\ =\ \textcolor{keyword}{dynamic\_cast<}InnerNode<T>*\textcolor{keyword}{>}(*node-\/>get\_entries().begin());}
+\DoxyCodeLine{00951\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (main\_entry)\ \{}
+\DoxyCodeLine{00952\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ main\_node\ =\ main\_entry-\/>get\_node();}
+\DoxyCodeLine{00953\ }
+\DoxyCodeLine{00954\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Verify\ main\_node\ is\ still\ valid}}
+\DoxyCodeLine{00955\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (main\_node\ !=\ \textcolor{keyword}{nullptr}\ \&\&\ all\_nodes.find(main\_node)\ !=\ all\_nodes.end())\ \{}
+\DoxyCodeLine{00956\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacehilbert_aa7ad03b6a321800f9790ee3dbb97d814}{EntrySet<T>}}\ data;}
+\DoxyCodeLine{00957\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ data.insert(main\_node-\/>get\_entries().begin(),}
+\DoxyCodeLine{00958\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ main\_node-\/>get\_entries().end());}
+\DoxyCodeLine{00959\ }
+\DoxyCodeLine{00960\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ main\_node-\/>reset\_entries();}
+\DoxyCodeLine{00961\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ node-\/>reset\_entries();}
+\DoxyCodeLine{00962\ }
+\DoxyCodeLine{00963\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (main\_node-\/>is\_leaf())\ \{}
+\DoxyCodeLine{00964\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ node-\/>set\_leaf(\textcolor{keyword}{true});}
+\DoxyCodeLine{00965\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ entry\ :\ data)\ \{}
+\DoxyCodeLine{00966\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ node-\/>insert\_leaf\_entry(\textcolor{keyword}{dynamic\_cast<}LeafEntry<T>*\textcolor{keyword}{>}(entry));}
+\DoxyCodeLine{00967\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00968\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00969\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ entry\ :\ data)\ \{}
+\DoxyCodeLine{00970\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ node-\/>insert\_inner\_entry(\textcolor{keyword}{dynamic\_cast<}InnerNode<T>*\textcolor{keyword}{>}(entry));}
+\DoxyCodeLine{00971\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00972\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Fix\ child\ sibling\ chain\ after\ moving\ entries\ to\ root}}
+\DoxyCodeLine{00973\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ validate\_and\_fix\_child\_chain(node);}
+\DoxyCodeLine{00974\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00975\ }
+\DoxyCodeLine{00976\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ all\_nodes.erase(main\_node);}
+\DoxyCodeLine{00977\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ main\_entry;}
+\DoxyCodeLine{00978\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ main\_node;}
+\DoxyCodeLine{00979\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00980\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00981\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00982\ }
+\DoxyCodeLine{00983\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!node-\/>get\_entries().empty())\ \{}
+\DoxyCodeLine{00984\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ node-\/>adjust\_lhv();}
+\DoxyCodeLine{00985\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ node-\/>adjust\_mbr();}
+\DoxyCodeLine{00986\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00987\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00988\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00989\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Handle\ deleted\ node}}
+\DoxyCodeLine{00990\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (del\_node\ !=\ \textcolor{keyword}{nullptr})\ \{}
+\DoxyCodeLine{00991\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ dnparent\ =\ del\_node-\/>get\_parent();}
+\DoxyCodeLine{00992\ }
+\DoxyCodeLine{00993\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ CRITICAL:\ Check\ if\ node\ still\ exists\ before\ accessing}}
+\DoxyCodeLine{00994\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ node\_exists\ =\ (all\_nodes.find(del\_node)\ !=\ all\_nodes.end());}
+\DoxyCodeLine{00995\ }
+\DoxyCodeLine{00996\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (node\_exists\ \&\&\ dnparent\ !=\ \textcolor{keyword}{nullptr}}
+\DoxyCodeLine{00997\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ all\_nodes.find(dnparent)\ !=\ all\_nodes.end())\ \{}
+\DoxyCodeLine{00998\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Remove\ from\ parent}}
+\DoxyCodeLine{00999\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ dnparent-\/>remove\_inner\_entry(del\_node);}
+\DoxyCodeLine{01000\ }
+\DoxyCodeLine{01001\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ CRITICAL:\ Fix\ parent's\ child\ sibling\ chain\ after\ removal}}
+\DoxyCodeLine{01002\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ validate\_and\_fix\_child\_chain(dnparent);}
+\DoxyCodeLine{01003\ }
+\DoxyCodeLine{01004\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (dnparent-\/>underflow()\ \&\&\ dnparent-\/>get\_parent()\ !=\ \textcolor{keyword}{nullptr})\ \{}
+\DoxyCodeLine{01005\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ dpparent\ =\ handle\_underflow(dnparent,\ new\_siblings);}
+\DoxyCodeLine{01006\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{01007\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ new\_siblings.push\_back(dnparent);}
+\DoxyCodeLine{01008\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01009\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01010\ }
+\DoxyCodeLine{01011\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ CRITICAL:\ Clear\ all\ pointers\ TO\ the\ deleted\ node\ before\ freeing\ it}}
+\DoxyCodeLine{01012\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ del\_prev\ =\ del\_node-\/>get\_prev\_siblings();}
+\DoxyCodeLine{01013\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ del\_next\ =\ del\_node-\/>get\_next\_siblings();}
+\DoxyCodeLine{01014\ }
+\DoxyCodeLine{01015\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (del\_prev\ !=\ \textcolor{keyword}{nullptr}\ \&\&\ all\_nodes.find(del\_prev)\ !=\ all\_nodes.end())\ \{}
+\DoxyCodeLine{01016\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ del\_prev-\/>set\_next\_siblings(del\_next);}
+\DoxyCodeLine{01017\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01018\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (del\_next\ !=\ \textcolor{keyword}{nullptr}\ \&\&\ all\_nodes.find(del\_next)\ !=\ all\_nodes.end())\ \{}
+\DoxyCodeLine{01019\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ del\_next-\/>set\_prev\_siblings(del\_prev);}
+\DoxyCodeLine{01020\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01021\ }
+\DoxyCodeLine{01022\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ del\_node-\/>set\_prev\_siblings(\textcolor{keyword}{nullptr});}
+\DoxyCodeLine{01023\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ del\_node-\/>set\_next\_siblings(\textcolor{keyword}{nullptr});}
+\DoxyCodeLine{01024\ }
+\DoxyCodeLine{01025\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Delete\ the\ node\ if\ it\ still\ exists}}
+\DoxyCodeLine{01026\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ (handle\_underflow\ may\ have\ already\ erased\ it\ from\ all\_nodes)}}
+\DoxyCodeLine{01027\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (node\_exists\ \&\&\ all\_nodes.find(del\_node)\ !=\ all\_nodes.end())\ \{}
+\DoxyCodeLine{01028\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ all\_nodes.erase(del\_node);}
+\DoxyCodeLine{01029\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01030\ }
+\DoxyCodeLine{01031\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Always\ safe\ to\ delete\ -\/\ either\ it's\ still\ valid\ or\ already\ erased}}
+\DoxyCodeLine{01032\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ del\_node;}
+\DoxyCodeLine{01033\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ del\_node\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{01034\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01035\ }
+\DoxyCodeLine{01036\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (np\ !=\ \textcolor{keyword}{nullptr}\ \&\&\ all\_nodes.find(np)\ !=\ all\_nodes.end())\ \{}
+\DoxyCodeLine{01037\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ new\_siblings.push\_back(np);}
+\DoxyCodeLine{01038\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01039\ }
+\DoxyCodeLine{01040\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Collect\ parents\ of\ affected\ siblings}}
+\DoxyCodeLine{01041\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ snode\ :\ s)\ \{}
+\DoxyCodeLine{01042\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (snode\ !=\ \textcolor{keyword}{nullptr}\ \&\&\ all\_nodes.find(snode)\ !=\ all\_nodes.end()}
+\DoxyCodeLine{01043\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ snode-\/>get\_parent()\ !=\ \textcolor{keyword}{nullptr}}
+\DoxyCodeLine{01044\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ all\_nodes.find(snode-\/>get\_parent())\ !=\ all\_nodes.end())\ \{}
+\DoxyCodeLine{01045\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ p.insert(snode-\/>get\_parent());}
+\DoxyCodeLine{01046\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01047\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01048\ }
+\DoxyCodeLine{01049\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Adjust\ MBR\ and\ LHV\ for\ all\ affected\ parents}}
+\DoxyCodeLine{01050\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ pnode\ :\ p)\ \{}
+\DoxyCodeLine{01051\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (pnode\ !=\ \textcolor{keyword}{nullptr}\ \&\&\ all\_nodes.find(pnode)\ !=\ all\_nodes.end()}
+\DoxyCodeLine{01052\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ !pnode-\/>get\_entries().empty())\ \{}
+\DoxyCodeLine{01053\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ pnode-\/>adjust\_lhv();}
+\DoxyCodeLine{01054\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ pnode-\/>adjust\_mbr();}
+\DoxyCodeLine{01055\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ CRITICAL:\ Validate\ child\ chains\ after\ adjustments}}
+\DoxyCodeLine{01056\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!pnode-\/>is\_leaf())\ \{}
+\DoxyCodeLine{01057\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ validate\_and\_fix\_child\_chain(pnode);}
+\DoxyCodeLine{01058\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01059\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01060\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01061\ }
+\DoxyCodeLine{01062\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ node\ =\ np;}
+\DoxyCodeLine{01063\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ del\_node\ =\ dpparent;}
+\DoxyCodeLine{01064\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ s.clear();}
+\DoxyCodeLine{01065\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ p.clear();}
+\DoxyCodeLine{01066\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ s.insert(new\_siblings.begin(),\ new\_siblings.end());}
+\DoxyCodeLine{01067\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ new\_siblings.clear();}
+\DoxyCodeLine{01068\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01069\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01070\ \ \ \ \ \}}
+\DoxyCodeLine{01071\ }
+\DoxyCodeLine{01072\ \ \ \ \ Node<T>*\ exactSearch(Node<T>*\ subtree,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{main_8cpp_a6375978ecb2c815628f632b6bd986afb}{Rectangle}}\&\ rect)\ \{}
+\DoxyCodeLine{01073\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!subtree\ ||\ all\_nodes.find(subtree)\ ==\ all\_nodes.end())\ \{}
+\DoxyCodeLine{01074\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{01075\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01076\ }
+\DoxyCodeLine{01077\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (subtree-\/>is\_leaf())\ \{}
+\DoxyCodeLine{01078\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ entry\ :\ subtree-\/>get\_entries())\ \{}
+\DoxyCodeLine{01079\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (entry\ !=\ \textcolor{keyword}{nullptr}\ \&\&\ rect\ ==\ entry-\/>get\_mbr())\ \{}
+\DoxyCodeLine{01080\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ subtree;}
+\DoxyCodeLine{01081\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01082\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01083\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{01084\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ entry\ :\ subtree-\/>get\_entries())\ \{}
+\DoxyCodeLine{01085\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (entry\ !=\ \textcolor{keyword}{nullptr}\ \&\&\ entry-\/>get\_mbr().contains(rect))\ \{}
+\DoxyCodeLine{01086\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ inner\ =\ \textcolor{keyword}{dynamic\_cast<}InnerNode<T>*\textcolor{keyword}{>}(entry);}
+\DoxyCodeLine{01087\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (inner\ \&\&\ inner-\/>get\_node()\ !=\ \textcolor{keyword}{nullptr})\ \{}
+\DoxyCodeLine{01088\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ res\ =\ exactSearch(inner-\/>get\_node(),\ rect);}
+\DoxyCodeLine{01089\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (res\ !=\ \textcolor{keyword}{nullptr})\ \{}
+\DoxyCodeLine{01090\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ res;}
+\DoxyCodeLine{01091\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01092\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01093\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01094\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01095\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01096\ }
+\DoxyCodeLine{01097\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{01098\ \ \ \ \ \}}
+\DoxyCodeLine{01099\ }
+\DoxyCodeLine{01100\ \ \ \ \ std::deque<LeafEntry<T>*>\ \_search(Node<T>*\ subtree,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{main_8cpp_a6375978ecb2c815628f632b6bd986afb}{Rectangle}}\&\ rect)\ \{}
+\DoxyCodeLine{01101\ \ \ \ \ \ \ \ \ std::deque<LeafEntry<T>*>\ result;}
+\DoxyCodeLine{01102\ }
+\DoxyCodeLine{01103\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (subtree\ ==\ \textcolor{keyword}{nullptr}\ ||\ all\_nodes.find(subtree)\ ==\ all\_nodes.end())\ \{}
+\DoxyCodeLine{01104\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{01105\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01106\ }
+\DoxyCodeLine{01107\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (subtree-\/>is\_leaf())\ \{}
+\DoxyCodeLine{01108\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ entry\ :\ subtree-\/>get\_entries())\ \{}
+\DoxyCodeLine{01109\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (entry\ !=\ \textcolor{keyword}{nullptr}\ \&\&\ entry-\/>get\_mbr().intersects(rect))\ \{}
+\DoxyCodeLine{01110\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ result.push\_back(\textcolor{keyword}{dynamic\_cast<}LeafEntry<T>*\textcolor{keyword}{>}(entry));}
+\DoxyCodeLine{01111\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01112\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01113\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{01114\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ entry\ :\ subtree-\/>get\_entries())\ \{}
+\DoxyCodeLine{01115\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (entry\ !=\ \textcolor{keyword}{nullptr}\ \&\&\ entry-\/>get\_mbr().intersects(rect))\ \{}
+\DoxyCodeLine{01116\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ inner\ =\ \textcolor{keyword}{dynamic\_cast<}InnerNode<T>*\textcolor{keyword}{>}(entry);}
+\DoxyCodeLine{01117\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (inner\ \&\&\ inner-\/>get\_node()\ !=\ \textcolor{keyword}{nullptr})\ \{}
+\DoxyCodeLine{01118\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ aux\ =\ \_search(inner-\/>get\_node(),\ rect);}
+\DoxyCodeLine{01119\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ result.insert(result.end(),\ aux.begin(),\ aux.end());}
+\DoxyCodeLine{01120\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01121\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01122\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01123\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01124\ }
+\DoxyCodeLine{01125\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{01126\ \ \ \ \ \}}
+\DoxyCodeLine{01127\ \};}
+\DoxyCodeLine{01128\ }
+\DoxyCodeLine{01129\ \}\ \ \textcolor{comment}{//\ namespace\ hilbert}}
+
+\end{DoxyCode}

@@ -1,0 +1,263 @@
+\@ifundefined {etoctocstyle}{\let \etoc@startlocaltoc \@gobble \let \etoc@settocdepth \@gobble \let \etoc@depthtag \@gobble \let \etoc@setlocaltop \@gobble }{}
+\contentsline {chapter}{\numberline {1}Directory Hierarchy}{1}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Directories}{1}{section.1.1}%
+\contentsline {chapter}{\numberline {2}Namespace Index}{3}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Namespace List}{3}{section.2.1}%
+\contentsline {chapter}{\numberline {3}Hierarchical Index}{5}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Class Hierarchy}{5}{section.3.1}%
+\contentsline {chapter}{\numberline {4}Class Index}{7}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Class List}{7}{section.4.1}%
+\contentsline {chapter}{\numberline {5}File Index}{9}{chapter.5}%
+\contentsline {section}{\numberline {5.1}File List}{9}{section.5.1}%
+\contentsline {chapter}{\numberline {6}Directory Documentation}{11}{chapter.6}%
+\contentsline {section}{\numberline {6.1}src/rtree Directory Reference}{11}{section.6.1}%
+\contentsline {section}{\numberline {6.2}src/rtree\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}\_\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}hilbert Directory Reference}{11}{section.6.2}%
+\contentsline {section}{\numberline {6.3}src Directory Reference}{11}{section.6.3}%
+\contentsline {chapter}{\numberline {7}Namespace Documentation}{13}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Gutman Namespace Reference}{13}{section.7.1}%
+\contentsline {subsection}{\numberline {7.1.1}Function Documentation}{13}{subsection.7.1.1}%
+\contentsline {subsubsection}{\numberline {7.1.1.1}equal()}{13}{subsubsection.7.1.1.1}%
+\contentsline {section}{\numberline {7.2}hilbert Namespace Reference}{14}{section.7.2}%
+\contentsline {subsection}{\numberline {7.2.1}Typedef Documentation}{14}{subsection.7.2.1}%
+\contentsline {subsubsection}{\numberline {7.2.1.1}EntrySet}{14}{subsubsection.7.2.1.1}%
+\contentsline {subsection}{\numberline {7.2.2}Variable Documentation}{14}{subsection.7.2.2}%
+\contentsline {subsubsection}{\numberline {7.2.2.1}not\_implemented}{14}{subsubsection.7.2.2.1}%
+\contentsline {chapter}{\numberline {8}Class Documentation}{15}{chapter.8}%
+\contentsline {section}{\numberline {8.1}Box Class Reference}{15}{section.8.1}%
+\contentsline {subsection}{\numberline {8.1.1}Detailed Description}{15}{subsection.8.1.1}%
+\contentsline {subsection}{\numberline {8.1.2}Constructor \& Destructor Documentation}{15}{subsection.8.1.2}%
+\contentsline {subsubsection}{\numberline {8.1.2.1}Box()}{15}{subsubsection.8.1.2.1}%
+\contentsline {subsection}{\numberline {8.1.3}Member Function Documentation}{16}{subsection.8.1.3}%
+\contentsline {subsubsection}{\numberline {8.1.3.1}contains()}{16}{subsubsection.8.1.3.1}%
+\contentsline {subsubsection}{\numberline {8.1.3.2}visit\_perimiter()}{16}{subsubsection.8.1.3.2}%
+\contentsline {section}{\numberline {8.2}Hilbert\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Curve Class Reference}{16}{section.8.2}%
+\contentsline {subsection}{\numberline {8.2.1}Detailed Description}{17}{subsection.8.2.1}%
+\contentsline {subsection}{\numberline {8.2.2}Constructor \& Destructor Documentation}{17}{subsection.8.2.2}%
+\contentsline {subsubsection}{\numberline {8.2.2.1}HilbertCurve()}{17}{subsubsection.8.2.2.1}%
+\contentsline {subsection}{\numberline {8.2.3}Member Function Documentation}{17}{subsection.8.2.3}%
+\contentsline {subsubsection}{\numberline {8.2.3.1}get\_bits()}{17}{subsubsection.8.2.3.1}%
+\contentsline {subsubsection}{\numberline {8.2.3.2}get\_dim()}{18}{subsubsection.8.2.3.2}%
+\contentsline {subsubsection}{\numberline {8.2.3.3}get\_length()}{18}{subsubsection.8.2.3.3}%
+\contentsline {subsubsection}{\numberline {8.2.3.4}index()}{18}{subsubsection.8.2.3.4}%
+\contentsline {subsubsection}{\numberline {8.2.3.5}max\_index()}{18}{subsubsection.8.2.3.5}%
+\contentsline {subsubsection}{\numberline {8.2.3.6}max\_ordinate()}{18}{subsubsection.8.2.3.6}%
+\contentsline {subsubsection}{\numberline {8.2.3.7}point()\hspace {0.1cm}{\footnotesize \ttfamily [1/2]}}{18}{subsubsection.8.2.3.7}%
+\contentsline {subsubsection}{\numberline {8.2.3.8}point()\hspace {0.1cm}{\footnotesize \ttfamily [2/2]}}{18}{subsubsection.8.2.3.8}%
+\contentsline {subsubsection}{\numberline {8.2.3.9}query()}{18}{subsubsection.8.2.3.9}%
+\contentsline {subsubsection}{\numberline {8.2.3.10}to\_index()}{19}{subsubsection.8.2.3.10}%
+\contentsline {subsubsection}{\numberline {8.2.3.11}transpose()\hspace {0.1cm}{\footnotesize \ttfamily [1/2]}}{19}{subsubsection.8.2.3.11}%
+\contentsline {subsubsection}{\numberline {8.2.3.12}transpose()\hspace {0.1cm}{\footnotesize \ttfamily [2/2]}}{19}{subsubsection.8.2.3.12}%
+\contentsline {subsubsection}{\numberline {8.2.3.13}transposed\_index()}{19}{subsubsection.8.2.3.13}%
+\contentsline {subsubsection}{\numberline {8.2.3.14}transposed\_index\_to\_point()}{20}{subsubsection.8.2.3.14}%
+\contentsline {section}{\numberline {8.3}hilbert\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}::Inner\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Node$<$ T $>$ Struct Template Reference}{20}{section.8.3}%
+\contentsline {subsection}{\numberline {8.3.1}Detailed Description}{21}{subsection.8.3.1}%
+\contentsline {subsection}{\numberline {8.3.2}Constructor \& Destructor Documentation}{21}{subsection.8.3.2}%
+\contentsline {subsubsection}{\numberline {8.3.2.1}InnerNode()}{21}{subsubsection.8.3.2.1}%
+\contentsline {subsection}{\numberline {8.3.3}Member Function Documentation}{21}{subsection.8.3.3}%
+\contentsline {subsubsection}{\numberline {8.3.3.1}get\_lhv()}{21}{subsubsection.8.3.3.1}%
+\contentsline {subsubsection}{\numberline {8.3.3.2}get\_mbr()}{21}{subsubsection.8.3.3.2}%
+\contentsline {subsubsection}{\numberline {8.3.3.3}get\_node()}{21}{subsubsection.8.3.3.3}%
+\contentsline {subsubsection}{\numberline {8.3.3.4}is\_leaf()}{21}{subsubsection.8.3.3.4}%
+\contentsline {subsection}{\numberline {8.3.4}Member Data Documentation}{21}{subsection.8.3.4}%
+\contentsline {subsubsection}{\numberline {8.3.4.1}node}{21}{subsubsection.8.3.4.1}%
+\contentsline {section}{\numberline {8.4}hilbert\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}::Leaf\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Entry$<$ T $>$ Struct Template Reference}{22}{section.8.4}%
+\contentsline {subsection}{\numberline {8.4.1}Detailed Description}{22}{subsection.8.4.1}%
+\contentsline {subsection}{\numberline {8.4.2}Constructor \& Destructor Documentation}{22}{subsection.8.4.2}%
+\contentsline {subsubsection}{\numberline {8.4.2.1}LeafEntry()}{22}{subsubsection.8.4.2.1}%
+\contentsline {subsection}{\numberline {8.4.3}Member Function Documentation}{22}{subsection.8.4.3}%
+\contentsline {subsubsection}{\numberline {8.4.3.1}get\_lhv()}{22}{subsubsection.8.4.3.1}%
+\contentsline {subsubsection}{\numberline {8.4.3.2}get\_mbr()}{23}{subsubsection.8.4.3.2}%
+\contentsline {subsubsection}{\numberline {8.4.3.3}is\_leaf()}{23}{subsubsection.8.4.3.3}%
+\contentsline {subsection}{\numberline {8.4.4}Member Data Documentation}{23}{subsection.8.4.4}%
+\contentsline {subsubsection}{\numberline {8.4.4.1}elem}{23}{subsubsection.8.4.4.1}%
+\contentsline {subsubsection}{\numberline {8.4.4.2}lhv}{23}{subsubsection.8.4.4.2}%
+\contentsline {subsubsection}{\numberline {8.4.4.3}mbr}{23}{subsubsection.8.4.4.3}%
+\contentsline {section}{\numberline {8.5}Gutman\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}::Node$<$ T $>$ Struct Template Reference}{23}{section.8.5}%
+\contentsline {subsection}{\numberline {8.5.1}Detailed Description}{24}{subsection.8.5.1}%
+\contentsline {subsection}{\numberline {8.5.2}Constructor \& Destructor Documentation}{25}{subsection.8.5.2}%
+\contentsline {subsubsection}{\numberline {8.5.2.1}Node()}{25}{subsubsection.8.5.2.1}%
+\contentsline {subsubsection}{\numberline {8.5.2.2}$\sim $Node()}{25}{subsubsection.8.5.2.2}%
+\contentsline {subsection}{\numberline {8.5.3}Member Function Documentation}{25}{subsection.8.5.3}%
+\contentsline {subsubsection}{\numberline {8.5.3.1}count()}{25}{subsubsection.8.5.3.1}%
+\contentsline {subsubsection}{\numberline {8.5.3.2}update\_mbr()}{25}{subsubsection.8.5.3.2}%
+\contentsline {subsection}{\numberline {8.5.4}Member Data Documentation}{25}{subsection.8.5.4}%
+\contentsline {subsubsection}{\numberline {8.5.4.1}children}{25}{subsubsection.8.5.4.1}%
+\contentsline {subsubsection}{\numberline {8.5.4.2}elems}{25}{subsubsection.8.5.4.2}%
+\contentsline {subsubsection}{\numberline {8.5.4.3}is\_leaf}{25}{subsubsection.8.5.4.3}%
+\contentsline {subsubsection}{\numberline {8.5.4.4}mbr}{25}{subsubsection.8.5.4.4}%
+\contentsline {subsubsection}{\numberline {8.5.4.5}parent}{25}{subsubsection.8.5.4.5}%
+\contentsline {section}{\numberline {8.6}hilbert\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}::Node$<$ T $>$ Struct Template Reference}{26}{section.8.6}%
+\contentsline {subsection}{\numberline {8.6.1}Detailed Description}{26}{subsection.8.6.1}%
+\contentsline {subsection}{\numberline {8.6.2}Constructor \& Destructor Documentation}{27}{subsection.8.6.2}%
+\contentsline {subsubsection}{\numberline {8.6.2.1}Node()}{27}{subsubsection.8.6.2.1}%
+\contentsline {subsubsection}{\numberline {8.6.2.2}$\sim $Node()}{27}{subsubsection.8.6.2.2}%
+\contentsline {subsection}{\numberline {8.6.3}Member Function Documentation}{27}{subsection.8.6.3}%
+\contentsline {subsubsection}{\numberline {8.6.3.1}adjust\_lhv()}{27}{subsubsection.8.6.3.1}%
+\contentsline {subsubsection}{\numberline {8.6.3.2}adjust\_mbr()}{27}{subsubsection.8.6.3.2}%
+\contentsline {subsubsection}{\numberline {8.6.3.3}get\_entries()}{27}{subsubsection.8.6.3.3}%
+\contentsline {subsubsection}{\numberline {8.6.3.4}get\_lhv()}{27}{subsubsection.8.6.3.4}%
+\contentsline {subsubsection}{\numberline {8.6.3.5}get\_mbr()}{27}{subsubsection.8.6.3.5}%
+\contentsline {subsubsection}{\numberline {8.6.3.6}get\_next\_siblings()}{27}{subsubsection.8.6.3.6}%
+\contentsline {subsubsection}{\numberline {8.6.3.7}get\_parent()}{27}{subsubsection.8.6.3.7}%
+\contentsline {subsubsection}{\numberline {8.6.3.8}get\_prev\_siblings()}{27}{subsubsection.8.6.3.8}%
+\contentsline {subsubsection}{\numberline {8.6.3.9}get\_siblings()}{27}{subsubsection.8.6.3.9}%
+\contentsline {subsubsection}{\numberline {8.6.3.10}insert\_inner\_entry()}{27}{subsubsection.8.6.3.10}%
+\contentsline {subsubsection}{\numberline {8.6.3.11}insert\_leaf\_entry()}{27}{subsubsection.8.6.3.11}%
+\contentsline {subsubsection}{\numberline {8.6.3.12}is\_leaf()}{27}{subsubsection.8.6.3.12}%
+\contentsline {subsubsection}{\numberline {8.6.3.13}overflow()}{27}{subsubsection.8.6.3.13}%
+\contentsline {subsubsection}{\numberline {8.6.3.14}remove\_inner\_entry()}{28}{subsubsection.8.6.3.14}%
+\contentsline {subsubsection}{\numberline {8.6.3.15}remove\_leaf\_entry()}{28}{subsubsection.8.6.3.15}%
+\contentsline {subsubsection}{\numberline {8.6.3.16}reset\_entries()}{28}{subsubsection.8.6.3.16}%
+\contentsline {subsubsection}{\numberline {8.6.3.17}set\_leaf()}{28}{subsubsection.8.6.3.17}%
+\contentsline {subsubsection}{\numberline {8.6.3.18}set\_next\_siblings()}{28}{subsubsection.8.6.3.18}%
+\contentsline {subsubsection}{\numberline {8.6.3.19}set\_parent()}{28}{subsubsection.8.6.3.19}%
+\contentsline {subsubsection}{\numberline {8.6.3.20}set\_prev\_siblings()}{28}{subsubsection.8.6.3.20}%
+\contentsline {subsubsection}{\numberline {8.6.3.21}underflow()}{28}{subsubsection.8.6.3.21}%
+\contentsline {subsection}{\numberline {8.6.4}Member Data Documentation}{28}{subsection.8.6.4}%
+\contentsline {subsubsection}{\numberline {8.6.4.1}curve}{28}{subsubsection.8.6.4.1}%
+\contentsline {subsubsection}{\numberline {8.6.4.2}dims}{28}{subsubsection.8.6.4.2}%
+\contentsline {subsubsection}{\numberline {8.6.4.3}entries}{28}{subsubsection.8.6.4.3}%
+\contentsline {subsubsection}{\numberline {8.6.4.4}leaf}{28}{subsubsection.8.6.4.4}%
+\contentsline {subsubsection}{\numberline {8.6.4.5}lhv}{28}{subsubsection.8.6.4.5}%
+\contentsline {subsubsection}{\numberline {8.6.4.6}max\_entries}{28}{subsubsection.8.6.4.6}%
+\contentsline {subsubsection}{\numberline {8.6.4.7}mbr}{29}{subsubsection.8.6.4.7}%
+\contentsline {subsubsection}{\numberline {8.6.4.8}min\_entries}{29}{subsubsection.8.6.4.8}%
+\contentsline {subsubsection}{\numberline {8.6.4.9}next\_sibling}{29}{subsubsection.8.6.4.9}%
+\contentsline {subsubsection}{\numberline {8.6.4.10}parent}{29}{subsubsection.8.6.4.10}%
+\contentsline {subsubsection}{\numberline {8.6.4.11}prev\_sibling}{29}{subsubsection.8.6.4.11}%
+\contentsline {section}{\numberline {8.7}hilbert\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}::Node\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Entry$<$ T $>$ Struct Template Reference}{29}{section.8.7}%
+\contentsline {subsection}{\numberline {8.7.1}Detailed Description}{29}{subsection.8.7.1}%
+\contentsline {subsection}{\numberline {8.7.2}Constructor \& Destructor Documentation}{29}{subsection.8.7.2}%
+\contentsline {subsubsection}{\numberline {8.7.2.1}$\sim $NodeEntry()}{29}{subsubsection.8.7.2.1}%
+\contentsline {subsection}{\numberline {8.7.3}Member Function Documentation}{29}{subsection.8.7.3}%
+\contentsline {subsubsection}{\numberline {8.7.3.1}get\_lhv()}{29}{subsubsection.8.7.3.1}%
+\contentsline {subsubsection}{\numberline {8.7.3.2}get\_mbr()}{30}{subsubsection.8.7.3.2}%
+\contentsline {subsubsection}{\numberline {8.7.3.3}is\_leaf()}{30}{subsubsection.8.7.3.3}%
+\contentsline {section}{\numberline {8.8}hilbert\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}::node\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Entry\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Comparison$<$ T $>$ Struct Template Reference}{30}{section.8.8}%
+\contentsline {subsection}{\numberline {8.8.1}Detailed Description}{30}{subsection.8.8.1}%
+\contentsline {subsection}{\numberline {8.8.2}Member Function Documentation}{30}{subsection.8.8.2}%
+\contentsline {subsubsection}{\numberline {8.8.2.1}operator()()}{30}{subsubsection.8.8.2.1}%
+\contentsline {section}{\numberline {8.9}Range Struct Reference}{30}{section.8.9}%
+\contentsline {subsection}{\numberline {8.9.1}Detailed Description}{30}{subsection.8.9.1}%
+\contentsline {subsection}{\numberline {8.9.2}Constructor \& Destructor Documentation}{30}{subsection.8.9.2}%
+\contentsline {subsubsection}{\numberline {8.9.2.1}Range()}{30}{subsubsection.8.9.2.1}%
+\contentsline {subsection}{\numberline {8.9.3}Member Data Documentation}{31}{subsection.8.9.3}%
+\contentsline {subsubsection}{\numberline {8.9.3.1}end}{31}{subsubsection.8.9.3.1}%
+\contentsline {subsubsection}{\numberline {8.9.3.2}start}{31}{subsubsection.8.9.3.2}%
+\contentsline {section}{\numberline {8.10}Ranges Class Reference}{31}{section.8.10}%
+\contentsline {subsection}{\numberline {8.10.1}Detailed Description}{31}{subsection.8.10.1}%
+\contentsline {subsection}{\numberline {8.10.2}Constructor \& Destructor Documentation}{31}{subsection.8.10.2}%
+\contentsline {subsubsection}{\numberline {8.10.2.1}Ranges()}{31}{subsubsection.8.10.2.1}%
+\contentsline {subsection}{\numberline {8.10.3}Member Function Documentation}{32}{subsection.8.10.3}%
+\contentsline {subsubsection}{\numberline {8.10.3.1}add()}{32}{subsubsection.8.10.3.1}%
+\contentsline {subsubsection}{\numberline {8.10.3.2}begin()}{32}{subsubsection.8.10.3.2}%
+\contentsline {subsubsection}{\numberline {8.10.3.3}end()}{32}{subsubsection.8.10.3.3}%
+\contentsline {subsubsection}{\numberline {8.10.3.4}size()}{32}{subsubsection.8.10.3.4}%
+\contentsline {section}{\numberline {8.11}Gutman\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}::Rectangle Struct Reference}{32}{section.8.11}%
+\contentsline {subsection}{\numberline {8.11.1}Detailed Description}{33}{subsection.8.11.1}%
+\contentsline {subsection}{\numberline {8.11.2}Constructor \& Destructor Documentation}{33}{subsection.8.11.2}%
+\contentsline {subsubsection}{\numberline {8.11.2.1}Rectangle()}{33}{subsubsection.8.11.2.1}%
+\contentsline {subsection}{\numberline {8.11.3}Member Function Documentation}{34}{subsection.8.11.3}%
+\contentsline {subsubsection}{\numberline {8.11.3.1}area()}{34}{subsubsection.8.11.3.1}%
+\contentsline {subsubsection}{\numberline {8.11.3.2}calc\_mbr()\hspace {0.1cm}{\footnotesize \ttfamily [1/2]}}{34}{subsubsection.8.11.3.2}%
+\contentsline {subsubsection}{\numberline {8.11.3.3}calc\_mbr()\hspace {0.1cm}{\footnotesize \ttfamily [2/2]}}{34}{subsubsection.8.11.3.3}%
+\contentsline {subsubsection}{\numberline {8.11.3.4}calc\_mbr\_area()}{34}{subsubsection.8.11.3.4}%
+\contentsline {subsubsection}{\numberline {8.11.3.5}contains()}{34}{subsubsection.8.11.3.5}%
+\contentsline {subsubsection}{\numberline {8.11.3.6}enlargement\_needed()}{34}{subsubsection.8.11.3.6}%
+\contentsline {subsubsection}{\numberline {8.11.3.7}equal()}{34}{subsubsection.8.11.3.7}%
+\contentsline {subsubsection}{\numberline {8.11.3.8}overlap()}{34}{subsubsection.8.11.3.8}%
+\contentsline {subsubsection}{\numberline {8.11.3.9}vec\_equal()}{35}{subsubsection.8.11.3.9}%
+\contentsline {subsection}{\numberline {8.11.4}Member Data Documentation}{35}{subsection.8.11.4}%
+\contentsline {subsubsection}{\numberline {8.11.4.1}max}{35}{subsubsection.8.11.4.1}%
+\contentsline {subsubsection}{\numberline {8.11.4.2}min}{35}{subsubsection.8.11.4.2}%
+\contentsline {section}{\numberline {8.12}hilbert\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}::Rectangle Struct Reference}{35}{section.8.12}%
+\contentsline {subsection}{\numberline {8.12.1}Detailed Description}{35}{subsection.8.12.1}%
+\contentsline {subsection}{\numberline {8.12.2}Constructor \& Destructor Documentation}{35}{subsection.8.12.2}%
+\contentsline {subsubsection}{\numberline {8.12.2.1}Rectangle()}{35}{subsubsection.8.12.2.1}%
+\contentsline {subsection}{\numberline {8.12.3}Member Function Documentation}{36}{subsection.8.12.3}%
+\contentsline {subsubsection}{\numberline {8.12.3.1}contains()}{36}{subsubsection.8.12.3.1}%
+\contentsline {subsubsection}{\numberline {8.12.3.2}get\_center()}{36}{subsubsection.8.12.3.2}%
+\contentsline {subsubsection}{\numberline {8.12.3.3}get\_lower()}{36}{subsubsection.8.12.3.3}%
+\contentsline {subsubsection}{\numberline {8.12.3.4}get\_upper()}{36}{subsubsection.8.12.3.4}%
+\contentsline {subsubsection}{\numberline {8.12.3.5}intersects()}{36}{subsubsection.8.12.3.5}%
+\contentsline {subsubsection}{\numberline {8.12.3.6}operator==()}{37}{subsubsection.8.12.3.6}%
+\contentsline {subsection}{\numberline {8.12.4}Member Data Documentation}{37}{subsection.8.12.4}%
+\contentsline {subsubsection}{\numberline {8.12.4.1}higher}{37}{subsubsection.8.12.4.1}%
+\contentsline {subsubsection}{\numberline {8.12.4.2}lower}{37}{subsubsection.8.12.4.2}%
+\contentsline {section}{\numberline {8.13}Gutman\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}::RTree$<$ T $>$ Class Template Reference}{37}{section.8.13}%
+\contentsline {subsection}{\numberline {8.13.1}Detailed Description}{37}{subsection.8.13.1}%
+\contentsline {subsection}{\numberline {8.13.2}Constructor \& Destructor Documentation}{38}{subsection.8.13.2}%
+\contentsline {subsubsection}{\numberline {8.13.2.1}RTree()}{38}{subsubsection.8.13.2.1}%
+\contentsline {subsubsection}{\numberline {8.13.2.2}$\sim $RTree()}{38}{subsubsection.8.13.2.2}%
+\contentsline {subsection}{\numberline {8.13.3}Member Function Documentation}{38}{subsection.8.13.3}%
+\contentsline {subsubsection}{\numberline {8.13.3.1}insert()}{38}{subsubsection.8.13.3.1}%
+\contentsline {subsubsection}{\numberline {8.13.3.2}remove()}{38}{subsubsection.8.13.3.2}%
+\contentsline {subsubsection}{\numberline {8.13.3.3}search()}{38}{subsubsection.8.13.3.3}%
+\contentsline {subsubsection}{\numberline {8.13.3.4}update()}{39}{subsubsection.8.13.3.4}%
+\contentsline {section}{\numberline {8.14}hilbert\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}::RTree$<$ T $>$ Class Template Reference}{39}{section.8.14}%
+\contentsline {subsection}{\numberline {8.14.1}Detailed Description}{39}{subsection.8.14.1}%
+\contentsline {subsection}{\numberline {8.14.2}Constructor \& Destructor Documentation}{39}{subsection.8.14.2}%
+\contentsline {subsubsection}{\numberline {8.14.2.1}RTree()}{39}{subsubsection.8.14.2.1}%
+\contentsline {subsubsection}{\numberline {8.14.2.2}$\sim $RTree()}{39}{subsubsection.8.14.2.2}%
+\contentsline {subsection}{\numberline {8.14.3}Member Function Documentation}{39}{subsection.8.14.3}%
+\contentsline {subsubsection}{\numberline {8.14.3.1}insert()}{39}{subsubsection.8.14.3.1}%
+\contentsline {subsubsection}{\numberline {8.14.3.2}remove()}{40}{subsubsection.8.14.3.2}%
+\contentsline {subsubsection}{\numberline {8.14.3.3}search()}{40}{subsubsection.8.14.3.3}%
+\contentsline {section}{\numberline {8.15}RTree\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Test Class Reference}{40}{section.8.15}%
+\contentsline {subsection}{\numberline {8.15.1}Member Function Documentation}{41}{subsection.8.15.1}%
+\contentsline {subsubsection}{\numberline {8.15.1.1}assert\_true()}{41}{subsubsection.8.15.1.1}%
+\contentsline {subsubsection}{\numberline {8.15.1.2}print\_summary()}{41}{subsubsection.8.15.1.2}%
+\contentsline {subsubsection}{\numberline {8.15.1.3}run\_all\_tests()}{41}{subsubsection.8.15.1.3}%
+\contentsline {subsubsection}{\numberline {8.15.1.4}test\_3d\_rectangles()}{41}{subsubsection.8.15.1.4}%
+\contentsline {subsubsection}{\numberline {8.15.1.5}test\_deep\_tree\_with\_condense()}{41}{subsubsection.8.15.1.5}%
+\contentsline {subsubsection}{\numberline {8.15.1.6}test\_deep\_tree\_with\_extreme\_condense()}{41}{subsubsection.8.15.1.6}%
+\contentsline {subsubsection}{\numberline {8.15.1.7}test\_delete\_and\_reinsert()}{41}{subsubsection.8.15.1.7}%
+\contentsline {subsubsection}{\numberline {8.15.1.8}test\_delete\_every\_other\_element()}{41}{subsubsection.8.15.1.8}%
+\contentsline {subsubsection}{\numberline {8.15.1.9}test\_delete\_from\_multiple()}{41}{subsubsection.8.15.1.9}%
+\contentsline {subsubsection}{\numberline {8.15.1.10}test\_delete\_from\_single\_element\_tree()}{41}{subsubsection.8.15.1.10}%
+\contentsline {subsubsection}{\numberline {8.15.1.11}test\_delete\_multiple\_sequential()}{41}{subsubsection.8.15.1.11}%
+\contentsline {subsubsection}{\numberline {8.15.1.12}test\_delete\_nonexistent()}{41}{subsubsection.8.15.1.12}%
+\contentsline {subsubsection}{\numberline {8.15.1.13}test\_delete\_single\_element()}{41}{subsubsection.8.15.1.13}%
+\contentsline {subsubsection}{\numberline {8.15.1.14}test\_extra\_delete\_and\_reinsert()}{41}{subsubsection.8.15.1.14}%
+\contentsline {subsubsection}{\numberline {8.15.1.15}test\_high\_dimensional()}{41}{subsubsection.8.15.1.15}%
+\contentsline {subsubsection}{\numberline {8.15.1.16}test\_insert\_and\_search\_large\_dataset()}{41}{subsubsection.8.15.1.16}%
+\contentsline {subsubsection}{\numberline {8.15.1.17}test\_insert\_identical\_rectangles()}{41}{subsubsection.8.15.1.17}%
+\contentsline {subsubsection}{\numberline {8.15.1.18}test\_insert\_multiple\_elements()}{41}{subsubsection.8.15.1.18}%
+\contentsline {subsubsection}{\numberline {8.15.1.19}test\_insert\_overlapping\_rectangles()}{41}{subsubsection.8.15.1.19}%
+\contentsline {subsubsection}{\numberline {8.15.1.20}test\_insert\_single\_element()}{42}{subsubsection.8.15.1.20}%
+\contentsline {subsubsection}{\numberline {8.15.1.21}test\_insert\_trigger\_split()}{42}{subsubsection.8.15.1.21}%
+\contentsline {subsubsection}{\numberline {8.15.1.22}test\_massive\_delete\_and\_reinsert()}{42}{subsubsection.8.15.1.22}%
+\contentsline {subsubsection}{\numberline {8.15.1.23}test\_mixed\_insert\_delete\_operations()}{42}{subsubsection.8.15.1.23}%
+\contentsline {subsubsection}{\numberline {8.15.1.24}test\_search\_empty\_tree()}{42}{subsubsection.8.15.1.24}%
+\contentsline {subsubsection}{\numberline {8.15.1.25}test\_search\_no\_overlap()}{42}{subsubsection.8.15.1.25}%
+\contentsline {subsubsection}{\numberline {8.15.1.26}test\_search\_partial\_overlap()}{42}{subsubsection.8.15.1.26}%
+\contentsline {subsubsection}{\numberline {8.15.1.27}test\_search\_point\_query()}{42}{subsubsection.8.15.1.27}%
+\contentsline {subsubsection}{\numberline {8.15.1.28}test\_search\_with\_exact\_boundaries()}{42}{subsubsection.8.15.1.28}%
+\contentsline {subsubsection}{\numberline {8.15.1.29}test\_stress\_test\_splits()}{42}{subsubsection.8.15.1.29}%
+\contentsline {subsubsection}{\numberline {8.15.1.30}test\_zero\_area\_rectangle()}{42}{subsubsection.8.15.1.30}%
+\contentsline {chapter}{\numberline {9}File Documentation}{43}{chapter.9}%
+\contentsline {section}{\numberline {9.1}src/main.cpp File Reference}{43}{section.9.1}%
+\contentsline {subsection}{\numberline {9.1.1}Typedef Documentation}{43}{subsection.9.1.1}%
+\contentsline {subsubsection}{\numberline {9.1.1.1}Rectangle}{43}{subsubsection.9.1.1.1}%
+\contentsline {subsection}{\numberline {9.1.2}Function Documentation}{43}{subsection.9.1.2}%
+\contentsline {subsubsection}{\numberline {9.1.2.1}main()}{43}{subsubsection.9.1.2.1}%
+\contentsline {subsubsection}{\numberline {9.1.2.2}makeRect()}{43}{subsubsection.9.1.2.2}%
+\contentsline {section}{\numberline {9.2}src/rtree/rtree.cpp File Reference}{43}{section.9.2}%
+\contentsline {section}{\numberline {9.3}src/rtree/rtree.h File Reference}{44}{section.9.3}%
+\contentsline {section}{\numberline {9.4}rtree.\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}h}{44}{section.9.4}%
+\contentsline {section}{\numberline {9.5}src/rtree\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}\_\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}hilbert/box.h File Reference}{52}{section.9.5}%
+\contentsline {section}{\numberline {9.6}box.\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}h}{52}{section.9.6}%
+\contentsline {section}{\numberline {9.7}src/rtree\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}\_\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}hilbert/hilbert\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}\_\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}curve.cpp File Reference}{53}{section.9.7}%
+\contentsline {subsection}{\numberline {9.7.1}Typedef Documentation}{53}{subsection.9.7.1}%
+\contentsline {subsubsection}{\numberline {9.7.1.1}Point}{53}{subsubsection.9.7.1.1}%
+\contentsline {section}{\numberline {9.8}src/rtree\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}\_\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}hilbert/hilbert\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}\_\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}curve.h File Reference}{53}{section.9.8}%
+\contentsline {subsection}{\numberline {9.8.1}Typedef Documentation}{53}{subsection.9.8.1}%
+\contentsline {subsubsection}{\numberline {9.8.1.1}Point}{54}{subsubsection.9.8.1.1}%
+\contentsline {section}{\numberline {9.9}hilbert\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}\_\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}curve.\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}h}{54}{section.9.9}%
+\contentsline {section}{\numberline {9.10}src/rtree\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}\_\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}hilbert/hilbert\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}\_\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}rtree.h File Reference}{54}{section.9.10}%
+\contentsline {subsection}{\numberline {9.10.1}Detailed Description}{55}{subsection.9.10.1}%
+\contentsline {subsection}{\numberline {9.10.2}Typedef Documentation}{55}{subsection.9.10.2}%
+\contentsline {subsubsection}{\numberline {9.10.2.1}Point}{55}{subsubsection.9.10.2.1}%
+\contentsline {section}{\numberline {9.11}hilbert\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}\_\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}rtree.\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}h}{55}{section.9.11}%
+\contentsline {section}{\numberline {9.12}src/rtree\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}\_\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}hilbert/ranges.h File Reference}{65}{section.9.12}%
+\contentsline {section}{\numberline {9.13}ranges.\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}h}{65}{section.9.13}%

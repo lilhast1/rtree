@@ -1,0 +1,111 @@
+\doxysection{hilbert\+::RTree\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classhilbert_1_1RTree}{}\label{classhilbert_1_1RTree}\index{hilbert::RTree$<$ T $>$@{hilbert::RTree$<$ T $>$}}
+
+
+R-\/\+Tree class with Hilbert curve ordering.  
+
+
+
+
+{\ttfamily \#include $<$hilbert\+\_\+rtree.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classhilbert_1_1RTree_a0a53ac0bcdc67c50ec3400adb304b653}{RTree}} (int min, int max, int dims, int bits)
+\item 
+\mbox{\hyperlink{classhilbert_1_1RTree_a58d7b3459f53f6b802b4e4ec8c0f0c16}{\texorpdfstring{$\sim$}{\string~}\+RTree}} ()
+\item 
+std\+::deque$<$ T \texorpdfstring{$\ast$}{*} $>$ \mbox{\hyperlink{classhilbert_1_1RTree_a0831f91bae312fc0fe880da2eab904de}{search}} (const \mbox{\hyperlink{structhilbert_1_1Rectangle}{Rectangle}} \&search\+\_\+rect)
+\begin{DoxyCompactList}\small\item\em Search all elements intersecting a rectangle. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classhilbert_1_1RTree_a5ca6ca87f82d03c23121aae0372df4fa}{insert}} (const \mbox{\hyperlink{structhilbert_1_1Rectangle}{Rectangle}} \&rect, T \texorpdfstring{$\ast$}{*}elem)
+\begin{DoxyCompactList}\small\item\em Insert an element with rectangle. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classhilbert_1_1RTree_a9de86485e180860c0adc655a1fb65d43}{remove}} (const \mbox{\hyperlink{structhilbert_1_1Rectangle}{Rectangle}} \&rect)
+\begin{DoxyCompactList}\small\item\em Remove element by exact rectangle. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$\newline
+class hilbert\+::\+RTree$<$ T $>$}
+R-\/\+Tree class with Hilbert curve ordering. 
+
+\label{doc-constructors}
+\Hypertarget{classhilbert_1_1RTree_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classhilbert_1_1RTree_a0a53ac0bcdc67c50ec3400adb304b653}\index{hilbert::RTree$<$ T $>$@{hilbert::RTree$<$ T $>$}!RTree@{RTree}}
+\index{RTree@{RTree}!hilbert::RTree$<$ T $>$@{hilbert::RTree$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{RTree()}{RTree()}}
+{\footnotesize\ttfamily \label{classhilbert_1_1RTree_a0a53ac0bcdc67c50ec3400adb304b653} 
+template$<$typename T$>$ \\
+\mbox{\hyperlink{classhilbert_1_1RTree}{hilbert\+::\+RTree}}$<$ T $>$\+::\+RTree (\begin{DoxyParamCaption}\item[{int}]{min}{, }\item[{int}]{max}{, }\item[{int}]{dims}{, }\item[{int}]{bits}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classhilbert_1_1RTree_a58d7b3459f53f6b802b4e4ec8c0f0c16}\index{hilbert::RTree$<$ T $>$@{hilbert::RTree$<$ T $>$}!````~RTree@{\texorpdfstring{$\sim$}{\string~}RTree}}
+\index{````~RTree@{\texorpdfstring{$\sim$}{\string~}RTree}!hilbert::RTree$<$ T $>$@{hilbert::RTree$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{\texorpdfstring{$\sim$}{\string~}RTree()}{\string~RTree()}}
+{\footnotesize\ttfamily \label{classhilbert_1_1RTree_a58d7b3459f53f6b802b4e4ec8c0f0c16} 
+template$<$typename T$>$ \\
+\mbox{\hyperlink{classhilbert_1_1RTree}{hilbert\+::\+RTree}}$<$ T $>$\+::\texorpdfstring{$\sim$}{\string~}\mbox{\hyperlink{classhilbert_1_1RTree_a0a53ac0bcdc67c50ec3400adb304b653}{RTree}} (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\label{doc-func-members}
+\Hypertarget{classhilbert_1_1RTree_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classhilbert_1_1RTree_a5ca6ca87f82d03c23121aae0372df4fa}\index{hilbert::RTree$<$ T $>$@{hilbert::RTree$<$ T $>$}!insert@{insert}}
+\index{insert@{insert}!hilbert::RTree$<$ T $>$@{hilbert::RTree$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{insert()}{insert()}}
+{\footnotesize\ttfamily \label{classhilbert_1_1RTree_a5ca6ca87f82d03c23121aae0372df4fa} 
+template$<$typename T$>$ \\
+void \mbox{\hyperlink{classhilbert_1_1RTree}{hilbert\+::\+RTree}}$<$ T $>$\+::insert (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structhilbert_1_1Rectangle}{Rectangle}} \&}]{rect}{, }\item[{T \texorpdfstring{$\ast$}{*}}]{elem}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Insert an element with rectangle. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rect} & rectangle of element \\
+\hline
+{\em elem} & pointer to element \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classhilbert_1_1RTree_a9de86485e180860c0adc655a1fb65d43}\index{hilbert::RTree$<$ T $>$@{hilbert::RTree$<$ T $>$}!remove@{remove}}
+\index{remove@{remove}!hilbert::RTree$<$ T $>$@{hilbert::RTree$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{remove()}{remove()}}
+{\footnotesize\ttfamily \label{classhilbert_1_1RTree_a9de86485e180860c0adc655a1fb65d43} 
+template$<$typename T$>$ \\
+void \mbox{\hyperlink{classhilbert_1_1RTree}{hilbert\+::\+RTree}}$<$ T $>$\+::remove (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structhilbert_1_1Rectangle}{Rectangle}} \&}]{rect}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Remove element by exact rectangle. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rect} & rectangle of element to remove \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classhilbert_1_1RTree_a0831f91bae312fc0fe880da2eab904de}\index{hilbert::RTree$<$ T $>$@{hilbert::RTree$<$ T $>$}!search@{search}}
+\index{search@{search}!hilbert::RTree$<$ T $>$@{hilbert::RTree$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{search()}{search()}}
+{\footnotesize\ttfamily \label{classhilbert_1_1RTree_a0831f91bae312fc0fe880da2eab904de} 
+template$<$typename T$>$ \\
+std\+::deque$<$ T \texorpdfstring{$\ast$}{*} $>$ \mbox{\hyperlink{classhilbert_1_1RTree}{hilbert\+::\+RTree}}$<$ T $>$\+::search (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structhilbert_1_1Rectangle}{Rectangle}} \&}]{search\+\_\+rect}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Search all elements intersecting a rectangle. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em search\+\_\+rect} & search rectangle \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+deque of element pointers 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/rtree\+\_\+hilbert/\mbox{\hyperlink{hilbert__rtree_8h}{hilbert\+\_\+rtree.\+h}}\end{DoxyCompactItemize}
