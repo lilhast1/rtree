@@ -1,11 +1,16 @@
 #include <algorithm>
 #include <cassert>
+#include <chrono>
+#include <cmath>
+#include <fstream>
+#include <iomanip>
 #include <iostream>
+#include <limits>
 #include <string>
 #include <vector>
 
 #include "rtree/rtree.h"
-
+#include "rtree_hilbert/hilbert_rtree.h"
 // Assuming the Gutman::RTree class is included here
 // #include "rtree.h"
 
@@ -458,9 +463,87 @@ class RTreeTest {
 
         assert_true(results.size() == 80, "Deep tree with non-leaf orphans condense");
     }
+    hilbert::Rectangle makeRectHilbert(std::vector<long long> min, std::vector<long long> max) {
+        return hilbert::Rectangle(min, max);
+    }
 
+    void test_deep_tree_with_extreme_condense1() {
+        std::cout << "\n[DEBUG] Pokrecem Extreme Condense Test (HILBERT)..." << std::endl;
+
+        // Parametri: min=10, max=40, dims=2, bits=64
+        hilbert::RTree<int> tree(10, 40, 2, 64);
+
+        std::vector<int> values(2000);
+        std::vector<hilbert::Rectangle> rects;
+
+        // 1. GENERISANJE PODATAKA (Skalirano x100)
+        for (int i = 0; i < 2000; i++) {
+            values[i] = i;
+            int cluster_id = i / 20;
+            int within_cluster = i % 20;
+
+            // Množimo sa 100 da bi 0.1 postalo 10, a 5.0 postalo 500
+            // Inače bi integer divizija ovo pretvorila u 0
+            long long x = (cluster_id * 500) + (within_cluster % 4) * 10;
+            long long y = (cluster_id * 500) + (within_cluster / 4) * 10;
+
+            // Width je bio 0.05 -> sada je 5
+            auto rect = makeRectHilbert({x, y}, {x + 5, y + 5});
+
+            tree.insert(rect, &values[i]);
+            rects.push_back(rect);
+        }
+        std::cout << "[DEBUG] Insertovano 2000 elemenata." << std::endl;
+
+        // 2. BRISANJE
+        // Brišemo svaki drugi klaster u prvih 10 klastera
+        // Klasteri 0, 2, 4, 6, 8 se brišu (5 klastera * 20 elemenata = 100 obrisano)
+        int removed_count = 0;
+        for (int cluster = 0; cluster < 10; cluster += 2) {
+            for (int j = 0; j < 20; j++) {
+                int idx = cluster * 20 + j;
+                tree.remove(rects[idx]);
+                removed_count++;
+            }
+        }
+        std::cout << "[DEBUG] Obrisano " << removed_count << " elemenata." << std::endl;
+
+        // 3. PRETRAGA
+        // Search rect mora da pokrije prvih 10-12 klastera da bismo videli šta je ostalo
+        // Original: -5.0 do 60.0 -> Skalirano: -500 do 6000
+        auto search_rect = makeRectHilbert({-500, -500}, {4900, 4900});
+
+        std::deque<int*> results = tree.search(search_rect);
+        size_t found = results.size();
+
+        // OČEKIVANJE:
+        // Search rect pokriva klastere od 0 do 11 (grubo).
+        // Klasteri 0, 2, 4, 6, 8 su OBRISANI.
+        // Klasteri 1, 3, 5, 7, 9 su OSTALI.
+        // Ukupno očekujemo: 5 klastera * 20 elemenata = 100.
+        size_t expected = 100;
+
+        if (found == expected) {
+            std::cout << "✓ PASS: Extreme condense (Nadjeno: " << found << ")" << std::endl;
+            passed++;
+        } else {
+            std::cout << "✗ FAIL: Extreme condense" << std::endl;
+            std::cout << "    -> Ocekivano: " << expected << std::endl;
+            std::cout << "    -> Nadjeno:   " << found << std::endl;
+            // Ispis prvih nekoliko da vidimo sta je ostalo (opciono)
+            if (found > 0)
+                std::cout << "    -> Primer vrednosti: " << *results[0] << std::endl;
+            failed++;
+        }
+    }
     void test_deep_tree_with_extreme_condense() {
+        std::cout << "\n[DEBUG] Pokrecem Extreme Condense Test..." << std::endl;
+
+        // PAŽNJA: Proveri da li testiraš Gutman ili Hilbert!
+        // Ako je Hilbert, koordinate moraju biti skalirane (vidi napomenu ispod)
+        // Ovde ostavljam Gutman kako je u tvom primeru, ali promeni tip ako testiraš Hilbert.
         Gutman::RTree<int> tree(10, 40);
+        // Za Hilbert bi bilo: hilbert::RTree<int> tree(10, 40, 2, 64);
 
         std::vector<int> values(2000);
         std::vector<Rectangle> rects;
@@ -477,17 +560,35 @@ class RTreeTest {
             tree.insert(rects[i], &values[i]);
         }
 
+        std::cout << "[DEBUG] Insertovano 2000 elemenata." << std::endl;
+
+        int removed_count = 0;
         for (int cluster = 0; cluster < 10; cluster += 2) {
             for (int j = 0; j < 20; j++) {
                 int idx = cluster * 20 + j;
                 tree.remove(rects[idx]);
+                removed_count++;
             }
         }
+        std::cout << "[DEBUG] Obrisano " << removed_count << " elemenata (ocekivano 100)."
+                  << std::endl;
 
-        auto search_rect = makeRect({-5.0, -5.0}, {60.0, 60.0});
+        auto search_rect = makeRect({-5.0, -5.0}, {49.0, 49.0});
         std::vector<int*> results = tree.search(search_rect);
 
-        assert_true(results.size() == 100, "Extreme condense");
+        size_t found = results.size();
+        size_t expected = 100;
+        if (found == expected) {
+            std::cout << "✓ PASS: Extreme condense (Nadjeno: " << found << ")" << std::endl;
+            passed++;
+        } else {
+            std::cout << "✗ FAIL: Extreme condense" << std::endl;
+            std::cout << "    -> Ukupno ubaceno: 2000" << std::endl;
+            std::cout << "    -> Ocekivano da ostane: " << expected << std::endl;
+            std::cout << "    -> Stvarno pronadjeno:  " << found << std::endl;
+            std::cout << "    -> Razlika: " << (long long)found - (long long)expected << std::endl;
+            failed++;
+        }
     }
 
     void test_extra_delete_and_reinsert() {
@@ -589,6 +690,7 @@ class RTreeTest {
 
         std::cout << "\n--- Condense Tree Tests ---" << std::endl;
         test_deep_tree_with_condense();
+        test_deep_tree_with_extreme_condense1();
         test_deep_tree_with_extreme_condense();
         test_extra_delete_and_reinsert();
         test_massive_delete_and_reinsert();
@@ -596,9 +698,166 @@ class RTreeTest {
         print_summary();
     }
 };
+using Payload = int;
 
+// Struktura za učitane podatke
+struct DataPoint {
+    long long x;
+    long long y;
+    Payload id;
+};
+
+// Pomoćna funkcija za merenje vremena
+template <typename Func>
+double measure_time(Func&& func) {
+    auto start = std::chrono::high_resolution_clock::now();
+    func();
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> diff = end - start;
+    return diff.count();
+}
+
+// Funkcija za učitavanje podataka i skaliranje
+std::vector<DataPoint> load_dataset(const std::string& filename) {
+    std::vector<DataPoint> data;
+    std::ifstream file(filename);
+
+    if (!file.is_open()) {
+        std::cerr << "GRESKA: Ne mogu da otvorim fajl: " << filename << std::endl;
+        std::cerr << "Proveri da li je fajl u istom folderu kao .exe!" << std::endl;
+        return data;
+    }
+
+    double lat, lon;
+    int id = 0;
+    while (file >> lat >> lon) {
+        // SKALIRANJE: Množimo sa 100 i kastujemo u long long
+        long long x = static_cast<long long>(lat * 100.0);
+        long long y = static_cast<long long>(lon * 100.0);
+        data.push_back({x, y, id++});
+    }
+
+    std::cout << "Ucitano " << data.size() << " tacaka iz " << filename << std::endl;
+    return data;
+}
+
+// Pronalazi granice (MBR) celog dataseta za potrebe pretrage
+void get_dataset_bounds(const std::vector<DataPoint>& data, long long& min_x, long long& min_y,
+                        long long& max_x, long long& max_y) {
+    min_x = std::numeric_limits<long long>::max();
+    min_y = std::numeric_limits<long long>::max();
+    max_x = std::numeric_limits<long long>::min();
+    max_y = std::numeric_limits<long long>::min();
+
+    for (const auto& p : data) {
+        if (p.x < min_x)
+            min_x = p.x;
+        if (p.y < min_y)
+            min_y = p.y;
+        if (p.x > max_x)
+            max_x = p.x;
+        if (p.y > max_y)
+            max_y = p.y;
+    }
+}
+
+void run_benchmark(const std::string& dataset_name, const std::string& filename) {
+    std::cout << "\n========================================================" << std::endl;
+    std::cout << "BENCHMARK: " << dataset_name << std::endl;
+    std::cout << "========================================================" << std::endl;
+
+    auto data = load_dataset(filename);
+    if (data.empty())
+        return;
+
+    size_t total_points = data.size();  // Koliko tacaka imamo ukupno
+
+    long long min_x, min_y, max_x, max_y;
+    get_dataset_bounds(data, min_x, min_y, max_x, max_y);
+
+    int min_entries = 4;
+    int max_entries = 8;
+
+    // Promenljive za cuvanje rezultata da ih uporedimo na kraju
+    size_t gutman_found = 0;
+    size_t hilbert_found = 0;
+
+    // -------------------------------------------------
+    // 1. GUTMAN
+    // -------------------------------------------------
+    {
+        std::cout << "\n--- Gutman R-Tree ---" << std::endl;
+        Gutman::RTree<Payload> tree(min_entries, max_entries);
+
+        double t_insert = measure_time([&]() {
+            for (const auto& p : data) {
+                std::vector<double> p_min = {static_cast<double>(p.x), static_cast<double>(p.y)};
+                std::vector<double> p_max = {static_cast<double>(p.x), static_cast<double>(p.y)};
+                tree.insert(Gutman::Rectangle(p_min, p_max), new Payload(p.id));
+            }
+        });
+        std::cout << "Insert Time: " << std::fixed << std::setprecision(6) << t_insert << " s"
+                  << std::endl;
+
+        double t_search = measure_time([&]() {
+            std::vector<double> s_min = {static_cast<double>(min_x), static_cast<double>(min_y)};
+            std::vector<double> s_max = {static_cast<double>(max_x), static_cast<double>(max_y)};
+            auto results = tree.search(Gutman::Rectangle(s_min, s_max));
+            gutman_found = results.size();  // <--- CUVAMO REZULTAT
+        });
+        std::cout << "Search Time: " << std::fixed << std::setprecision(6) << t_search << " s"
+                  << std::endl;
+        std::cout << "Pronadjeno tacaka: " << gutman_found << " / " << total_points << std::endl;
+    }
+
+    // -------------------------------------------------
+    // 2. HILBERT
+    // -------------------------------------------------
+    {
+        std::cout << "\n--- Hilbert R-Tree ---" << std::endl;
+        hilbert::RTree<Payload> tree(min_entries, max_entries, 2, 64);
+
+        double t_insert = measure_time([&]() {
+            for (const auto& p : data) {
+                std::vector<long long> p_min = {p.x, p.y};
+                std::vector<long long> p_max = {p.x, p.y};
+                tree.insert(hilbert::Rectangle(p_min, p_max), new Payload(p.id));
+            }
+        });
+        std::cout << "Insert Time: " << std::fixed << std::setprecision(6) << t_insert << " s"
+                  << std::endl;
+
+        double t_search = measure_time([&]() {
+            std::vector<long long> s_min = {min_x, min_y};
+            std::vector<long long> s_max = {max_x, max_y};
+            auto results = tree.search(hilbert::Rectangle(s_min, s_max));
+            hilbert_found = results.size();  // <--- CUVAMO REZULTAT
+        });
+        std::cout << "Search Time: " << std::fixed << std::setprecision(6) << t_search << " s"
+                  << std::endl;
+        std::cout << "Pronadjeno tacaka: " << hilbert_found << " / " << total_points << std::endl;
+    }
+
+    // -------------------------------------------------
+    // ZAKLJUCAK / VALIDACIJA
+    // -------------------------------------------------
+    std::cout << "\n--- VALIDACIJA ---" << std::endl;
+    if (gutman_found == total_points && hilbert_found == total_points) {
+        std::cout << "[SUCCESS] Oba stabla su pronasla sve tacke! Podaci su validni." << std::endl;
+    } else {
+        std::cout << "[FAIL] Greska u podacima!" << std::endl;
+        if (gutman_found != total_points)
+            std::cout << "Gutman fali: " << (total_points - gutman_found) << std::endl;
+        if (hilbert_found != total_points)
+            std::cout << "Hilbert fali: " << (total_points - hilbert_found) << std::endl;
+    }
+}
 int main() {
     RTreeTest test_suite;
     test_suite.run_all_tests();
+    run_benchmark("1000 Points Dataset", "1000.txt");
+    run_benchmark("Greek Earthquakes (1964-2000)", "greek-earthquakes-1964-2000.txt");
+
+    std::cout << "\nBenchmark zavrsen." << std::endl;
     return 0;
 }
