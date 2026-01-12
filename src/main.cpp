@@ -852,12 +852,97 @@ void run_benchmark(const std::string& dataset_name, const std::string& filename)
             std::cout << "Hilbert fali: " << (total_points - hilbert_found) << std::endl;
     }
 }
+void run_scalability_test(const std::string& filename) {
+    std::cout << "\n========================================================" << std::endl;
+    std::cout << "GENERISANJE PODATAKA ZA GRAFIKE (SKALABILNOST)" << std::endl;
+    std::cout << "========================================================" << std::endl;
+
+    auto full_data = load_dataset(filename);
+    if (full_data.empty())
+        return;
+
+    // Definisemo korake za grafik (npr. 5k, 10k, 20k... do max)
+    std::vector<size_t> steps = {5000, 10000, 15000, 20000, 25000, 30000, 35000, full_data.size()};
+
+    // Otvaramo fajl za snimanje rezultata (CSV format)
+    std::ofstream csv_file("benchmark_results.csv");
+    csv_file << "N,GutmanInsert,HilbertInsert,GutmanSearch,HilbertSearch\n";  // Header
+
+    std::cout << "N\tG_Ins\tH_Ins\tG_Srch\tH_Srch" << std::endl;
+    std::cout << "--------------------------------------------------------" << std::endl;
+
+    for (size_t n : steps) {
+        if (n > full_data.size())
+            n = full_data.size();
+
+        // 1. Priprema podskupa podataka (prvih N tacaka)
+        std::vector<DataPoint> subset(full_data.begin(), full_data.begin() + n);
+
+        // Nadjemo granice za ovaj podskup da bi pretraga bila fer
+        long long min_x, min_y, max_x, max_y;
+        get_dataset_bounds(subset, min_x, min_y, max_x, max_y);
+
+        // Varijable za vremena
+        double g_insert = 0, h_insert = 0;
+        double g_search = 0, h_search = 0;
+
+        // --- GUTMAN MERENJE ---
+        {
+            Gutman::RTree<Payload> tree(4, 8);
+            g_insert = measure_time([&]() {
+                for (const auto& p : subset) {
+                    std::vector<double> p_min = {static_cast<double>(p.x),
+                                                 static_cast<double>(p.y)};
+                    std::vector<double> p_max = {static_cast<double>(p.x),
+                                                 static_cast<double>(p.y)};
+                    tree.insert(Gutman::Rectangle(p_min, p_max), new Payload(p.id));
+                }
+            });
+
+            g_search = measure_time([&]() {
+                std::vector<double> s_min = {static_cast<double>(min_x),
+                                             static_cast<double>(min_y)};
+                std::vector<double> s_max = {static_cast<double>(max_x),
+                                             static_cast<double>(max_y)};
+                auto res = tree.search(Gutman::Rectangle(s_min, s_max));
+            });
+        }
+
+        // --- HILBERT MERENJE ---
+        {
+            hilbert::RTree<Payload> tree(4, 8, 2, 64);
+            h_insert = measure_time([&]() {
+                for (const auto& p : subset) {
+                    std::vector<long long> p_min = {p.x, p.y};
+                    std::vector<long long> p_max = {p.x, p.y};
+                    tree.insert(hilbert::Rectangle(p_min, p_max), new Payload(p.id));
+                }
+            });
+
+            h_search = measure_time([&]() {
+                std::vector<long long> s_min = {min_x, min_y};
+                std::vector<long long> s_max = {max_x, max_y};
+                auto res = tree.search(hilbert::Rectangle(s_min, s_max));
+            });
+        }
+
+        // Ispis na ekran da vidis da radi
+        std::cout << n << "\t" << std::fixed << std::setprecision(3) << g_insert << "\t" << h_insert
+                  << "\t" << std::setprecision(5) << g_search << "\t" << h_search << std::endl;
+
+        // Upis u CSV fajl
+        csv_file << n << "," << std::fixed << std::setprecision(6) << g_insert << "," << h_insert
+                 << "," << g_search << "," << h_search << "\n";
+    }
+
+    std::cout << "\n[INFO] Rezultati sacuvani u 'benchmark_results.csv'" << std::endl;
+}
 int main() {
     RTreeTest test_suite;
     test_suite.run_all_tests();
     run_benchmark("1000 Points Dataset", "1000.txt");
     run_benchmark("Greek Earthquakes (1964-2000)", "greek-earthquakes-1964-2000.txt");
-
+    run_scalability_test("greek-earthquakes-1964-2000.txt");
     std::cout << "\nBenchmark zavrsen." << std::endl;
     return 0;
 }
